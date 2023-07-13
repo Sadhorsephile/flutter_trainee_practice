@@ -22,7 +22,7 @@ NotesWidgetModel defaultAppWidgetModelFactory(BuildContext context) {
 /// Имплементация и реализация Виджет модели [INotesWidgetModel]
 class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
     implements INotesWidgetModel {
-  NotesWidgetModel(NotesScreenModel model) : super(model);
+  NotesWidgetModel(super._model);
 
   @override
   void handleDrag(int oldIndex, int newIndext) {
@@ -33,7 +33,7 @@ class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
   void onSaveTap() {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return CreateNoteDialog(
           titleEditingController: TextEditingController(),
           contentEditingController: TextEditingController(),

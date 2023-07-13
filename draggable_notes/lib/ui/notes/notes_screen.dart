@@ -21,7 +21,7 @@ class NotesScreen extends ElementaryWidget<INotesWidgetModel> {
       ),
       body: Center(
         child: ReorderableList(
-          itemBuilder: (BuildContext context, int index) {
+          itemBuilder: (context, index) {
             return NoteCard(
               key: ValueKey(index),
               title: 'Заголовок',

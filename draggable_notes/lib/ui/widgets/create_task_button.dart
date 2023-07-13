@@ -7,8 +7,8 @@ class CreateTaskButton extends StatelessWidget {
   final VoidCallback onTap;
 
   const CreateTaskButton({
-    super.key,
     required this.onTap,
+    super.key,
   });
 
   @override
