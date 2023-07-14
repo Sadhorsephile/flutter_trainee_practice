@@ -4,6 +4,7 @@ import 'package:draggable_notes/interactor/notes_interactor.dart';
 import 'package:draggable_notes/ui/notes/notes_model.dart';
 import 'package:draggable_notes/ui/notes/notes_screen.dart';
 import 'package:draggable_notes/ui/widgets/create_note_dialog.dart';
+import 'package:draggable_notes/ui/widgets/snack_bars.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 
@@ -52,8 +53,12 @@ class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
 
   /// Обновить список заметок
   void updateNotes() {
-    final notes = model.getNotes();
-    notesListState.content(notes);
+    try {
+      final notes = model.getNotes();
+      notesListState.content(notes);
+    } on Exception catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(errorLoadingSnackBar);
+    }
   }
 
   @override
