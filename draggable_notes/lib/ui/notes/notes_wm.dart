@@ -46,11 +46,12 @@ class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
   void initWidgetModel() {
     titleEditingController = TextEditingController();
     contentEditingController = TextEditingController();
-    getPhoto();
+    updateNotes();
     super.initWidgetModel();
   }
 
-  void getPhoto() {
+  /// Обновить список заметок
+  void updateNotes() {
     final notes = model.getNotes();
     notesListState.content(notes);
   }
@@ -66,7 +67,7 @@ class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
   @override
   void handleDrag(int oldIndex, int newIndex) {
     model.replaceNotes(oldIndex, newIndex);
-    getPhoto();
+    updateNotes();
   }
 
   @override
@@ -90,6 +91,6 @@ class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
     ));
     titleEditingController.text = '';
     contentEditingController.text = '';
-    getPhoto();
+    updateNotes();
   }
 }
