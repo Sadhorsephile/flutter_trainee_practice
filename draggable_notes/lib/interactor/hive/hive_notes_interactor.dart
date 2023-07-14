@@ -7,6 +7,7 @@ import 'package:injectable/injectable.dart';
 const notesBoxName = 'notesBox';
 const notesDBKey = 'notes';
 
+/// Реализация для [NotesInteractor] для работы с заметками и их хранения в Hive
 @Injectable(as: NotesInteractor)
 class HiveNotesInteractor implements NotesInteractor {
   /// Согласно документации нельзя указать в generic типе List
