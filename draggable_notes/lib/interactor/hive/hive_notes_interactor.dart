@@ -1,4 +1,5 @@
 import 'package:draggable_notes/data/note.dart';
+import 'package:draggable_notes/interactor/hive/adapters/note.dart';
 import 'package:draggable_notes/interactor/hive/hive_repository.dart';
 import 'package:draggable_notes/interactor/notes_interactor.dart';
 import 'package:injectable/injectable.dart';
@@ -16,7 +17,18 @@ class HiveNotesInteractor implements NotesInteractor {
   void addNote(NoteDomain note) => _hiveRepository.addNote(note);
 
   @override
-  List<NoteDomain> getNotes() => _hiveRepository.getNotes();
+  List<NoteDomain> getNotes() {
+    final notesDb = _hiveRepository.getNotes();
+    final notes = notesDb?.map((note) {
+      note as NoteDB;
+      return NoteDomain(
+        title: note.title,
+        content: note.content,
+      );
+    }).toList();
+
+    return notes ?? [];
+  }
 
   @override
   void replaceNotes(int oldIndex, int newIndex) =>

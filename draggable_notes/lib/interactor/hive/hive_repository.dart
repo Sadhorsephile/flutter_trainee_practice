@@ -23,17 +23,8 @@ class HiveRepository {
     _notesBox.put(notesDBKey, notes);
   }
 
-  List<NoteDomain> getNotes() {
-    final notesDb = _notesBox.get(notesDBKey) as List<dynamic>?;
-    final notes = notesDb?.map((note) {
-      note as NoteDB;
-      return NoteDomain(
-        title: note.title,
-        content: note.content,
-      );
-    }).toList();
-
-    return notes ?? [];
+  List<dynamic>? getNotes() {
+    return _notesBox.get(notesDBKey) as List<dynamic>?;
   }
 
   void replaceNotes(int oldIndex, int newIndex) {
