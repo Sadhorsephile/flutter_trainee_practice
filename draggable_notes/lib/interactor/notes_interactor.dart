@@ -1,7 +1,7 @@
 import 'package:draggable_notes/data/note.dart';
 
 /// Интерактор для работы с заметками
-abstract class NotesInteractor {
+abstract interface class NotesInteractor {
   /// Получить заметки
   List<NoteDomain> getNotes();
 
