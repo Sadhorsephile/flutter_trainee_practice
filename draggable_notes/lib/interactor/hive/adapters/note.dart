@@ -5,10 +5,10 @@ part 'note.g.dart';
 @HiveType(typeId: 0)
 class NoteDB extends HiveObject {
   @HiveField(0)
-  String title;
+  final String title;
 
   @HiveField(1)
-  String content;
+  final String content;
 
   NoteDB({
     required this.title,

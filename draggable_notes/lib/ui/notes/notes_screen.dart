@@ -17,7 +17,7 @@ class NotesScreen extends ElementaryWidget<INotesWidgetModel> {
   Widget build(INotesWidgetModel wm) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.yellow,
+        backgroundColor: AppColors.mainColor,
         title: const Text(AppStrings.notes),
       ),
       body: Center(

@@ -1,10 +1,10 @@
 /// Доменная сущность заметки
 class NoteDomain {
   /// Название заметки
-  String title;
+  final String title;
 
   /// Содержание заметки
-  String content;
+  final String content;
 
   NoteDomain({
     required this.title,
