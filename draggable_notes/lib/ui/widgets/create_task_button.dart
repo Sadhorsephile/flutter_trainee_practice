@@ -1,3 +1,4 @@
+import 'package:draggable_notes/res/%D1%81olors.dart';
 import 'package:draggable_notes/res/strings.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class CreateTaskButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      backgroundColor: Colors.orange,
+      backgroundColor: AppColors.buttonColor,
       onPressed: onTap,
       tooltip: AppStrings.addNote,
       child: const Icon(Icons.note_add),
