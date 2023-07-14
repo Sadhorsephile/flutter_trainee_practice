@@ -25,9 +25,10 @@ class NotesScreen extends ElementaryWidget<INotesWidgetModel> {
           listenableEntityState: wm.notesListState,
           builder: (context, notesList) {
             if (notesList == null) {
-              return const Center(
-                child: Text(AppStrings.emptyNotes),
-              );
+              return const NotesPlaceholder();
+            }
+            if (notesList.isEmpty) {
+              return const NotesPlaceholder();
             }
             return ReorderableListView.builder(
               itemCount: notesList.length,
@@ -47,6 +48,20 @@ class NotesScreen extends ElementaryWidget<INotesWidgetModel> {
       floatingActionButton: CreateTaskButton(
         onTap: wm.onCreateNoteTap,
       ),
+    );
+  }
+}
+
+/// Виджет, который отображается когда заметок нет
+class NotesPlaceholder extends StatelessWidget {
+  const NotesPlaceholder({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text(AppStrings.emptyNotes),
     );
   }
 }
