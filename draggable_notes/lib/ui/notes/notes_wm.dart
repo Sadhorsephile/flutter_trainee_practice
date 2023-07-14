@@ -32,7 +32,7 @@ class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
     implements INotesWidgetModel {
   NotesWidgetModel(super._model);
 
-  /// Контроллер ядл ввода названия заметки
+  /// Контроллер для ввода названия заметки
   late final TextEditingController titleEditingController;
 
   /// Контроллер для содержания заметки
@@ -84,6 +84,7 @@ class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
     );
   }
 
+  /// Сохранить заметок
   void _saveNote() {
     model.addNote(NoteDomain(
       title: titleEditingController.text,
