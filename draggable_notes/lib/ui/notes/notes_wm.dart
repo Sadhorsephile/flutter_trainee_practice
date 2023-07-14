@@ -40,7 +40,7 @@ class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
   late final TextEditingController contentEditingController;
 
   @override
-  EntityStateNotifier<List<NoteDomain>> notesListState =
+  final EntityStateNotifier<List<NoteDomain>> notesListState =
       EntityStateNotifier<List<NoteDomain>>();
 
   @override
