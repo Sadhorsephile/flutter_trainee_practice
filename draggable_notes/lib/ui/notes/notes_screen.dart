@@ -1,3 +1,4 @@
+import 'package:draggable_notes/res/colors.dart';
 import 'package:draggable_notes/data/note.dart';
 import 'package:draggable_notes/res/strings.dart';
 import 'package:draggable_notes/ui/notes/notes_wm.dart';
