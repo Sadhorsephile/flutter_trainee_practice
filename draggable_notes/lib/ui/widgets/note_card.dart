@@ -15,46 +15,48 @@ class NoteCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10),
-      child: Container(
+      child: ConstrainedBox(
         constraints: const BoxConstraints(
           minHeight: 100,
           minWidth: double.infinity,
         ),
-        decoration: BoxDecoration(
-          color: Colors.yellowAccent.shade200.withAlpha(100),
-          borderRadius: const BorderRadius.only(
-            bottomRight: Radius.circular(20),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 10,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: Colors.yellowAccent.shade200.withAlpha(100),
+            borderRadius: const BorderRadius.only(
+              bottomRight: Radius.circular(20),
             ),
-            Center(
-              child: Text(
-                title,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              Center(
+                child: Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                  ),
                 ),
               ),
-            ),
-            const Divider(
-              height: 2,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 12,
-                right: 12,
-                bottom: 10,
-                top: 16,
+              const Divider(
+                height: 2,
               ),
-              child: Text(content),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 12,
+                  right: 12,
+                  bottom: 10,
+                  top: 16,
+                ),
+                child: Text(content),
+              )
+            ],
+          ),
         ),
       ),
     );
