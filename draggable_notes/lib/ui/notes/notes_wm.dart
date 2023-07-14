@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 /// Абстракция Widget Model для экрана заметок
 abstract class INotesWidgetModel extends IWidgetModel {
+  /// Состояние списка заметок
   ListenableState<EntityState<List<NoteDomain>>> get notesListState;
 
   /// Добавление заметки
@@ -31,7 +32,10 @@ class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
     implements INotesWidgetModel {
   NotesWidgetModel(super._model);
 
+  /// Контроллер ядл ввода названия заметки
   late final TextEditingController titleEditingController;
+
+  /// Контроллер для содержания заметки
   late final TextEditingController contentEditingController;
 
   @override
