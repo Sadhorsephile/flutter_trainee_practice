@@ -32,7 +32,8 @@ void main() {
         ),
       );
 
-    await tester.pumpWidgetBuilder(builder.build());
+    await tester.pumpWidgetBuilder(builder.build(),
+        surfaceSize: Size(400, 800));
 
     await screenMatchesGolden(tester, 'notes_card');
   });
