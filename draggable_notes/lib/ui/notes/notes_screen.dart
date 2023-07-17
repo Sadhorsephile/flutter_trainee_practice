@@ -17,9 +17,17 @@ class NotesScreen extends ElementaryWidget<INotesWidgetModel> {
   @override
   Widget build(INotesWidgetModel wm) {
     return Scaffold(
+      backgroundColor: wm.themeData.canvasColor,
       appBar: AppBar(
-        backgroundColor: AppColors.mainColor,
+        backgroundColor: wm.themeData.primaryColor,
         title: const Text(AppStrings.notes),
+        actions: [
+          IconButton(
+            splashRadius: 26,
+            icon: const Icon(Icons.theater_comedy),
+            onPressed: wm.onThemeChangeTap,
+          )
+        ],
       ),
       body: Center(
         child: EntityStateNotifierBuilder<List<NoteDomain>>(

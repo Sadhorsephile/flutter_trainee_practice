@@ -15,7 +15,7 @@ class CreateTaskButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      backgroundColor: AppColors.buttonColor,
+      backgroundColor: AppColorsLight.buttonColor,
       onPressed: onTap,
       tooltip: AppStrings.addNote,
       child: const Icon(Icons.note_add),

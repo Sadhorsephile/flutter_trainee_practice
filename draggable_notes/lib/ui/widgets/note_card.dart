@@ -23,7 +23,8 @@ class NoteCard extends StatelessWidget {
         ),
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: AppColors.cardColor,
+            color: Theme.of(context).cardColor,
+            //color: AppColorsLight.cardColor,
             borderRadius: const BorderRadius.only(
               bottomRight: Radius.circular(20),
             ),
