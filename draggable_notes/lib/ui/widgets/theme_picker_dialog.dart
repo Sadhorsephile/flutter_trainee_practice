@@ -6,8 +6,8 @@ class ThemePickerDialog extends StatelessWidget {
   final void Function(ThemeMode?) onThemeChanged;
 
   const ThemePickerDialog({
-    super.key,
     required this.onThemeChanged,
+    super.key,
   });
 
   void onChange(BuildContext context, ThemeMode? theme) {
@@ -15,6 +15,7 @@ class ThemePickerDialog extends StatelessWidget {
     Navigator.of(context).pop();
   }
 
+  // TODO: вынести строки
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

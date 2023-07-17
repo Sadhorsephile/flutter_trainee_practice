@@ -17,7 +17,6 @@ class NotesScreen extends ElementaryWidget<INotesWidgetModel> {
   @override
   Widget build(INotesWidgetModel wm) {
     return Scaffold(
-      backgroundColor: wm.themeData.canvasColor,
       appBar: AppBar(
         backgroundColor: wm.themeData.primaryColor,
         title: const Text(AppStrings.notes),
