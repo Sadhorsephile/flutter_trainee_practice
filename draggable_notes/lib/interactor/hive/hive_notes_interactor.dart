@@ -1,16 +1,16 @@
 import 'package:draggable_notes/data/note.dart';
 import 'package:draggable_notes/interactor/hive/adapters/note.dart';
-import 'package:draggable_notes/interactor/hive/hive_repository.dart';
+import 'package:draggable_notes/interactor/hive/hive_storage.dart';
 import 'package:draggable_notes/interactor/notes_interactor.dart';
 import 'package:injectable/injectable.dart';
 
 /// Реализация для [NotesInteractor] для работы с заметками и их хранения в Hive
 @Injectable(as: NotesInteractor)
 class HiveNotesInteractor implements NotesInteractor {
-  late final HiveRepository _hiveRepository;
+  late final HiveStorage _hiveRepository;
 
   HiveNotesInteractor() {
-    _hiveRepository = HiveRepository();
+    _hiveRepository = HiveStorage();
   }
 
   @override
