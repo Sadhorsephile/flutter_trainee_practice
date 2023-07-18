@@ -1,5 +1,5 @@
 import 'package:draggable_notes/data/note.dart';
-import 'package:draggable_notes/interactor/notes_interactor.dart';
+import 'package:draggable_notes/interactor/notes/notes_interactor.dart';
 import 'package:elementary/elementary.dart';
 
 /// Имплементация Elementary модели к экрану заметок
