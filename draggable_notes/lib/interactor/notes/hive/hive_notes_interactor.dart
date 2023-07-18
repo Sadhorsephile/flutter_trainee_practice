@@ -5,10 +5,10 @@ import 'package:draggable_notes/storage/notes/hive/hive_storage.dart';
 import 'package:draggable_notes/storage/notes/notes_storage.dart';
 import 'package:injectable/injectable.dart';
 
-/// Реализация для [NotesInteractor] для работы с заметками и их хранения в Hive
+/// Реализация [NotesInteractor] для работы с заметками и их хранения в Hive
 @Injectable(as: NotesInteractor)
 class HiveNotesInteractor implements NotesInteractor {
-  late final NotesStorage _hiveStorage;
+  late final NotesStorage<NoteDB> _hiveStorage;
 
   HiveNotesInteractor() {
     _hiveStorage = HiveStorage();
@@ -19,16 +19,21 @@ class HiveNotesInteractor implements NotesInteractor {
 
   @override
   List<NoteDomain> getNotes() {
-    final notesDb = _hiveStorage.getNotes();
-    final notes = notesDb?.map((note) {
-      note as NoteDB;
-      return NoteDomain(
-        title: note.title,
-        content: note.content,
-      );
-    }).toList();
+    try {
+      final notesDb = _hiveStorage.getNotes();
+      final notesDomain = notesDb
+          .map(
+            (note) => NoteDomain(
+              title: note.title,
+              content: note.content,
+            ),
+          )
+          .toList();
 
-    return notes ?? [];
+      return notesDomain;
+    } on Exception catch (_) {
+      rethrow;
+    }
   }
 
   @override
