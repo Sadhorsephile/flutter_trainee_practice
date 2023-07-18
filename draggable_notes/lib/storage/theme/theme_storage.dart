@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// Хранилище темы в приложении
-abstract class ThemeStorage {
+abstract interface class ThemeStorage {
   /// Получить сохраненную тему
   ThemeMode getThemeMode();
 
