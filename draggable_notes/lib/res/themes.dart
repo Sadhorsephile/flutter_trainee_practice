@@ -1,7 +1,9 @@
 import 'package:draggable_notes/res/colors.dart';
 import 'package:flutter/material.dart';
 
+/// Темы приложения
 class AppThemes {
+  /// Светлая тема приложения
   static ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: AppColorsLight.canvasColor,
     primaryColor: AppColorsLight.mainColor,
@@ -22,6 +24,7 @@ class AppThemes {
     ),
   );
 
+  /// Темная тема приложения
   static ThemeData darkTheme = ThemeData(
     scaffoldBackgroundColor: AppColorsDark.canvasColor,
     primaryColor: AppColorsDark.mainColor,
