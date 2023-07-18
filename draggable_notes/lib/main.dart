@@ -1,7 +1,18 @@
+import 'package:draggable_notes/di/di_container.dart';
+import 'package:draggable_notes/storage/notes/hive/adapters/note.dart';
+import 'package:draggable_notes/storage/notes/hive/hive_storage.dart';
 import 'package:draggable_notes/ui/notes/notes_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+void main() async {
+  /// Инициализируем локальную базу данных
+  await Hive.initFlutter();
+  Hive.registerAdapter<NoteDB>(NoteDBAdapter());
+  await Hive.openBox<dynamic>(notesBoxName);
+
+  configureDependencies();
+
   runApp(const MyApp());
 }
 

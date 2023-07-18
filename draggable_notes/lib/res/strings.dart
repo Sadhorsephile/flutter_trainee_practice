@@ -8,4 +8,7 @@ class AppStrings {
   static const enterContent = 'Введите содержание';
   static const save = 'Сохранить';
   static const cancel = 'Отмена';
+  static const emptyNotes = 'Здесь ничего нет';
+  static const loadingError = 'Произошла ошибка во время загрузки данных.';
+  static const refresh = 'Обновить';
 }
