@@ -1,4 +1,4 @@
-import 'package:draggable_notes/interactor/notes_interactor.dart';
+import 'package:draggable_notes/interactor/notes/notes_interactor.dart';
 import 'package:mocktail/mocktail.dart';
 
 /// Мок для [NotesInteractor].
