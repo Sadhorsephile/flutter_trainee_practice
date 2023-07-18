@@ -2,22 +2,35 @@ import 'package:draggable_notes/res/strings.dart';
 import 'package:flutter/material.dart';
 
 /// Диалог создания новой заметки
-class CreateNoteDialog extends StatelessWidget {
-  /// Контроллер для ввода названия заметки
-  final TextEditingController titleEditingController;
-
-  /// Контроллер для ввода содержания заметки
-  final TextEditingController contentEditingController;
-
-  /// Действие по нажатию на Сохранить
-  final VoidCallback onSaveTap;
-
+class CreateNoteDialog extends StatefulWidget {
   const CreateNoteDialog({
-    required this.titleEditingController,
-    required this.contentEditingController,
-    required this.onSaveTap,
     super.key,
   });
+
+  @override
+  State<CreateNoteDialog> createState() => _CreateNoteDialogState();
+}
+
+class _CreateNoteDialogState extends State<CreateNoteDialog> {
+  /// Контроллер для ввода названия заметки
+  late final TextEditingController titleEditingController;
+
+  /// Контроллер для ввода содержания заметки
+  late final TextEditingController contentEditingController;
+
+  @override
+  void initState() {
+    titleEditingController = TextEditingController();
+    contentEditingController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    titleEditingController.dispose();
+    contentEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +77,7 @@ class CreateNoteDialog extends StatelessWidget {
         TextButton(
           child: const Text(AppStrings.save),
           onPressed: () {
-            onSaveTap.call();
+            // TODO(AndrewVorotyntsev):  вернуть заметку
             Navigator.of(context).pop();
           },
         ),
