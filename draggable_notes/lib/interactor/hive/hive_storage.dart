@@ -8,7 +8,7 @@ const notesDBKey = 'notes';
 
 /// Хранилище заметок в Hive
 class HiveStorage implements NotesStorage {
-  /// Согласно документации нельзя указать в generic типе List
+  /// Согласно документации нельзя указать в generic тип List
   /// Вынужденное решение - приводить типы вручную (as)
   Box<dynamic> get _notesBox => Hive.box<dynamic>(notesBoxName);
 
