@@ -1,10 +1,10 @@
-import 'package:draggable_notes/res/themes.dart';
 import 'package:draggable_notes/storage/theme/theme_storage.dart';
+import 'package:draggable_notes/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefsThemeStorage implements ThemeStorage {
-  SharedPreferences _prefs;
+  final SharedPreferences _prefs;
 
   PrefsThemeStorage(this._prefs);
 

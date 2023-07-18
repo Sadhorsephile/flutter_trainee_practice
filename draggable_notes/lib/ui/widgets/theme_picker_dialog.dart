@@ -3,6 +3,7 @@ import 'package:draggable_notes/res/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Диалог выбора темы
 class ThemePickerDialog extends StatelessWidget {
   final void Function(ThemeMode?) onThemeChanged;
 
