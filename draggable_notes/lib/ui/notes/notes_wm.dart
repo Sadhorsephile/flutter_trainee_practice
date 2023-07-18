@@ -24,6 +24,9 @@ abstract class INotesWidgetModel extends IWidgetModel {
 
   /// Нажатие на выбор темы
   void onThemeChangeTap();
+
+  /// Обновить список заметок
+  void updateNotes();
 }
 
 NotesWidgetModel defaultAppWidgetModelFactory(BuildContext context) {
@@ -50,12 +53,23 @@ class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
   }
 
   /// Обновить список заметок
+  @override
   void updateNotes() {
     try {
       final notes = model.getNotes();
       notesListState.content(notes);
-    } on Exception catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(errorLoadingSnackBar);
+    } on Exception catch (e) {
+      /// Если данные не было - показываем экран с ошибкой
+      if (notesListState.value?.data?.isEmpty ?? true) {
+        notesListState.error(e);
+      } else {
+        /// Если данные уже были загружены - показать снэкбар
+        ScaffoldMessenger.of(context).showSnackBar(
+          ErrorSnackBar(
+            onActionTap: updateNotes,
+          ),
+        );
+      }
     }
   }
 

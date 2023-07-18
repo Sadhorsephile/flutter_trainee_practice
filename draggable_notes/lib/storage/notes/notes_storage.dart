@@ -1,9 +1,11 @@
 import 'package:draggable_notes/data/note.dart';
+import 'package:draggable_notes/storage/notes/note_data.dart';
 
 /// Хранилище для работы с заметками
-abstract class NotesStorage {
+/// Оно работает с заметками в формате [T]
+abstract class NotesStorage<T extends NoteData> {
   /// Получить заметки
-  List<dynamic>? getNotes();
+  List<T> getNotes();
 
   /// Добавить заметку
   void addNote(NoteDomain note);
