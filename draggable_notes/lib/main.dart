@@ -1,6 +1,6 @@
 import 'package:draggable_notes/di/di_container.dart';
 import 'package:draggable_notes/interactor/notes/hive/adapters/note.dart';
-import 'package:draggable_notes/interactor/notes/hive/hive_repository.dart';
+import 'package:draggable_notes/interactor/notes/hive/hive_storage.dart';
 import 'package:draggable_notes/res/themes.dart';
 import 'package:draggable_notes/storage/theme/prefs_theme_storage.dart';
 import 'package:draggable_notes/ui/notes/notes_screen.dart';

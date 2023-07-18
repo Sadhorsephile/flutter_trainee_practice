@@ -13,8 +13,6 @@ import 'package:provider/provider.dart';
 
 /// Абстракция Widget Model для экрана заметок
 abstract class INotesWidgetModel extends IWidgetModel {
-  ThemeData get themeData;
-
   /// Состояние списка заметок
   ListenableState<EntityState<List<NoteDomain>>> get notesListState;
 
@@ -42,22 +40,11 @@ class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
   NotesWidgetModel(super._model);
 
   @override
-  ThemeData get themeData => Theme.of(context);
-
-  /// Контроллер для ввода названия заметки
-  late final TextEditingController titleEditingController;
-
-  /// Контроллер для содержания заметки
-  late final TextEditingController contentEditingController;
-
-  @override
   final EntityStateNotifier<List<NoteDomain>> notesListState =
       EntityStateNotifier<List<NoteDomain>>();
 
   @override
   void initWidgetModel() {
-    titleEditingController = TextEditingController();
-    contentEditingController = TextEditingController();
     updateNotes();
     super.initWidgetModel();
   }
@@ -74,8 +61,6 @@ class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
 
   @override
   void dispose() {
-    titleEditingController.dispose();
-    contentEditingController.dispose();
     notesListState.dispose();
     super.dispose();
   }
@@ -87,28 +72,15 @@ class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
   }
 
   @override
-  void onCreateNoteTap() {
-    showDialog(
+  Future<void> onCreateNoteTap() async {
+    final createdNote = await showDialog<NoteDomain?>(
       context: context,
-      builder: (context) {
-        return CreateNoteDialog(
-          titleEditingController: titleEditingController,
-          contentEditingController: contentEditingController,
-          onSaveTap: _saveNote,
-        );
-      },
+      builder: (context) => const CreateNoteDialog(),
     );
-  }
-
-  /// Сохранить заметок
-  void _saveNote() {
-    model.addNote(NoteDomain(
-      title: titleEditingController.text,
-      content: contentEditingController.text,
-    ));
-    titleEditingController.text = '';
-    contentEditingController.text = '';
-    updateNotes();
+    if (createdNote != null) {
+      model.addNote(createdNote);
+      updateNotes();
+    }
   }
 
   @override

@@ -11,6 +11,9 @@ class AppThemes {
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: AppColorsLight.buttonColor,
     ),
+    appBarTheme: const AppBarTheme(
+      color: AppColorsLight.mainColor,
+    ),
     radioTheme: RadioThemeData(
       fillColor: MaterialStateColor.resolveWith(
         (states) => states.contains(MaterialState.selected)
@@ -27,6 +30,9 @@ class AppThemes {
     dialogBackgroundColor: AppColorsDark.dialogColor,
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: AppColorsDark.buttonColor,
+    ),
+    appBarTheme: const AppBarTheme(
+      color: AppColorsDark.mainColor,
     ),
     radioTheme: RadioThemeData(
       fillColor: MaterialStateColor.resolveWith((states) =>

@@ -1,24 +1,26 @@
 import 'package:draggable_notes/data/note.dart';
 import 'package:draggable_notes/interactor/notes/hive/adapters/note.dart';
-import 'package:draggable_notes/interactor/notes/hive/hive_repository.dart';
+import 'package:draggable_notes/interactor/notes/hive/hive_storage.dart';
 import 'package:draggable_notes/interactor/notes/notes_interactor.dart';
+
+import 'package:draggable_notes/interactor/notes_storage.dart';
 import 'package:injectable/injectable.dart';
 
 /// Реализация [NotesInteractor] для работы с заметками и их хранения в Hive
 @Injectable(as: NotesInteractor)
 class HiveNotesInteractor implements NotesInteractor {
-  late final HiveRepository _hiveRepository;
+  late final NotesStorage _hiveStorage;
 
   HiveNotesInteractor() {
-    _hiveRepository = HiveRepository();
+    _hiveStorage = HiveStorage();
   }
 
   @override
-  void addNote(NoteDomain note) => _hiveRepository.addNote(note);
+  void addNote(NoteDomain note) => _hiveStorage.addNote(note);
 
   @override
   List<NoteDomain> getNotes() {
-    final notesDb = _hiveRepository.getNotes();
+    final notesDb = _hiveStorage.getNotes();
     final notes = notesDb?.map((note) {
       note as NoteDB;
       return NoteDomain(
@@ -32,5 +34,5 @@ class HiveNotesInteractor implements NotesInteractor {
 
   @override
   void replaceNotes(int oldIndex, int newIndex) =>
-      _hiveRepository.replaceNotes(oldIndex, newIndex);
+      _hiveStorage.replaceNotes(oldIndex, newIndex);
 }
