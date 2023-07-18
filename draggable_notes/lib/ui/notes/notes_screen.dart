@@ -24,8 +24,7 @@ class NotesScreen extends ElementaryWidget<INotesWidgetModel> {
       body: Center(
         child: EntityStateNotifierBuilder<List<NoteDomain>>(
           listenableEntityState: wm.notesListState,
-          errorBuilder: (context, e, list) =>
-              _ErrorWidget(onRefresh: wm.updateNotes),
+          errorBuilder: (_, __, ___) => _ErrorWidget(onRefresh: wm.updateNotes),
           builder: (context, notesList) {
             if (notesList == null) {
               return const NotesPlaceholder();
