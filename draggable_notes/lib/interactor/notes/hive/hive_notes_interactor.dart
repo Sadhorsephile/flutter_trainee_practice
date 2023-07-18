@@ -19,21 +19,17 @@ class HiveNotesInteractor implements NotesInteractor {
 
   @override
   List<NoteDomain> getNotes() {
-    try {
-      final notesDb = _hiveStorage.getNotes();
-      final notesDomain = notesDb
-          .map(
-            (note) => NoteDomain(
-              title: note.title,
-              content: note.content,
-            ),
-          )
-          .toList();
+    final notesDb = _hiveStorage.getNotes();
+    final notesDomain = notesDb
+        .map(
+          (note) => NoteDomain(
+            title: note.title,
+            content: note.content,
+          ),
+        )
+        .toList();
 
-      return notesDomain;
-    } on Exception catch (_) {
-      rethrow;
-    }
+    return notesDomain;
   }
 
   @override
