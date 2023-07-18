@@ -1,5 +1,5 @@
+import 'package:draggable_notes/providers/theme_provider.dart';
 import 'package:draggable_notes/res/strings.dart';
-import 'package:draggable_notes/res/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

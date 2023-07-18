@@ -1,7 +1,7 @@
 import 'package:draggable_notes/data/note.dart';
 import 'package:draggable_notes/di/di_container.dart';
 import 'package:draggable_notes/interactor/notes/notes_interactor.dart';
-import 'package:draggable_notes/res/themes.dart';
+import 'package:draggable_notes/providers/theme_provider.dart';
 import 'package:draggable_notes/ui/notes/notes_model.dart';
 import 'package:draggable_notes/ui/notes/notes_screen.dart';
 import 'package:draggable_notes/ui/widgets/create_note_dialog.dart';
