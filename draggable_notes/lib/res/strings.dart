@@ -10,4 +10,8 @@ class AppStrings {
   static const cancel = 'Отмена';
   static const emptyNotes = 'Здесь ничего нет';
   static const loadingError = 'Произошла ошибка во время загрузки данных.';
+  static const chooseThemeMode = 'Выберете тему';
+  static const lightThemeMode = 'Светлая';
+  static const darkThemeMode = 'Темная';
+  static const systemThemeMode = 'Системная';
 }

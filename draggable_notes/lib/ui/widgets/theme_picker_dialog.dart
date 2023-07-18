@@ -1,3 +1,4 @@
+import 'package:draggable_notes/res/strings.dart';
 import 'package:draggable_notes/res/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,12 +16,11 @@ class ThemePickerDialog extends StatelessWidget {
     Navigator.of(context).pop();
   }
 
-  // TODO: вынести строки
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(
-        'Выберете тему',
+      title: const Text(
+        AppStrings.chooseThemeMode,
         textAlign: TextAlign.center,
       ),
       content: SizedBox(
@@ -34,7 +34,7 @@ class ThemePickerDialog extends StatelessWidget {
                   groupValue: context.watch<ThemeProvider>().currentThemeMode,
                   onChanged: (theme) => onChange(context, theme),
                 ),
-                Text('Светлая'),
+                const Text(AppStrings.lightThemeMode),
               ],
             ),
             Row(
@@ -44,7 +44,7 @@ class ThemePickerDialog extends StatelessWidget {
                   groupValue: context.watch<ThemeProvider>().currentThemeMode,
                   onChanged: (theme) => onChange(context, theme),
                 ),
-                Text('Темная'),
+                const Text(AppStrings.darkThemeMode),
               ],
             ),
             Row(
@@ -54,7 +54,7 @@ class ThemePickerDialog extends StatelessWidget {
                   groupValue: context.watch<ThemeProvider>().currentThemeMode,
                   onChanged: (theme) => onChange(context, theme),
                 ),
-                Text('Системная'),
+                const Text(AppStrings.systemThemeMode),
               ],
             ),
           ],
