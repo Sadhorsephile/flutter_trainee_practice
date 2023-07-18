@@ -1,4 +1,4 @@
-import 'package:draggable_notes/storage/notes/notes_storage.dart';
+import 'package:draggable_notes/storage/notes/note_data.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 part 'note.g.dart';
