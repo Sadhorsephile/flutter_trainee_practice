@@ -61,6 +61,9 @@ class _ErrorWidget extends StatelessWidget {
     required this.onRefresh,
   });
 
+  /// Размер иконки рефреша
+  static double get iconSize => 30;
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -68,14 +71,16 @@ class _ErrorWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text(AppStrings.loadingError),
-          IconButton(
-            icon: const Icon(
-              Icons.refresh,
-              size: 30,
-            ),
-            iconSize: 30,
-            onPressed: onRefresh,
-          ),
+          Builder(builder: (context) {
+            return IconButton(
+              icon: Icon(
+                Icons.refresh,
+                size: iconSize,
+              ),
+              iconSize: iconSize,
+              onPressed: onRefresh,
+            );
+          }),
         ],
       ),
     );
