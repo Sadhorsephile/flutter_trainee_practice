@@ -11,10 +11,11 @@ class AppThemes {
       backgroundColor: AppColorsLight.buttonColor,
     ),
     radioTheme: RadioThemeData(
-      fillColor: MaterialStateColor.resolveWith((states) =>
-          states.contains(MaterialState.selected)
-              ? AppColorsLight.radioColorSelected
-              : AppColorsLight.radioColorUnselected),
+      fillColor: MaterialStateColor.resolveWith(
+        (states) => states.contains(MaterialState.selected)
+            ? AppColorsLight.radioColorSelected
+            : AppColorsLight.radioColorUnselected,
+      ),
     ),
   );
 
@@ -31,6 +32,9 @@ class AppThemes {
           states.contains(MaterialState.selected)
               ? AppColorsDark.radioColorSelected
               : AppColorsDark.radioColorUnselected),
+    ),
+    textTheme: TextTheme(
+      bodyMedium: TextStyle(color: AppColorsDark.textColor),
     ),
   );
 }

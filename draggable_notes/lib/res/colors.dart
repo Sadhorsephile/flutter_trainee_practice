@@ -18,7 +18,8 @@ class AppColorsDark {
   static const mainColor = Color(0xFF301E67);
   static Color cardColor = Colors.grey;
   static const buttonColor = Colors.indigo;
-  static Color errorColor = Color(0xFFE96479);
+  static const errorColor = Color(0xFFE96479);
   static Color radioColorSelected = Colors.blue.shade300;
   static Color radioColorUnselected = Colors.white60;
+  static Color textColor = Colors.white;
 }
