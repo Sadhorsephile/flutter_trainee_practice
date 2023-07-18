@@ -33,20 +33,12 @@ class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
     implements INotesWidgetModel {
   NotesWidgetModel(super._model);
 
-  /// Контроллер для ввода названия заметки
-  late final TextEditingController titleEditingController;
-
-  /// Контроллер для содержания заметки
-  late final TextEditingController contentEditingController;
-
   @override
   final EntityStateNotifier<List<NoteDomain>> notesListState =
       EntityStateNotifier<List<NoteDomain>>();
 
   @override
   void initWidgetModel() {
-    titleEditingController = TextEditingController();
-    contentEditingController = TextEditingController();
     updateNotes();
     super.initWidgetModel();
   }
@@ -63,8 +55,6 @@ class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
 
   @override
   void dispose() {
-    titleEditingController.dispose();
-    contentEditingController.dispose();
     notesListState.dispose();
     super.dispose();
   }
@@ -76,24 +66,14 @@ class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
   }
 
   @override
-  void onCreateNoteTap() {
-    // TODO(AndrewVorotyntsev): обработать новую заметку
-    showDialog(
+  Future<void> onCreateNoteTap() async {
+    final createdNote = await showDialog<NoteDomain?>(
       context: context,
-      builder: (context) {
-        return const CreateNoteDialog();
-      },
+      builder: (context) => const CreateNoteDialog(),
     );
-  }
-
-  /// Сохранить заметок
-  void _saveNote() {
-    model.addNote(NoteDomain(
-      title: titleEditingController.text,
-      content: contentEditingController.text,
-    ));
-    titleEditingController.text = '';
-    contentEditingController.text = '';
-    updateNotes();
+    if (createdNote != null) {
+      model.addNote(createdNote);
+      updateNotes();
+    }
   }
 }

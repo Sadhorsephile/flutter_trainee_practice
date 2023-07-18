@@ -1,3 +1,4 @@
+import 'package:draggable_notes/data/note.dart';
 import 'package:draggable_notes/res/strings.dart';
 import 'package:flutter/material.dart';
 
@@ -77,8 +78,12 @@ class _CreateNoteDialogState extends State<CreateNoteDialog> {
         TextButton(
           child: const Text(AppStrings.save),
           onPressed: () {
-            // TODO(AndrewVorotyntsev):  вернуть заметку
-            Navigator.of(context).pop();
+            Navigator.of(context).pop<NoteDomain?>(
+              NoteDomain(
+                title: titleEditingController.text,
+                content: contentEditingController.text,
+              ),
+            );
           },
         ),
         TextButton(
