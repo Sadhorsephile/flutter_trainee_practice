@@ -22,6 +22,9 @@ class AppThemes {
             : AppColorsLight.radioColorUnselected,
       ),
     ),
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: AppColorsLight.errorColor,
+    ),
   );
 
   /// Темная тема приложения
@@ -44,6 +47,9 @@ class AppThemes {
     ),
     textTheme: TextTheme(
       bodyMedium: TextStyle(color: AppColorsDark.textColor),
+    ),
+    snackBarTheme: const SnackBarThemeData(
+      backgroundColor: AppColorsDark.errorColor,
     ),
   );
 }
