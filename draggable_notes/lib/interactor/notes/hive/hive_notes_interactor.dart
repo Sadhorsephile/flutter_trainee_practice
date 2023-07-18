@@ -28,6 +28,8 @@ class HiveNotesInteractor implements NotesInteractor {
           ),
         )
         .toList();
+
+    return notesDomain;
   }
 
   @override
