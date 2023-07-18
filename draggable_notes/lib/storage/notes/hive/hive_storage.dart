@@ -1,6 +1,6 @@
 import 'package:draggable_notes/data/note.dart';
-import 'package:draggable_notes/interactor/hive/adapters/note.dart';
-import 'package:draggable_notes/interactor/notes_storage.dart';
+import 'package:draggable_notes/storage/notes/hive/adapters/note.dart';
+import 'package:draggable_notes/storage/notes/notes_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 const notesBoxName = 'notesBox';
