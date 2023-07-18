@@ -3,6 +3,7 @@ import 'package:draggable_notes/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Хранилище, которое сохраняет текущую темы в SharedPreferences
 class PrefsThemeStorage implements ThemeStorage {
   final SharedPreferences _prefs;
 
@@ -10,6 +11,7 @@ class PrefsThemeStorage implements ThemeStorage {
 
   @override
   ThemeMode getThemeMode() {
+    /// Изначальная тема в приложении будет системная
     final themeName = _prefs.getString('theme') ?? 'system';
     return themeName.toThemeMode();
   }
