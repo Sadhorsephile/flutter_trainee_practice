@@ -10,6 +10,7 @@ const notesDBKey = 'notes';
 class HiveStorage implements NotesStorage {
   /// Согласно документации нельзя указать в generic тип List
   /// Вынужденное решение - приводить типы вручную (as)
+  /// ref: https://docs.hivedb.dev/#/basics/boxes (последний пункт)
   Box<dynamic> get _notesBox => Hive.box<dynamic>(notesBoxName);
 
   @override
