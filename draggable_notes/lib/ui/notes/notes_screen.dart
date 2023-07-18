@@ -24,6 +24,8 @@ class NotesScreen extends ElementaryWidget<INotesWidgetModel> {
       body: Center(
         child: EntityStateNotifierBuilder<List<NoteDomain>>(
           listenableEntityState: wm.notesListState,
+          errorBuilder: (context, e, list) =>
+              _ErrorWidget(onRefresh: wm.updateNotes),
           builder: (context, notesList) {
             if (notesList == null) {
               return const NotesPlaceholder();
@@ -48,6 +50,34 @@ class NotesScreen extends ElementaryWidget<INotesWidgetModel> {
       ),
       floatingActionButton: CreateTaskButton(
         onTap: wm.onCreateNoteTap,
+      ),
+    );
+  }
+}
+
+/// Экран ошибки с возможностью рефреша.
+class _ErrorWidget extends StatelessWidget {
+  final VoidCallback onRefresh;
+  const _ErrorWidget({
+    required this.onRefresh,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(AppStrings.loadingError),
+          IconButton(
+            icon: const Icon(
+              Icons.refresh,
+              size: 30,
+            ),
+            iconSize: 30,
+            onPressed: onRefresh,
+          ),
+        ],
       ),
     );
   }

@@ -35,6 +35,7 @@ class HiveStorage implements NotesStorage<NoteDB> {
     try {
       final rawNotes = _notesBox.get(notesDBKey) as List<dynamic>?;
       final notesDb = rawNotes?.whereType<NoteDB>().toList() ?? [];
+
       return notesDb;
     } on Exception catch (_) {
       rethrow;
