@@ -31,16 +31,11 @@ class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
 
   @override
   void onSaveTap() {
+    // TODO(AndrewVorotyntsev): обработать новую заметку
     showDialog(
       context: context,
       builder: (context) {
-        return CreateNoteDialog(
-          titleEditingController: TextEditingController(),
-          contentEditingController: TextEditingController(),
-          onSaveTap: () {
-            // TODO(AndrewVorotyntsev): impement
-          },
-        );
+        return const CreateNoteDialog();
       },
     );
   }
