@@ -1,4 +1,5 @@
 import 'package:draggable_notes/res/colors.dart';
+import 'package:draggable_notes/storage/theme/theme_storage.dart';
 import 'package:flutter/material.dart';
 
 class AppThemes {
@@ -39,14 +40,36 @@ class AppThemes {
   );
 }
 
+/// Провайдер для темы
 class ThemeProvider extends ChangeNotifier {
-  // TODO: брать с сохраненной
-  ThemeMode _currentTheme = ThemeMode.light;
+  /// Хранилище темы.
+  final ThemeStorage _themeStorage;
+
+  /// Текушая тема.
+  late ThemeMode _currentTheme;
 
   ThemeMode get currentThemeMode => _currentTheme;
 
+  ThemeProvider(this._themeStorage) {
+    _currentTheme = _themeStorage.getThemeMode();
+  }
+
   set currentThemeMode(ThemeMode value) {
     _currentTheme = value;
+    _themeStorage.setThemeMode(_currentTheme);
     notifyListeners();
+  }
+}
+
+extension StringTheme on String {
+  /// Получить режим темы по строке
+  ThemeMode toThemeMode() {
+    if (this == 'light') {
+      return ThemeMode.light;
+    }
+    if (this == 'dark') {
+      return ThemeMode.dark;
+    }
+    return ThemeMode.system;
   }
 }

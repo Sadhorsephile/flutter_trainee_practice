@@ -1,7 +1,7 @@
 import 'package:draggable_notes/data/note.dart';
-import 'package:draggable_notes/interactor/hive/adapters/note.dart';
-import 'package:draggable_notes/interactor/hive/hive_repository.dart';
-import 'package:draggable_notes/interactor/notes_interactor.dart';
+import 'package:draggable_notes/interactor/notes/hive/adapters/note.dart';
+import 'package:draggable_notes/interactor/notes/hive/hive_repository.dart';
+import 'package:draggable_notes/interactor/notes/notes_interactor.dart';
 import 'package:injectable/injectable.dart';
 
 /// Реализация [NotesInteractor] для работы с заметками и их хранения в Hive

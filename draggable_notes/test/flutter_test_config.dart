@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:draggable_notes/data/note.dart';
 import 'package:draggable_notes/di/di_container.dart';
-import 'package:draggable_notes/interactor/notes_interactor.dart';
+import 'package:draggable_notes/interactor/notes/notes_interactor.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:mocktail/mocktail.dart';
 
