@@ -44,11 +44,7 @@ void main() {
     final builder = GoldenBuilder.column()
       ..addScenario(
         'create_new_note_dialog',
-        CreateNoteDialog(
-          titleEditingController: TextEditingController(),
-          contentEditingController: TextEditingController(),
-          onSaveTap: () {},
-        ),
+        CreateNoteDialog(),
       );
 
     await tester.pumpWidgetBuilder(builder.build());
