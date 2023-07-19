@@ -28,35 +28,17 @@ class ThemePickerDialog extends StatelessWidget {
         height: 150,
         child: Column(
           children: [
-            Row(
-              children: [
-                Radio<ThemeMode>(
-                  value: ThemeMode.light,
-                  groupValue: context.watch<ThemeProvider>().currentThemeMode,
-                  onChanged: (theme) => onChange(context, theme),
-                ),
-                const Text(AppStrings.lightThemeMode),
-              ],
-            ),
-            Row(
-              children: [
-                Radio<ThemeMode>(
-                  value: ThemeMode.dark,
-                  groupValue: context.watch<ThemeProvider>().currentThemeMode,
-                  onChanged: (theme) => onChange(context, theme),
-                ),
-                const Text(AppStrings.darkThemeMode),
-              ],
-            ),
-            Row(
-              children: [
-                Radio<ThemeMode>(
-                  value: ThemeMode.system,
-                  groupValue: context.watch<ThemeProvider>().currentThemeMode,
-                  onChanged: (theme) => onChange(context, theme),
-                ),
-                const Text(AppStrings.systemThemeMode),
-              ],
+            ...ThemeMode.values.map<Widget>(
+              (mode) => Row(
+                children: [
+                  Radio<ThemeMode>(
+                    value: mode,
+                    groupValue: context.watch<ThemeProvider>().currentThemeMode,
+                    onChanged: (theme) => onChange(context, theme),
+                  ),
+                  Text(AppStrings.themeMode(mode)),
+                ],
+              ),
             ),
           ],
         ),

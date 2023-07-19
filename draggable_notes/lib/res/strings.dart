@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class AppStrings {
   static const notes = 'Заметки';
   static const addNote = 'Добавить заметку';
@@ -15,4 +17,15 @@ class AppStrings {
   static const lightThemeMode = 'Светлая';
   static const darkThemeMode = 'Темная';
   static const systemThemeMode = 'Системная';
+
+  static String themeMode(ThemeMode mode) {
+    switch (mode) {
+      case ThemeMode.light:
+        return lightThemeMode;
+      case ThemeMode.dark:
+        return darkThemeMode;
+      case ThemeMode.system:
+        return systemThemeMode;
+    }
+  }
 }
