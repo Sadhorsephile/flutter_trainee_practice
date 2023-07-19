@@ -7,17 +7,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PrefsThemeStorage implements ThemeStorage {
   final SharedPreferences _prefs;
 
+  static const themeValueName = 'theme';
+
   PrefsThemeStorage(this._prefs);
 
   @override
   ThemeMode getThemeMode() {
     /// Изначальная тема в приложении будет системная
-    final themeName = _prefs.getString('theme') ?? 'system';
+    final themeName = _prefs.getString(themeValueName) ?? ThemeMode.system.name;
     return themeName.toThemeMode();
   }
 
   @override
   Future<void> setThemeMode(ThemeMode theme) async {
-    await _prefs.setString('theme', theme.name);
+    await _prefs.setString(themeValueName, theme.name);
   }
 }
