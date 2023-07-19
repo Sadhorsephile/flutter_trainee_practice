@@ -12,7 +12,7 @@ class ThemeProvider extends ChangeNotifier {
   ThemeMode get currentThemeMode => _currentTheme;
 
   ThemeProvider(this._themeStorage) {
-    _currentTheme = _themeStorage.getThemeMode();
+    _currentTheme = _themeStorage.themeMode;
   }
 
   set currentThemeMode(ThemeMode value) {

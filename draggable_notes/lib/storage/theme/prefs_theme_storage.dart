@@ -12,7 +12,7 @@ class PrefsThemeStorage implements ThemeStorage {
   PrefsThemeStorage(this._prefs);
 
   @override
-  ThemeMode getThemeMode() {
+  ThemeMode get themeMode {
     /// Изначальная тема в приложении будет системная
     final themeName = _prefs.getString(themeValueName) ?? ThemeMode.system.name;
     return themeName.toThemeMode();
