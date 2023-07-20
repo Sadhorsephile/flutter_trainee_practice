@@ -5,4 +5,5 @@ import 'package:mocktail/mocktail.dart';
 /// Мок для [NotesInteractor].
 class NotesInteractorMock extends Mock implements NotesInteractor {}
 
+/// Мок для [ThemeProvider].
 class ThemeProviderMock extends Mock implements ThemeProvider {}
