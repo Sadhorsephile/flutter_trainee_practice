@@ -1,4 +1,3 @@
-import 'package:draggable_notes/res/colors.dart';
 import 'package:flutter/material.dart';
 
 /// Карточка с заметкой
@@ -23,7 +22,7 @@ class NoteCard extends StatelessWidget {
         ),
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: AppColors.cardColor,
+            color: Theme.of(context).cardColor,
             borderRadius: const BorderRadius.only(
               bottomRight: Radius.circular(20),
             ),

@@ -1,12 +1,15 @@
 import 'package:draggable_notes/data/note.dart';
 import 'package:draggable_notes/di/di_container.dart';
 import 'package:draggable_notes/interactor/notes/notes_interactor.dart';
+import 'package:draggable_notes/providers/theme_provider.dart';
 import 'package:draggable_notes/ui/notes/notes_model.dart';
 import 'package:draggable_notes/ui/notes/notes_screen.dart';
 import 'package:draggable_notes/ui/widgets/create_note_dialog.dart';
 import 'package:draggable_notes/ui/widgets/snack_bars.dart';
+import 'package:draggable_notes/ui/widgets/theme_picker_dialog.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 /// Абстракция Widget Model для экрана заметок
 abstract class INotesWidgetModel extends IWidgetModel {
@@ -18,6 +21,9 @@ abstract class INotesWidgetModel extends IWidgetModel {
 
   /// Обработка перетаскивания со старого места [oldIndex] на новое [newIndex]
   void handleDrag(int oldIndex, int newIndex);
+
+  /// Нажатие на выбор темы
+  void onThemeChangeTap();
 
   /// Обновить список заметок
   void updateNotes();
@@ -88,6 +94,25 @@ class NotesWidgetModel extends WidgetModel<NotesScreen, NotesScreenModel>
     if (createdNote != null) {
       model.addNote(createdNote);
       updateNotes();
+    }
+  }
+
+  @override
+  void onThemeChangeTap() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return ThemePickerDialog(
+          onThemeChanged: changeTheme,
+        );
+      },
+    );
+  }
+
+  void changeTheme(ThemeMode? theme) {
+    if (theme != null) {
+      Provider.of<ThemeProvider>(context, listen: false).currentThemeMode =
+          theme;
     }
   }
 }

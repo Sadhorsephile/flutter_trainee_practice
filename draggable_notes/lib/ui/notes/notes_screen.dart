@@ -1,5 +1,4 @@
 import 'package:draggable_notes/data/note.dart';
-import 'package:draggable_notes/res/colors.dart';
 import 'package:draggable_notes/res/strings.dart';
 import 'package:draggable_notes/ui/notes/notes_wm.dart';
 import 'package:draggable_notes/ui/widgets/create_task_button.dart';
@@ -18,8 +17,14 @@ class NotesScreen extends ElementaryWidget<INotesWidgetModel> {
   Widget build(INotesWidgetModel wm) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.mainColor,
         title: const Text(AppStrings.notes),
+        actions: [
+          IconButton(
+            splashRadius: 26,
+            icon: const Icon(Icons.theater_comedy),
+            onPressed: wm.onThemeChangeTap,
+          )
+        ],
       ),
       body: Center(
         child: EntityStateNotifierBuilder<List<NoteDomain>>(

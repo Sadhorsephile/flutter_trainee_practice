@@ -1,7 +1,7 @@
 import 'package:draggable_notes/data/note.dart';
+import 'package:draggable_notes/storage/notes/hive/hive_storage.dart';
 import 'package:draggable_notes/interactor/notes/notes_interactor.dart';
 import 'package:draggable_notes/storage/notes/hive/adapters/note.dart';
-import 'package:draggable_notes/storage/notes/hive/hive_storage.dart';
 import 'package:draggable_notes/storage/notes/notes_storage.dart';
 import 'package:injectable/injectable.dart';
 
