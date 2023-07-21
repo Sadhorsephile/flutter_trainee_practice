@@ -11,14 +11,9 @@ class Pool implements AquariumObservable<Fish> {
   late List<Fish> fishes;
 
   /// Текущее состояние бассейна
-  PoolState _state;
-
-  PoolState get state => _state;
-
-  set state(PoolState value) {
-    _state = value;
-    notifyObservers();
-  }
+  /// НЕ менять свойства вручную - иначе рыбы не будут уведомлены
+  // TODO: подумать над иммутабельностью
+  final PoolState state;
 
   /// Вместимость бассейна
   int capacity;
@@ -27,14 +22,14 @@ class Pool implements AquariumObservable<Fish> {
   static const pollutionDuration = Duration(seconds: 1);
 
   Pool({
-    required PoolState state,
+    required this.state,
     required this.capacity,
-  }) : _state = state {
+  }) {
     fishes = [];
 
     /// Автоматическое загрязнение
     Timer.periodic(pollutionDuration, (Timer t) {
-      _pollute();
+      pollute();
     });
   }
 
@@ -61,7 +56,20 @@ class Pool implements AquariumObservable<Fish> {
   }
 
   /// Увеличить загрязнение
-  _pollute() {
+  void pollute() {
     state.pollution += 0.1;
+    notifyObservers();
+  }
+
+  /// Изменить значение температуры
+  void changeTemperature(double newTemperature) {
+    state.temperature = newTemperature;
+    notifyObservers();
+  }
+
+  /// Изменить значение загрязнения
+  void changePollution(double newPollution) {
+    state.pollution = newPollution;
+    notifyObservers();
   }
 }
