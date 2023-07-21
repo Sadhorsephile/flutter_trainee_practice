@@ -50,7 +50,7 @@ packages:
     source: hosted
     version: "1.0.5"
   fake_async:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: fake_async
       sha256: "511392330127add0b769b75a987850d136345d9227c6b94c96a04cf4a391bf78"
@@ -160,6 +160,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  surf_lint_rules:
+    dependency: "direct main"
+    description:
+      name: surf_lint_rules
+      sha256: a382454bf88f62a101c1d339686b9058954b33198b3f8ae1b536ed7cc1948d93
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   term_glyph:
     dependency: transitive
     description:
