@@ -59,16 +59,13 @@ class CarpFish extends Fish {
         timer.cancel();
       }
     });
+
+    Future.delayed(lifetime).then((value) => _die());
   }
 
   /// Паттерн "Прототип"
   @override
   Fish birth() => CarpFish();
-
-  @override
-  void die() {
-    health = 0;
-  }
 
   @override
   void feed() {
@@ -104,5 +101,9 @@ class CarpFish extends Fish {
         health -= newState.pollution * sensitivity * 20;
       }
     }
+  }
+
+  void _die() {
+    health = 0;
   }
 }

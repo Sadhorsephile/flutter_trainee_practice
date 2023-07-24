@@ -61,17 +61,12 @@ class Goldfish extends Fish {
       }
     });
 
-    Future.delayed(lifetime).then((value) => die());
+    Future.delayed(lifetime).then((value) => _die());
   }
 
   /// Паттерн "Прототип"
   @override
   Fish birth() => Goldfish();
-
-  @override
-  void die() {
-    health = 0;
-  }
 
   @override
   void feed() {
@@ -93,5 +88,9 @@ class Goldfish extends Fish {
 
       health -= newState.pollution * sensitivity * 20;
     }
+  }
+
+  void _die() {
+    health = 0;
   }
 }
