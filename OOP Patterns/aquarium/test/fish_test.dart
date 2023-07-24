@@ -47,10 +47,10 @@ void main() {
         expect(
           fish.hunger,
           (timeBeforeFeed.inMilliseconds ~/ fish.hungerTime.inMilliseconds) *
-              10,
+              fish.hungerIncreasing,
         );
 
-        expect(fish.health, fish.maxHealth - (fish.hunger * 0.1));
+        expect(fish.health, fish.maxHealth - (fish.hunger * fish.hungerHarm));
 
         fish.feed();
 

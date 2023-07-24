@@ -62,11 +62,11 @@ abstract class Fish extends AquariumObserver {
 
   /// Количество единиц на которые возрастает голод
   /// Пример: 10
-  late double hungerIncrease;
+  late double hungerIncreasing;
 
   /// Предел голода, то которого рыба не получает вреда
   /// Пример: 50
-  late double hungerLimit;
+  late double hungerSafeLimit;
 
   /// Коэффицент,
   late double hungerHarm;
@@ -94,10 +94,10 @@ abstract class Fish extends AquariumObserver {
         return;
       }
 
-      hunger += hungerIncrease;
+      hunger += hungerIncreasing;
 
       /// Если голод слишком высокий - уменьшается здоровье
-      if (hunger > hungerLimit) {
+      if (hunger > hungerSafeLimit) {
         health -= hunger * hungerHarm;
       }
     });

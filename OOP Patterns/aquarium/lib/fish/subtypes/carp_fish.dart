@@ -5,7 +5,8 @@ import 'package:aquarium/fish/strategy/react_pool_strategy.dart';
 /// Подтип рыбы.
 class CarpFish extends Fish {
   @override
-  FishAppearance appearance = FishAppearance(description: 'Silver Scales');
+  final FishAppearance appearance =
+      FishAppearance(description: 'Silver Scales');
 
   @override
   double get minTemp => 16.0;
@@ -30,9 +31,9 @@ class CarpFish extends Fish {
       RiverFishReactPoolStateStrategy();
 
   @override
-  double get hungerIncrease => 10;
+  double get hungerIncreasing => 10;
   @override
-  double get hungerLimit => 50;
+  double get hungerSafeLimit => 50;
   @override
   double get hungerHarm => 0.1;
 
@@ -42,8 +43,8 @@ class CarpFish extends Fish {
     super.reactPoolStateStrategy = reactPoolStateStrategy;
 
     super.hunger = 0;
-    super.hungerIncrease = hungerIncrease;
-    super.hungerLimit = hungerLimit;
+    super.hungerIncreasing = hungerIncreasing;
+    super.hungerSafeLimit = hungerSafeLimit;
     super.hungerHarm = hungerHarm;
     super.hungerTime = hungerTime;
   }

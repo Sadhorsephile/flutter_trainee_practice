@@ -1,16 +1,12 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:aquarium/fish/fish.dart';
 import 'package:aquarium/fish/strategy/react_pool_strategy.dart';
-import 'package:aquarium/pool/pool_state.dart';
 import 'package:flutter/foundation.dart';
 
 /// Золотая рыбка.
 /// Подтип рыбы.
 class Goldfish extends Fish {
   @override
-  FishAppearance appearance = FishAppearance(description: 'Gold Scales');
+  final FishAppearance appearance = FishAppearance(description: 'Gold Scales');
 
   @override
   double get minTemp => 18.0;
@@ -27,15 +23,15 @@ class Goldfish extends Fish {
 
   /// Период времени, через который у рыбы возрастет голод.
   @override
-  Duration hungerTime = const Duration(milliseconds: 500);
+  Duration get hungerTime => const Duration(milliseconds: 500);
 
   @override
-  Duration lifetime = const Duration(seconds: 120);
+  final Duration lifetime = const Duration(seconds: 120);
 
   @override
-  double get hungerIncrease => 10;
+  double get hungerIncreasing => 10;
   @override
-  double get hungerLimit => 50;
+  double get hungerSafeLimit => 50;
   @override
   double get hungerHarm => 0.1;
 
@@ -49,8 +45,8 @@ class Goldfish extends Fish {
     super.reactPoolStateStrategy = reactPoolStateStrategy;
 
     super.hunger = 0;
-    super.hungerIncrease = hungerIncrease;
-    super.hungerLimit = hungerLimit;
+    super.hungerIncreasing = hungerIncreasing;
+    super.hungerSafeLimit = hungerSafeLimit;
     super.hungerHarm = hungerHarm;
     super.hungerTime = hungerTime;
   }
