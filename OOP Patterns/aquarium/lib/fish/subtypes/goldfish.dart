@@ -67,10 +67,10 @@ class Goldfish extends Fish {
   @override
   Fish birth() => Goldfish();
 
-  @override
-  void feed() {
-    hunger = 0;
-  }
+  // @override
+  // void feed() {
+  //   hunger = 0;
+  // }
 
   @override
   void react(PoolState newState) {

@@ -27,7 +27,7 @@ abstract class Fish extends AquariumObserver {
 
   /// Голод рыбы
   /// Значение в диапозоне [0, 100]
-  double get hunger;
+  late double hunger;
 
   /// Период времени, через который у рыбы возрастает голод.
   /// Отличается у разных подтипов.
@@ -53,7 +53,17 @@ abstract class Fish extends AquariumObserver {
   Duration get lifetime;
 
   /// Кормить рыбу для уменьшения голода
-  void feed();
+  void feed() {
+    if (state != FishState.dead) {
+      if (state == FishState.sick) {
+        // Отказ от еды - неполностью утоляют голод
+        hunger = hunger / 2;
+      } else {
+        // Здоровые рыбы полностью утоляют голод
+        hunger = 0;
+      }
+    }
+  }
 
   /// Реакция рыбы на состояние бассейна
   /// Отличается у разных подтипов.
