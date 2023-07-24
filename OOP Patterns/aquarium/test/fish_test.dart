@@ -21,7 +21,7 @@ void main() {
       final fish = Goldfish();
 
       // Специально задаем здоровье для проверки
-      fish.health = 50;
+      fish.health = fish.maxHealth / 2;
       expect(fish.state, FishState.sick);
     });
 

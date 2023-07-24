@@ -1,9 +1,5 @@
-import 'dart:async';
-
 import 'package:aquarium/fish/fish.dart';
 import 'package:aquarium/fish/strategy/react_pool_strategy.dart';
-import 'package:aquarium/pool/pool_state.dart';
-import 'package:flutter/cupertino.dart';
 
 /// Карп.
 /// Подтип рыбы.
@@ -23,55 +19,36 @@ class CarpFish extends Fish {
   @override
   final double maxHealth = 100;
 
-  @visibleForTesting
   @override
-  late double health;
+  Duration get hungerTime => const Duration(seconds: 1);
 
   @override
-  double hunger;
+  final Duration lifetime = const Duration(seconds: 180);
 
   @override
-  Duration hungerTime = const Duration(seconds: 1);
-
-  @override
-  Duration lifetime = const Duration(seconds: 180);
-
-  final ReactPoolStateStrategy _reactPoolStateStrategy =
+  ReactPoolStateStrategy get reactPoolStateStrategy =>
       RiverFishReactPoolStateStrategy();
 
-  CarpFish() : hunger = 0 {
-    health = maxHealth;
+  @override
+  double get hungerIncrease => 10;
+  @override
+  double get hungerLimit => 50;
+  @override
+  double get hungerHarm => 0.1;
 
-    /// Увеличение голода
-    Timer.periodic(hungerTime, (timer) {
-      /// Выключаем таймер, если рыба мертва
-      if (state == FishState.dead) {
-        timer.cancel();
-        return;
-      }
+  CarpFish() {
+    super.health = maxHealth;
 
-      hunger += 10;
+    super.reactPoolStateStrategy = reactPoolStateStrategy;
 
-      /// Если голод слишком высокий - уменьшается здоровье
-      if (hunger > 50) {
-        health -= hunger * 0.1;
-      }
-    });
-
-    Future.delayed(lifetime).then((value) => _die());
+    super.hunger = 0;
+    super.hungerIncrease = hungerIncrease;
+    super.hungerLimit = hungerLimit;
+    super.hungerHarm = hungerHarm;
+    super.hungerTime = hungerTime;
   }
 
   /// Паттерн "Прототип"
   @override
   Fish birth() => CarpFish();
-
-  @override
-  void react(PoolState newState) {
-    double healthHarm = _reactPoolStateStrategy.react(this, newState);
-    health -= healthHarm;
-  }
-
-  void _die() {
-    health = 0;
-  }
 }

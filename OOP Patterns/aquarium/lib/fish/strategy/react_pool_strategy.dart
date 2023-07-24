@@ -3,14 +3,16 @@ import 'dart:math';
 import 'package:aquarium/fish/fish.dart';
 import 'package:aquarium/pool/pool_state.dart';
 
+/// Стратегия реакций рыб на состояния бассейна
 abstract class ReactPoolStateStrategy {
   /// Реакция рыбы [fish] на новые условия в бассейне [poolState]
   /// Возвращает вред нанесенный здоровью
   double react(Fish fish, PoolState poolState);
 }
 
-/// Реакция речных рыб на загрязнение
+/// Реакция речных рыб на изменение условий бассейна
 class RiverFishReactPoolStateStrategy implements ReactPoolStateStrategy {
+  /// Коэффецент получения урона от загрязнения
   static const pollutionHarmParam = 20;
 
   @override
@@ -46,7 +48,9 @@ class RiverFishReactPoolStateStrategy implements ReactPoolStateStrategy {
   }
 }
 
+/// Реакция домашних рыб на загрязнение
 class PetFishReactPoolStateStrategy implements ReactPoolStateStrategy {
+  /// Коэффецент получения урона от загрязнения
   static const pollutionHarmParam = 20;
 
   @override

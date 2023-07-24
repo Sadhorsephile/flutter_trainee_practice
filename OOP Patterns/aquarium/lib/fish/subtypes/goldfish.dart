@@ -25,12 +25,6 @@ class Goldfish extends Fish {
   @override
   final double maxHealth = 100;
 
-  @override
-  late double health;
-
-  @override
-  double hunger;
-
   /// Период времени, через который у рыбы возрастет голод.
   @override
   Duration hungerTime = const Duration(milliseconds: 500);
@@ -38,42 +32,30 @@ class Goldfish extends Fish {
   @override
   Duration lifetime = const Duration(seconds: 120);
 
-  final ReactPoolStateStrategy _reactPoolStateStrategy =
+  @override
+  double get hungerIncrease => 10;
+  @override
+  double get hungerLimit => 50;
+  @override
+  double get hungerHarm => 0.1;
+
+  @override
+  ReactPoolStateStrategy get reactPoolStateStrategy =>
       PetFishReactPoolStateStrategy();
 
-  Goldfish() : hunger = 0 {
-    health = maxHealth;
+  Goldfish() {
+    super.health = maxHealth;
 
-    /// Увеличение голода
-    Timer.periodic(hungerTime, (timer) {
-      /// Отменяем таймер в случае смерти рыбы
-      if (state == FishState.dead) {
-        timer.cancel();
-        return;
-      }
+    super.reactPoolStateStrategy = reactPoolStateStrategy;
 
-      hunger += 10;
-
-      /// Если голод слишком высокий - уменьшается здоровье
-      if (hunger > 50) {
-        health -= hunger * 0.1;
-      }
-    });
-
-    Future.delayed(lifetime).then((value) => _die());
+    super.hunger = 0;
+    super.hungerIncrease = hungerIncrease;
+    super.hungerLimit = hungerLimit;
+    super.hungerHarm = hungerHarm;
+    super.hungerTime = hungerTime;
   }
 
   /// Паттерн "Прототип"
   @override
   Fish birth() => Goldfish();
-
-  @override
-  void react(PoolState newState) {
-    double healthHarm = _reactPoolStateStrategy.react(this, newState);
-    health -= healthHarm;
-  }
-
-  void _die() {
-    health = 0;
-  }
 }
