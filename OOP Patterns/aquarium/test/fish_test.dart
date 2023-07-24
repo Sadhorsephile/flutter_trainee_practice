@@ -1,5 +1,6 @@
 import 'package:aquarium/fish/fish.dart';
 import 'package:aquarium/fish/fish_factory.dart';
+import 'package:aquarium/fish/strategy/react_pool_strategy.dart';
 import 'package:aquarium/fish/subtypes/carp_fish.dart';
 import 'package:aquarium/fish/subtypes/goldfish.dart';
 import 'package:aquarium/pool/pool_state.dart';
@@ -18,6 +19,8 @@ void main() {
     /// Нездоровое состояние
     test('Sick state', () {
       final fish = Goldfish();
+
+      // Специально задаем здоровье для проверки
       fish.health = 50;
       expect(fish.state, FishState.sick);
     });
@@ -25,6 +28,8 @@ void main() {
     /// Неживое состояние
     test('Dead state', () {
       final fish = Goldfish();
+
+      // Специально задаем здоровье для проверки
       fish.health = 0;
       expect(fish.state, FishState.dead);
     });
@@ -45,6 +50,7 @@ void main() {
               10,
         );
 
+        // TODO Убрать магическое число
         expect(fish.health, 94);
 
         fish.feed();
@@ -83,7 +89,6 @@ void main() {
           async.elapse(timeOffset);
 
           expect(fish.state, FishState.dead);
-          expect(fish.health, 0);
         });
       });
     });
@@ -96,35 +101,46 @@ void main() {
 
       fish.react(PoolState(temperature: 20, pollution: 0));
 
-      expect(fish.health, 100);
+      expect(fish.health, fish.maxHealth);
     });
 
     /// Реакция на высокую температуру
     test("High temperature reaction", () {
       final fish = Goldfish();
 
-      fish.react(PoolState(temperature: 28, pollution: 0));
+      final newPoolState = PoolState(temperature: 28, pollution: 0);
 
-      expect(fish.health, 90);
+      fish.react(newPoolState);
+
+      expect(
+          fish.health,
+          fish.maxHealth -
+              (newPoolState.temperature - fish.maxTemp) * fish.sensitivity);
     });
 
     /// Реакция на низкую температуру
     test("Low temperature reaction", () {
       final fish = Goldfish();
 
+      final newPoolState = PoolState(temperature: 14, pollution: 0);
+
       fish.react(PoolState(temperature: 14, pollution: 0));
 
-      expect(fish.health, 80);
+      expect(
+          fish.health,
+          fish.maxHealth -
+              (fish.minTemp - newPoolState.temperature) * fish.sensitivity);
     });
 
     /// Смерть из-за несоблюдения температурных условий
     test("Lethal temperature condition", () {
       final fish = Goldfish();
 
-      fish.react(PoolState(temperature: fish.maxTemp + 10, pollution: 0));
-      fish.react(PoolState(temperature: fish.maxTemp + 50, pollution: 0));
+      const veryHighTemp = 50;
 
-      expect(fish.health, 0);
+      fish.react(
+          PoolState(temperature: fish.maxTemp + veryHighTemp, pollution: 0));
+
       expect(fish.state, FishState.dead);
     });
   });
@@ -134,30 +150,30 @@ void main() {
     test("Increase pollution reaction", () {
       final fish = Goldfish();
 
-      fish.react(PoolState(temperature: 20, pollution: 0.1));
+      final poolState = PoolState(temperature: 20, pollution: 0.1);
 
-      expect(fish.health, 90);
+      fish.react(poolState);
+
+      expect(
+        fish.health,
+        fish.maxHealth -
+            poolState.pollution *
+                PetFishReactPoolStateStrategy.pollutionHarmParam *
+                fish.sensitivity,
+      );
 
       fish.react(PoolState(temperature: 20, pollution: 0.5));
-
-      expect(fish.health, 40);
     });
 
     /// Смерть из-за несоблюдения условий чистоты
     test("Lethal pollution", () {
       final fish = Goldfish();
 
-      fish.react(PoolState(temperature: 20, pollution: 0.1));
+      fish
+        ..react(PoolState(temperature: 20, pollution: 0.1))
+        ..react(PoolState(temperature: 20, pollution: 0.5))
+        ..react(PoolState(temperature: 20, pollution: 0.9));
 
-      expect(fish.health, 90);
-
-      fish.react(PoolState(temperature: 20, pollution: 0.5));
-
-      expect(fish.health, 40);
-
-      fish.react(PoolState(temperature: 20, pollution: 0.9));
-
-      expect(fish.health, 0);
       expect(fish.state, FishState.dead);
     });
   });

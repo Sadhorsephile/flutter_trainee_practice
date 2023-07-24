@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:aquarium/fish/fish.dart';
+import 'package:aquarium/fish/strategy/react_pool_strategy.dart';
 import 'package:aquarium/pool/pool_state.dart';
 import 'package:flutter/foundation.dart';
 
@@ -37,6 +38,9 @@ class Goldfish extends Fish {
   @override
   Duration lifetime = const Duration(seconds: 120);
 
+  final ReactPoolStateStrategy _reactPoolStateStrategy =
+      PetFishReactPoolStateStrategy();
+
   Goldfish() : hunger = 0 {
     health = maxHealth;
 
@@ -70,19 +74,8 @@ class Goldfish extends Fish {
 
   @override
   void react(PoolState newState) {
-    if (state != FishState.dead) {
-      final newTemperature = newState.temperature;
-
-      if (newTemperature > maxTemp || newTemperature < minTemp) {
-        final temperatureDeviation = min(
-          (newTemperature - maxTemp).abs(),
-          (minTemp - newTemperature).abs(),
-        );
-        health -= temperatureDeviation * sensitivity;
-      }
-
-      health -= newState.pollution * sensitivity * 20;
-    }
+    double healthHarm = _reactPoolStateStrategy.react(this, newState);
+    health -= healthHarm;
   }
 
   void _die() {
