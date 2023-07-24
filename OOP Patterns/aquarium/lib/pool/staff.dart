@@ -17,19 +17,13 @@ class PoolStaff {
 
   /// Обслужить всех рыб в аквариуме
   void serveFishes() {
-    final deadFishes = [];
-    for (final fish in _pool.fishes) {
-      if (fish.state == FishState.dead) {
-        /// Если рыба мертва, добавляем её в список для удаления
-        deadFishes.add(fish);
-      } else {
-        /// Покормить живых
-        fish.feed();
-      }
-    }
+    /// Убрать мертвых рфб
+    _pool.fishes.removeWhere((value) => value.state == FishState.dead);
 
-    /// Удаляем мертвых рыб
-    _pool.fishes.removeWhere((value) => deadFishes.contains(value));
+    /// Покормить рыб
+    for (final fish in _pool.fishes) {
+      fish.feed();
+    }
 
     /// Переселить рыб в резервный бассейн
     while (_pool.capacity < _pool.fishes.length) {
