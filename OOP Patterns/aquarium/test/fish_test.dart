@@ -50,8 +50,7 @@ void main() {
               10,
         );
 
-        // TODO Убрать магическое число
-        expect(fish.health, 94);
+        expect(fish.health, fish.maxHealth - (fish.hunger * 0.1));
 
         fish.feed();
 

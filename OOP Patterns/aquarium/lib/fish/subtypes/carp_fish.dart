@@ -65,19 +65,6 @@ class CarpFish extends Fish {
   @override
   Fish birth() => CarpFish();
 
-  // @override
-  // void feed() {
-  //   if (state != FishState.dead) {
-  //     if (state == FishState.sick) {
-  //       // Отказ от еды - неполностью утоляют голод
-  //       hunger = hunger / 2;
-  //     } else {
-  //       // Здоровые рыбы полностью утоляют голод
-  //       hunger = 0;
-  //     }
-  //   }
-  // }
-
   @override
   void react(PoolState newState) {
     double healthHarm = _reactPoolStateStrategy.react(this, newState);
