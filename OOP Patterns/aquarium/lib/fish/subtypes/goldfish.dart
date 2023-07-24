@@ -1,14 +1,12 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:aquarium/fish/fish.dart';
-import 'package:aquarium/pool/pool_state.dart';
+import 'package:aquarium/fish/strategy/react_pool_strategy.dart';
+import 'package:flutter/foundation.dart';
 
 /// Золотая рыбка.
 /// Подтип рыбы.
 class Goldfish extends Fish {
   @override
-  FishAppearance appearance = FishAppearance(description: 'Gold Scales');
+  final FishAppearance appearance = FishAppearance(description: 'Gold Scales');
 
   @override
   double get minTemp => 18.0;
@@ -19,79 +17,41 @@ class Goldfish extends Fish {
   @override
   double get sensitivity => 5;
 
-  double _health;
-
+  @visibleForTesting
   @override
-  double get health => _health;
-
-  set health(double value) {
-    /// Здоровье рыбы не может быть меньше нуля
-    if (value < 0) {
-      _health = 0;
-    } else {
-      _health = value;
-    }
-  }
-
-  @override
-  double hunger;
+  final double maxHealth = 100;
 
   /// Период времени, через который у рыбы возрастет голод.
   @override
-  Duration hungerTime = const Duration(milliseconds: 500);
+  Duration get hungerTime => const Duration(milliseconds: 500);
 
   @override
-  Duration lifetime = const Duration(seconds: 120);
+  final Duration lifetime = const Duration(seconds: 120);
 
-  Goldfish()
-      : _health = 100,
-        hunger = 0 {
-    /// Увеличение голода
-    Timer.periodic(hungerTime, (timer) {
-      hunger += 10;
+  @override
+  double get hungerIncreasing => 10;
+  @override
+  double get hungerSafeLimit => 50;
+  @override
+  double get hungerHarm => 0.1;
 
-      /// Если голод слишком высокий - уменьшается здоровье
-      if (hunger > 50) {
-        health -= hunger * 0.1;
-      }
+  @override
+  ReactPoolStateStrategy get reactPoolStateStrategy =>
+      PetFishReactPoolStateStrategy();
 
-      /// Отменяем таймер в случае смерти рыбы
-      if (state == FishState.dead) {
-        timer.cancel();
-      }
-    });
+  Goldfish() {
+    super.health = maxHealth;
 
-    Future.delayed(lifetime).then((value) => die());
+    super.reactPoolStateStrategy = reactPoolStateStrategy;
+
+    super.hunger = 0;
+    super.hungerIncreasing = hungerIncreasing;
+    super.hungerSafeLimit = hungerSafeLimit;
+    super.hungerHarm = hungerHarm;
+    super.hungerTime = hungerTime;
   }
 
   /// Паттерн "Прототип"
   @override
   Fish birth() => Goldfish();
-
-  @override
-  void die() {
-    health = 0;
-  }
-
-  @override
-  void feed() {
-    hunger = 0;
-  }
-
-  @override
-  void react(PoolState newState) {
-    if (state != FishState.dead) {
-      final newTemperature = newState.temperature;
-
-      if (newTemperature > maxTemp || newTemperature < minTemp) {
-        final temperatureDeviation = min(
-          (newTemperature - maxTemp).abs(),
-          (minTemp - newTemperature).abs(),
-        );
-        health -= temperatureDeviation * sensitivity;
-      }
-
-      health -= newState.pollution * sensitivity * 20;
-    }
-  }
 }

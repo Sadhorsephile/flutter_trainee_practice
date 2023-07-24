@@ -1,14 +1,12 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:aquarium/fish/fish.dart';
-import 'package:aquarium/pool/pool_state.dart';
+import 'package:aquarium/fish/strategy/react_pool_strategy.dart';
 
 /// Карп.
 /// Подтип рыбы.
 class CarpFish extends Fish {
   @override
-  FishAppearance appearance = FishAppearance(description: 'Silver Scales');
+  final FishAppearance appearance =
+      FishAppearance(description: 'Silver Scales');
 
   @override
   double get minTemp => 16.0;
@@ -19,90 +17,39 @@ class CarpFish extends Fish {
   @override
   double get sensitivity => 4;
 
-  double _health;
+  @override
+  final double maxHealth = 100;
 
   @override
-  double get health => _health;
-
-  set health(double value) {
-    /// Здоровье рыбы не может быть меньше нуля
-    if (value < 0) {
-      _health = 0;
-    } else {
-      _health = value;
-    }
-  }
+  Duration get hungerTime => const Duration(seconds: 1);
 
   @override
-  double hunger;
+  final Duration lifetime = const Duration(seconds: 180);
 
   @override
-  Duration hungerTime = const Duration(seconds: 1);
+  ReactPoolStateStrategy get reactPoolStateStrategy =>
+      RiverFishReactPoolStateStrategy();
 
   @override
-  Duration lifetime = const Duration(seconds: 180);
+  double get hungerIncreasing => 10;
+  @override
+  double get hungerSafeLimit => 50;
+  @override
+  double get hungerHarm => 0.1;
 
-  CarpFish()
-      : _health = 100,
-        hunger = 0 {
-    /// Увеличение голода
-    Timer.periodic(hungerTime, (timer) {
-      hunger += 10;
+  CarpFish() {
+    super.health = maxHealth;
 
-      /// Если голод слишком высокий - уменьшается здоровье
-      if (hunger > 50) {
-        health -= hunger * 0.1;
-      }
+    super.reactPoolStateStrategy = reactPoolStateStrategy;
 
-      /// Выключаем таймер, если рыба мертва
-      if (state == FishState.dead) {
-        timer.cancel();
-      }
-    });
+    super.hunger = 0;
+    super.hungerIncreasing = hungerIncreasing;
+    super.hungerSafeLimit = hungerSafeLimit;
+    super.hungerHarm = hungerHarm;
+    super.hungerTime = hungerTime;
   }
 
   /// Паттерн "Прототип"
   @override
   Fish birth() => CarpFish();
-
-  @override
-  void die() {
-    health = 0;
-  }
-
-  @override
-  void feed() {
-    if (state != FishState.dead) {
-      if (state == FishState.sick) {
-        // Отказ от еды - неполностью утоляют голод
-        hunger = hunger / 2;
-      } else {
-        // Здоровые рыбы полностью утоляют голод
-        hunger = 0;
-      }
-    }
-  }
-
-  @override
-  void react(PoolState newState) {
-    if (state != FishState.dead) {
-      final newTemperature = newState.temperature;
-
-      if (newTemperature > maxTemp || newTemperature < minTemp) {
-        /// Ухудшение здоровья завивит от отклонения условий от нормальных
-        final temperatureDeviation = min(
-          (newTemperature - maxTemp).abs(),
-          (minTemp - newTemperature).abs(),
-        );
-        health -= temperatureDeviation * sensitivity;
-      }
-
-      /// Дополнительное условие:
-      /// Карп получает вред, только когда вода загрязнена больше
-      /// чем на половину
-      if (newState.pollution > 0.5) {
-        health -= newState.pollution * sensitivity * 20;
-      }
-    }
-  }
 }
