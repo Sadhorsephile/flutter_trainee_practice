@@ -13,13 +13,13 @@ void main() {
     /// Первоначальное добавление рыб
     test('Adding first fishes', () {
       fakeAsync((async) {
-        int poolCapacity = 8;
+        const poolCapacity = 8;
         final pool = Pool(
           state: PoolState(temperature: 20, pollution: 0),
           capacity: poolCapacity,
         );
         final fishFactory = EvenFishFactory();
-        PoolStaff staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+        final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
 
         expect(pool.fishes.length, 0);
 
@@ -39,7 +39,7 @@ void main() {
         final fishFactory = EvenFishFactory();
         pool.addObserver(Goldfish());
         pool.addObserver(CarpFish());
-        PoolStaff staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+        final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
 
         /// Задержка, чтобы рыбы проголодались
         async.elapse(const Duration(seconds: 1));
@@ -64,7 +64,7 @@ void main() {
         final fishFactory = EvenFishFactory();
         pool.addObserver(Goldfish());
         pool.addObserver(CarpFish());
-        PoolStaff staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+        final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
 
         /// Задержка, чтобы рыбы погибли
         async.elapse(const Duration(seconds: 100));
@@ -87,7 +87,7 @@ void main() {
         capacity: 2,
       );
       final fishFactory = EvenFishFactory();
-      PoolStaff staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+      final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
 
       pool.changeTemperature(34);
 
@@ -103,7 +103,7 @@ void main() {
           capacity: 2,
         );
         final fishFactory = EvenFishFactory();
-        PoolStaff staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+        final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
 
         async.elapse(const Duration(seconds: 10));
 

@@ -32,7 +32,7 @@ class PoolStaff {
 
     /// Подселить рыб
     while (_pool.capacity > _pool.fishes.length) {
-      Fish additionalFish = _fishFactory.createFish();
+      final additionalFish = _fishFactory.createFish();
       _pool.addObserver(additionalFish);
     }
   }
