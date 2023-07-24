@@ -68,7 +68,7 @@ abstract class Fish extends AquariumObserver {
   /// Пример: 50
   late double hungerSafeLimit;
 
-  /// Коэффицент,
+  /// Коэффицент, с которым рыба получает урон от голода
   late double hungerHarm;
 
   /// Стратегия реакций рыб на состояния бассейна.
