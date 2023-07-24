@@ -8,7 +8,7 @@ abstract class Fish extends AquariumObserver {
 
   /// Состояние рыбы. Завивисит от уровня здоровья [health]
   FishState get state {
-    if (health > 70) {
+    if (health > maxHealth * 0.7) {
       return FishState.healthy;
     } else if (health <= 0) {
       return FishState.dead;
@@ -17,7 +17,11 @@ abstract class Fish extends AquariumObserver {
     }
   }
 
-  /// Здоровье рыбы
+  /// Максимальное здоровье рыбы
+  /// Пример: 100
+  double get maxHealth;
+
+  /// Текущее здоровье рыбы
   /// Значение в диапозоне [0, 100]
   double get health;
 

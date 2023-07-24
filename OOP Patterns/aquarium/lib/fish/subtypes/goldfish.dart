@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:aquarium/fish/fish.dart';
 import 'package:aquarium/pool/pool_state.dart';
+import 'package:flutter/foundation.dart';
 
 /// Золотая рыбка.
 /// Подтип рыбы.
@@ -19,19 +20,12 @@ class Goldfish extends Fish {
   @override
   double get sensitivity => 5;
 
-  double _health;
+  @visibleForTesting
+  @override
+  final double maxHealth = 100;
 
   @override
-  double get health => _health;
-
-  set health(double value) {
-    /// Здоровье рыбы не может быть меньше нуля
-    if (value < 0) {
-      _health = 0;
-    } else {
-      _health = value;
-    }
-  }
+  late double health;
 
   @override
   double hunger;
@@ -43,21 +37,22 @@ class Goldfish extends Fish {
   @override
   Duration lifetime = const Duration(seconds: 120);
 
-  Goldfish()
-      : _health = 100,
-        hunger = 0 {
+  Goldfish() : hunger = 0 {
+    health = maxHealth;
+
     /// Увеличение голода
     Timer.periodic(hungerTime, (timer) {
+      /// Отменяем таймер в случае смерти рыбы
+      if (state == FishState.dead) {
+        timer.cancel();
+        return;
+      }
+
       hunger += 10;
 
       /// Если голод слишком высокий - уменьшается здоровье
       if (hunger > 50) {
         health -= hunger * 0.1;
-      }
-
-      /// Отменяем таймер в случае смерти рыбы
-      if (state == FishState.dead) {
-        timer.cancel();
       }
     });
 

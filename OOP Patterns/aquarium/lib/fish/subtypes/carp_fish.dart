@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:aquarium/fish/fish.dart';
 import 'package:aquarium/pool/pool_state.dart';
+import 'package:flutter/cupertino.dart';
 
 /// Карп.
 /// Подтип рыбы.
@@ -19,19 +20,12 @@ class CarpFish extends Fish {
   @override
   double get sensitivity => 4;
 
-  double _health;
-
   @override
-  double get health => _health;
+  final double maxHealth = 100;
 
-  set health(double value) {
-    /// Здоровье рыбы не может быть меньше нуля
-    if (value < 0) {
-      _health = 0;
-    } else {
-      _health = value;
-    }
-  }
+  @visibleForTesting
+  @override
+  late double health;
 
   @override
   double hunger;
@@ -42,21 +36,22 @@ class CarpFish extends Fish {
   @override
   Duration lifetime = const Duration(seconds: 180);
 
-  CarpFish()
-      : _health = 100,
-        hunger = 0 {
+  CarpFish() : hunger = 0 {
+    health = maxHealth;
+
     /// Увеличение голода
     Timer.periodic(hungerTime, (timer) {
+      /// Выключаем таймер, если рыба мертва
+      if (state == FishState.dead) {
+        timer.cancel();
+        return;
+      }
+
       hunger += 10;
 
       /// Если голод слишком высокий - уменьшается здоровье
       if (hunger > 50) {
         health -= hunger * 0.1;
-      }
-
-      /// Выключаем таймер, если рыба мертва
-      if (state == FishState.dead) {
-        timer.cancel();
       }
     });
 
