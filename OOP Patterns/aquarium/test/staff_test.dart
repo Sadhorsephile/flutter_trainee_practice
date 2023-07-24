@@ -37,8 +37,9 @@ void main() {
           capacity: 2,
         );
         final fishFactory = EvenFishFactory();
-        pool.addObserver(Goldfish());
-        pool.addObserver(CarpFish());
+        pool
+          ..addObserver(Goldfish())
+          ..addObserver(CarpFish());
         final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
 
         /// Задержка, чтобы рыбы проголодались
@@ -62,8 +63,9 @@ void main() {
           capacity: 2,
         );
         final fishFactory = EvenFishFactory();
-        pool.addObserver(Goldfish());
-        pool.addObserver(CarpFish());
+        pool
+          ..addObserver(Goldfish())
+          ..addObserver(CarpFish());
         final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
 
         /// Задержка, чтобы рыбы погибли
