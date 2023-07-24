@@ -26,7 +26,7 @@ abstract class Fish extends AquariumObserver {
   double get maxHealth;
 
   /// Текущее здоровье рыбы
-  /// Значение в диапозоне [0, 100]
+  /// Значение в диапозоне [0, maxHealth]
   @visibleForTesting
   @protected
   late double health;
@@ -50,10 +50,12 @@ abstract class Fish extends AquariumObserver {
 
   /// Минимальная температура, которую может выдержать рыба
   /// Отличается у разных подтипов.
+  /// Пример: 18
   double get minTemp;
 
   /// Максимальная температура, которую может выдержать рыба
   /// Отличается у разных подтипов.
+  /// Пример: 25
   double get maxTemp;
 
   /// Время жизни рыбы
@@ -69,6 +71,7 @@ abstract class Fish extends AquariumObserver {
   late double hungerSafeLimit;
 
   /// Коэффициент, с которым рыба получает урон от голода
+  /// Пример: 0.1
   late double hungerHarm;
 
   /// Стратегия реакций рыб на состояния бассейна.
