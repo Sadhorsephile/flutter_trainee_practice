@@ -3,7 +3,8 @@ import 'package:aquarium/fish/fish_factory.dart';
 import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/pool/pool_state.dart';
 
-/// Фасад для использования бассейна
+/// Сущность, которая представляет персонал бассейна
+/// Реализация паттерна "Фасад' для использования бассейна
 class PoolStaff {
   /// Бассейн, с которым работает персонал
   /// Клиенты [PoolStaff] не должны на прямую обращаться к нему
@@ -17,7 +18,7 @@ class PoolStaff {
 
   /// Обслужить всех рыб в аквариуме
   void serveFishes() {
-    /// Убрать мертвых рфб
+    /// Убрать мертвых рыб
     _pool.fishes.removeWhere((value) => value.state == FishState.dead);
 
     /// Покормить рыб
@@ -38,12 +39,8 @@ class PoolStaff {
   }
 
   /// Установить нормальную температуру
-  void setNormalTemperature() {
-    _pool.changeTemperature(normalTemperature);
-  }
+  void setNormalTemperature() => _pool.changeTemperature(normalTemperature);
 
   /// Почистить бассейн
-  void cleanPool() {
-    _pool.changePollution(0);
-  }
+  void cleanPool() => _pool.changePollution(0);
 }

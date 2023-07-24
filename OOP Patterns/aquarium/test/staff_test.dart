@@ -24,7 +24,6 @@ void main() {
         expect(pool.fishes.length, 0);
 
         staff.serveFishes();
-
         expect(pool.fishes.length, poolCapacity);
       });
     });
@@ -43,10 +42,21 @@ void main() {
         final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
 
         /// Задержка, чтобы рыбы проголодались
-        async.elapse(const Duration(seconds: 1));
+        const timeBeforeFeed = Duration(seconds: 1);
+        async.elapse(timeBeforeFeed);
 
-        expect(pool.fishes[0].hunger, 20);
-        expect(pool.fishes[1].hunger, 10);
+        expect(
+          pool.fishes[0].hunger,
+          pool.fishes[0].hungerIncreasing *
+              (timeBeforeFeed.inMilliseconds /
+                  pool.fishes[0].hungerTime.inMilliseconds),
+        );
+        expect(
+          pool.fishes[1].hunger,
+          pool.fishes[1].hungerIncreasing *
+              (timeBeforeFeed.inMilliseconds /
+                  pool.fishes[1].hungerTime.inMilliseconds),
+        );
 
         staff.serveFishes();
 
@@ -68,7 +78,7 @@ void main() {
           ..addObserver(CarpFish());
         final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
 
-        /// Задержка, чтобы рыбы погибли
+        /// Задержка в кормежке, из-за которой рыбы погибнут
         async.elapse(const Duration(seconds: 100));
 
         expect(pool.fishes[0].state, FishState.dead);
@@ -90,11 +100,12 @@ void main() {
       );
       final fishFactory = EvenFishFactory();
       final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+      const newTemperature = 34.0;
 
-      pool.changeTemperature(34);
+      pool.changeTemperature(newTemperature);
+      expect(pool.state.temperature, newTemperature);
 
       staff.setNormalTemperature();
-
       expect(pool.state.temperature, normalTemperature);
     });
 
@@ -107,10 +118,10 @@ void main() {
         final fishFactory = EvenFishFactory();
         final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
 
-        async.elapse(const Duration(seconds: 10));
+        const timeBeforeCleaning = Duration(seconds: 10);
+        async.elapse(timeBeforeCleaning);
 
         staff.cleanPool();
-
         expect(pool.state.pollution, 0);
       });
     });
