@@ -8,22 +8,36 @@ import 'package:aquarium/pool/pool_state.dart';
 class Pool implements AquariumObservable<Fish> {
   /// Список рыб, находящихся в бассейне
   /// Они являются обозревателями
-  late List<Fish> fishes;
+  late final List<Fish> fishes;
 
   /// Текущее состояние бассейна
   /// НЕ менять свойства вручную - иначе рыбы не будут уведомлены
-  final PoolState state;
+  PoolState _state;
+
+  /// Текущее состояние бассейна
+  /// НЕ менять свойства вручную - иначе рыбы не будут уведомлены
+  PoolState get state => _state;
+
+  /// Текущее состояние бассейна
+  /// НЕ менять свойства вручную - иначе рыбы не будут уведомлены
+  set state(PoolState value) {
+    _state = value;
+    notifyObservers();
+  }
 
   /// Вместимость бассейна
-  int capacity;
+  final int capacity;
 
   /// Время, после которого бассейн получает некоторую долю загрязнения
   static const pollutionDuration = Duration(seconds: 1);
 
+  /// Время, после которого бассейн получает некоторую долю загрязнения
+  static const pollutionIncreasing = 0.1;
+
   Pool({
-    required this.state,
+    required PoolState state,
     required this.capacity,
-  }) {
+  }) : _state = state {
     fishes = [];
 
     /// Автоматическое загрязнение
@@ -56,19 +70,16 @@ class Pool implements AquariumObservable<Fish> {
 
   /// Увеличить загрязнение
   void pollute() {
-    state.pollution += 0.1;
-    notifyObservers();
+    state = state.copyWith(pollution: state.pollution + pollutionIncreasing);
   }
 
   /// Изменить значение температуры
   void changeTemperature(double newTemperature) {
-    state.temperature = newTemperature;
-    notifyObservers();
+    state = state.copyWith(temperature: newTemperature);
   }
 
   /// Изменить значение загрязнения
   void changePollution(double newPollution) {
-    state.pollution = newPollution;
-    notifyObservers();
+    state = state.copyWith(pollution: newPollution);
   }
 }

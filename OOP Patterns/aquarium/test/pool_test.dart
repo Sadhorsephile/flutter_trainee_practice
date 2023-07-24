@@ -1,3 +1,4 @@
+import 'package:aquarium/fish/strategy/react_pool_strategy.dart';
 import 'package:aquarium/fish/subtypes/goldfish.dart';
 import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/pool/pool_state.dart';
@@ -46,7 +47,7 @@ void main() {
 
       async.elapse(pollutionTime);
 
-      expect(pool.state.pollution, 0.1);
+      expect(pool.state.pollution, Pool.pollutionIncreasing);
     });
   });
 
@@ -79,7 +80,12 @@ void main() {
         const timeWithoutCleaning = Duration(seconds: 1, milliseconds: 100);
         async.elapse(timeWithoutCleaning);
 
-        expect(pool.fishes.first.health, 90);
+        expect(
+            pool.fishes.first.health,
+            fish.maxHealth -
+                Pool.pollutionIncreasing *
+                    fish.sensitivity *
+                    PetFishReactPoolStateStrategy.pollutionHarmParam);
       });
     });
 
@@ -92,9 +98,12 @@ void main() {
       final fish = Goldfish();
       pool.addObserver(fish);
 
-      pool.changeTemperature(16);
+      const newTemperature = 16.0;
 
-      expect(pool.fishes.first.health, 90);
+      pool.changeTemperature(newTemperature);
+
+      expect(fish.health,
+          fish.maxHealth - (fish.minTemp - newTemperature) * fish.sensitivity);
     });
   });
 }
