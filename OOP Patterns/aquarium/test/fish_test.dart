@@ -93,9 +93,9 @@ void main() {
   group('Fish temperature reaction', () {
     /// Реакция на нормальную температуру
     test('Normal temperature reaction', () {
-      final fish = Goldfish()
-        ;
-      fish.react(const PoolState(temperature: (fish.minTemp + fish.maxTemp) / 2, pollution: 0));
+      final fish = Goldfish();
+      fish.react(PoolState(
+          temperature: (fish.minTemp + fish.maxTemp) / 2, pollution: 0));
 
       expect(fish.health, fish.maxHealth);
     });
@@ -104,7 +104,7 @@ void main() {
     test('High temperature reaction', () {
       final fish = Goldfish();
 
-      const newPoolState =
+      final newPoolState =
           PoolState(temperature: fish.maxTemp + 2, pollution: 0);
 
       fish.react(newPoolState);
@@ -119,7 +119,7 @@ void main() {
     test('Low temperature reaction', () {
       final fish = Goldfish();
 
-      const newPoolState =
+      final newPoolState =
           PoolState(temperature: fish.minTemp - 2, pollution: 0);
 
       fish.react(newPoolState);
@@ -145,7 +145,7 @@ void main() {
     test('Increase pollution reaction', () {
       final fish = Goldfish();
 
-      const poolState = PoolState(
+      final poolState = PoolState(
           temperature: (fish.minTemp + fish.maxTemp) / 2, pollution: 0.1);
 
       fish.react(poolState);
@@ -163,11 +163,11 @@ void main() {
     test('Lethal pollution', () {
       final fish = Goldfish();
       fish
-        ..react(const PoolState(
+        ..react(PoolState(
             temperature: (fish.minTemp + fish.maxTemp) / 2, pollution: 0.1))
-        ..react(const PoolState(
+        ..react(PoolState(
             temperature: (fish.minTemp + fish.maxTemp) / 2, pollution: 0.5))
-        ..react(const PoolState(
+        ..react(PoolState(
             temperature: (fish.minTemp + fish.maxTemp) / 2, pollution: 0.9));
 
       expect(fish.state, FishState.dead);
