@@ -93,7 +93,8 @@ void main() {
   group('Fish temperature reaction', () {
     /// Реакция на нормальную температуру
     test('Normal temperature reaction', () {
-      final fish = Goldfish()..react(const PoolState(temperature: 20, pollution: 0));
+      final fish = Goldfish()
+        ..react(const PoolState(temperature: 20, pollution: 0));
 
       expect(fish.health, fish.maxHealth);
     });
