@@ -17,7 +17,7 @@ class RiverFishReactPoolStateStrategy implements ReactPoolStateStrategy {
 
   @override
   double react(Fish fish, PoolState poolState) {
-    double healthHarm = 0;
+    var healthHarm = 0.0;
 
     final state = fish.state;
     final maxTemp = fish.maxTemp;
@@ -55,7 +55,7 @@ class PetFishReactPoolStateStrategy implements ReactPoolStateStrategy {
 
   @override
   double react(Fish fish, PoolState poolState) {
-    double healthHarm = 0;
+    var healthHarm = 0.0;
 
     final state = fish.state;
     final maxTemp = fish.maxTemp;

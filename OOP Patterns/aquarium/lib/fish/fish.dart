@@ -124,7 +124,7 @@ abstract class Fish extends AquariumObserver {
   /// Часть паттерна "Наблюдатель"
   @override
   void react(PoolState newState) {
-    double healthHarm = reactPoolStateStrategy.react(this, newState);
+    final healthHarm = reactPoolStateStrategy.react(this, newState);
     health -= healthHarm;
   }
 
@@ -151,7 +151,7 @@ class FishAppearance {
   /// Словесное описание внешнего виды рыбы
   String? description;
 
-  // TODO: Добавить ассет
+  // TODO(AndrewVorotyntsev):  Добавить ассет
 
   FishAppearance({
     this.description,

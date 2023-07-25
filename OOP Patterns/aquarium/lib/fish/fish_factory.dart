@@ -1,7 +1,6 @@
+import 'package:aquarium/fish/fish.dart';
 import 'package:aquarium/fish/subtypes/carp_fish.dart';
 import 'package:aquarium/fish/subtypes/goldfish.dart';
-
-import 'fish.dart';
 
 /// Фабрика, которая возвращает экземпляры класса рыб
 abstract class FishFactory {

@@ -9,10 +9,10 @@ class Goldfish extends Fish {
   final FishAppearance appearance = FishAppearance(description: 'Gold Scales');
 
   @override
-  double get minTemp => 18.0;
+  double get minTemp => 18;
 
   @override
-  double get maxTemp => 26.0;
+  double get maxTemp => 26;
 
   @override
   double get sensitivity => 5;
