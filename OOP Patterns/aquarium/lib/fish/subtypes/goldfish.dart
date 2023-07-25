@@ -38,18 +38,6 @@ class Goldfish extends Fish {
   ReactPoolStateStrategy get reactPoolStateStrategy =>
       PetFishReactPoolStateStrategy();
 
-  Goldfish() {
-    super.health = maxHealth;
-
-    super.reactPoolStateStrategy = reactPoolStateStrategy;
-
-    super.hunger = 0;
-    super.hungerIncreasing = hungerIncreasing;
-    super.hungerSafeLimit = hungerSafeLimit;
-    super.hungerHarm = hungerHarm;
-    super.hungerTime = hungerTime;
-  }
-
   /// Паттерн "Прототип"
   @override
   Fish birth() => Goldfish();

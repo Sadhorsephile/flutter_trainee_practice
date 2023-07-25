@@ -39,7 +39,7 @@ abstract class Fish extends AquariumObserver {
 
   /// Период времени, через который у рыбы возрастает голод.
   /// Отличается у разных подтипов.
-  late Duration hungerTime;
+  Duration get hungerTime;
 
   /// Коэффецент чуствительности рыбы к неблагоприятным условиям.
   /// От него зависит, как будет падать здоровье рыбы
@@ -64,21 +64,24 @@ abstract class Fish extends AquariumObserver {
 
   /// Количество единиц на которые возрастает голод
   /// Пример: 10
-  late double hungerIncreasing;
+  double get hungerIncreasing;
 
   /// Предел голода, до которого рыба не получает вреда
   /// Пример: 50
-  late double hungerSafeLimit;
+  double get hungerSafeLimit;
 
   /// Коэффициент, с которым рыба получает урон от голода
   /// Пример: 0.1
-  late double hungerHarm;
+  double get hungerHarm;
 
   /// Стратегия реакций рыб на состояния бассейна.
   /// На её основе высчитывается урон здоровью.
-  late ReactPoolStateStrategy reactPoolStateStrategy;
+  abstract final ReactPoolStateStrategy reactPoolStateStrategy;
 
   Fish() {
+    health = maxHealth;
+    hunger = 0;
+
     /// Увеличение голода
     launchHungerTimer();
 

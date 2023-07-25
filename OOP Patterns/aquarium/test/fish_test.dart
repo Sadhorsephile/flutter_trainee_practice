@@ -94,7 +94,8 @@ void main() {
     /// Реакция на нормальную температуру
     test('Normal temperature reaction', () {
       final fish = Goldfish()
-        ..react(const PoolState(temperature: 20, pollution: 0));
+        ;
+      fish.react(const PoolState(temperature: (fish.minTemp + fish.maxTemp) / 2, pollution: 0));
 
       expect(fish.health, fish.maxHealth);
     });
@@ -103,7 +104,8 @@ void main() {
     test('High temperature reaction', () {
       final fish = Goldfish();
 
-      const newPoolState = PoolState(temperature: 28, pollution: 0);
+      const newPoolState =
+          PoolState(temperature: fish.maxTemp + 2, pollution: 0);
 
       fish.react(newPoolState);
 
@@ -117,9 +119,10 @@ void main() {
     test('Low temperature reaction', () {
       final fish = Goldfish();
 
-      const newPoolState = PoolState(temperature: 14, pollution: 0);
+      const newPoolState =
+          PoolState(temperature: fish.minTemp - 2, pollution: 0);
 
-      fish.react(const PoolState(temperature: 14, pollution: 0));
+      fish.react(newPoolState);
 
       expect(
           fish.health,
@@ -131,10 +134,7 @@ void main() {
     test('Lethal temperature condition', () {
       final fish = Goldfish();
 
-      const veryHighTemp = 50;
-
-      fish.react(
-          PoolState(temperature: fish.maxTemp + veryHighTemp, pollution: 0));
+      fish.react(PoolState(temperature: fish.maxTemp * 2, pollution: 0));
 
       expect(fish.state, FishState.dead);
     });
@@ -145,7 +145,8 @@ void main() {
     test('Increase pollution reaction', () {
       final fish = Goldfish();
 
-      const poolState = PoolState(temperature: 20, pollution: 0.1);
+      const poolState = PoolState(
+          temperature: (fish.minTemp + fish.maxTemp) / 2, pollution: 0.1);
 
       fish.react(poolState);
 
@@ -156,16 +157,18 @@ void main() {
                 PetFishReactPoolStateStrategy.pollutionHarmParam *
                 fish.sensitivity,
       );
-
-      fish.react(const PoolState(temperature: 20, pollution: 0.5));
     });
 
     /// Смерть из-за несоблюдения условий чистоты
     test('Lethal pollution', () {
-      final fish = Goldfish()
-        ..react(const PoolState(temperature: 20, pollution: 0.1))
-        ..react(const PoolState(temperature: 20, pollution: 0.5))
-        ..react(const PoolState(temperature: 20, pollution: 0.9));
+      final fish = Goldfish();
+      fish
+        ..react(const PoolState(
+            temperature: (fish.minTemp + fish.maxTemp) / 2, pollution: 0.1))
+        ..react(const PoolState(
+            temperature: (fish.minTemp + fish.maxTemp) / 2, pollution: 0.5))
+        ..react(const PoolState(
+            temperature: (fish.minTemp + fish.maxTemp) / 2, pollution: 0.9));
 
       expect(fish.state, FishState.dead);
     });
