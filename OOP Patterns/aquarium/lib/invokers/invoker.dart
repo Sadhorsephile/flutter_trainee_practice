@@ -12,22 +12,27 @@ abstract class Invoker {
 /// Сущность, которая управляет жизнью системы
 /// запуская случайные события
 class RandomInvoker implements Invoker {
+  /// Фабрика, которая создает ивенты, которые инвокер будет запускать
   final NatureEventFactory _natureEventFactory;
+
+  /// Генератор случайных чисел
+  final Random _random;
 
   /// Задержка между событиями
   static const eventDelay = Duration(seconds: 1);
 
-  RandomInvoker({required NatureEventFactory commandsFactory})
-      : _natureEventFactory = commandsFactory;
+  RandomInvoker({
+    required NatureEventFactory commandsFactory,
+    required Random random,
+  })  : _natureEventFactory = commandsFactory,
+        _random = random;
 
   @override
-  void live() {
-    final random = Random();
+  Future<void> live() async {
     while (true) {
-      final param = random.nextInt(10);
-      final command = _natureEventFactory.giveCommand(param);
-      command.execute();
-      Future<void>.delayed(eventDelay);
+      await Future<void>.delayed(eventDelay);
+      final param = _random.nextInt(10);
+      _natureEventFactory.giveCommand(param).execute();
     }
   }
 }
@@ -44,13 +49,12 @@ class ScheduledInvoker implements Invoker {
       : _dutyCommandsFactory = commandsFactory;
 
   @override
-  void live() {
+  Future<void> live() async {
     while (true) {
       /// Выполняем каждую из трех обязанностей
-      for (int i = 0; i < 3; i++) {
-        final command = _dutyCommandsFactory.giveCommand();
-        command.execute();
-        Future<void>.delayed(dutyDelay);
+      for (var i = 0; i < 3; i++) {
+        await Future<void>.delayed(dutyDelay);
+        _dutyCommandsFactory.giveCommand().execute();
       }
     }
   }
