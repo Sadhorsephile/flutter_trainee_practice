@@ -161,9 +161,7 @@ void main() {
 
     /// Смерть из-за несоблюдения условий чистоты
     test('Lethal pollution', () {
-      final fish = Goldfish();
-
-      fish
+      final fish = Goldfish()
         ..react(PoolState(temperature: 20, pollution: 0.1))
         ..react(PoolState(temperature: 20, pollution: 0.5))
         ..react(PoolState(temperature: 20, pollution: 0.9));
