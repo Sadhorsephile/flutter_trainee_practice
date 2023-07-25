@@ -76,7 +76,7 @@ abstract class Fish extends AquariumObserver {
 
   /// Стратегия реакций рыб на состояния бассейна.
   /// На её основе высчитывается урон здоровью.
-  abstract final ReactPoolStateStrategy reactPoolStateStrategy;
+  ReactPoolStateStrategy get reactPoolStateStrategy;
 
   Fish() {
     health = maxHealth;
