@@ -8,7 +8,7 @@ import 'package:aquarium/utils/list_utils.dart';
 /// Реализации
 /// - [ChangeNatureTemperature]
 /// - [BornFish]
-abstract final interface class  NatureEvent extends Command {}
+abstract final interface class NatureEvent extends Command {}
 
 /// Событие для изменения температуры
 final class ChangeNatureTemperature implements NatureEvent {
@@ -20,7 +20,7 @@ final class ChangeNatureTemperature implements NatureEvent {
   @override
   void execute() {
     final random = Random();
-    double newTemperature = random.nextInt(40).toDouble();
+    final newTemperature = random.nextInt(40).toDouble();
     _pool.changeTemperature(newTemperature);
   }
 
@@ -43,4 +43,3 @@ final class BornFish implements NatureEvent {
   }
 
 }
-
