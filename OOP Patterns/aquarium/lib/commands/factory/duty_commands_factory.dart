@@ -3,7 +3,7 @@ import 'package:aquarium/commands/implementations/duty_commands.dart';
 import 'package:aquarium/pool/staff.dart';
 
 /// Фабрика, которая возвращает команды типа [DutyCommand]
-class DutyCommandsFactory implements CommandsFactory {
+class DutyCommandsFactory implements CommandsFactory<void> {
   /// Персонал, для которого будут создаваться команды
   final PoolStaff _poolStaff;
 

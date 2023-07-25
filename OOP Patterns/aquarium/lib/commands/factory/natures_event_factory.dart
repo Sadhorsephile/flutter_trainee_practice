@@ -10,6 +10,10 @@ class NatureEventFactory extends CommandsFactory<int?> {
   NatureEventFactory({required Pool pool}) : _pool = pool;
 
   /// Необходимо передать в качестве параметра целое число (случайное)
+  ///
+  /// Если число меньше 5 или вообще не передано (null),
+  /// то возвращает событие [ChangeNatureTemperature]
+  /// Иначе возвращает событие [BornFish]
   @override
   NatureEvent giveCommand([int? param]) {
     if (param == null) {
