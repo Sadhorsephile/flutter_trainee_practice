@@ -9,10 +9,10 @@ class CarpFish extends Fish {
       FishAppearance(description: 'Silver Scales');
 
   @override
-  double get minTemp => 16.0;
+  double get minTemp => 16;
 
   @override
-  double get maxTemp => 24.0;
+  double get maxTemp => 24;
 
   @override
   double get sensitivity => 4;
