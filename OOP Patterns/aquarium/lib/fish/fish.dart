@@ -39,11 +39,11 @@ abstract class Fish extends AquariumObserver {
 
   /// Период времени, через который у рыбы возрастает голод.
   /// Отличается у разных подтипов.
-  late Duration hungerTime;
+  Duration get hungerTime;
 
   /// Коэффецент чуствительности рыбы к неблагоприятным условиям.
   /// От него зависит, как будет падать здоровье рыбы
-  /// в неблагоприятных условиях или при старении
+  /// в неблагоприятных условиях
   /// Отличается у разных подтипов.
   /// Пример значения: 5
   double get sensitivity;
@@ -64,24 +64,28 @@ abstract class Fish extends AquariumObserver {
 
   /// Количество единиц на которые возрастает голод
   /// Пример: 10
-  late double hungerIncreasing;
+  double get hungerIncreasing;
 
   /// Предел голода, до которого рыба не получает вреда
   /// Пример: 50
-  late double hungerSafeLimit;
+  double get hungerSafeLimit;
 
   /// Коэффициент, с которым рыба получает урон от голода
   /// Пример: 0.1
-  late double hungerHarm;
+  double get hungerHarm;
 
   /// Стратегия реакций рыб на состояния бассейна.
   /// На её основе высчитывается урон здоровью.
-  late ReactPoolStateStrategy reactPoolStateStrategy;
+  ReactPoolStateStrategy get reactPoolStateStrategy;
 
   Fish() {
+    health = maxHealth;
+    hunger = 0;
+
     /// Увеличение голода
     launchHungerTimer();
 
+    /// Естественная смерть рыбы по истечению времени жизни
     Future.delayed(lifetime).then((value) => health = 0);
   }
 
@@ -89,7 +93,6 @@ abstract class Fish extends AquariumObserver {
   /// Потомки могут переопределить эту логику
   @protected
   void launchHungerTimer() {
-    /// Увеличение голода
     Timer.periodic(hungerTime, (timer) {
       /// Выключаем таймер, если рыба мертва
       if (state == FishState.dead) {
@@ -124,7 +127,7 @@ abstract class Fish extends AquariumObserver {
   /// Часть паттерна "Наблюдатель"
   @override
   void react(PoolState newState) {
-    double healthHarm = reactPoolStateStrategy.react(this, newState);
+    final healthHarm = reactPoolStateStrategy.react(this, newState);
     health -= healthHarm;
   }
 
@@ -151,7 +154,7 @@ class FishAppearance {
   /// Словесное описание внешнего виды рыбы
   String? description;
 
-  // TODO: Добавить ассет
+  // TODO(AndrewVorotyntsev):  Добавить ассет
 
   FishAppearance({
     this.description,

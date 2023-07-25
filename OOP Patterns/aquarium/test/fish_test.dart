@@ -9,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   /// Проверка состояний рыб
-  group("Fish State test", () {
+  group('Fish State test', () {
     /// Здоровое состояние
     test('Healthy state', () {
       final fish = Goldfish();
@@ -27,10 +27,9 @@ void main() {
 
     /// Неживое состояние
     test('Dead state', () {
-      final fish = Goldfish();
-
       // Специально задаем здоровье для проверки
-      fish.health = 0;
+      final fish = Goldfish()..health = 0;
+
       expect(fish.state, FishState.dead);
     });
   });
@@ -39,8 +38,8 @@ void main() {
     /// Кормление рыб
     test('Able to eat', () async {
       fakeAsync((async) {
-        Fish fish = Goldfish();
-        Duration timeBeforeFeed = const Duration(seconds: 3, milliseconds: 100);
+        final Fish fish = Goldfish();
+        const timeBeforeFeed = Duration(seconds: 3, milliseconds: 100);
 
         async.elapse(timeBeforeFeed);
 
@@ -61,9 +60,8 @@ void main() {
     /// Смерть из-за голодания
     test('Lethal starvation', () async {
       fakeAsync((async) {
-        Fish fish = Goldfish();
-        Duration timeWithoutFeed =
-            const Duration(seconds: 100, milliseconds: 100);
+        final Fish fish = Goldfish();
+        const timeWithoutFeed = Duration(seconds: 100, milliseconds: 100);
 
         async.elapse(timeWithoutFeed);
 
@@ -81,11 +79,10 @@ void main() {
       /// Время жизни рыбы
       test('Fish dead after lifetime', () {
         fakeAsync((async) {
-          Fish fish = Goldfish();
-          Duration timeOffset = const Duration(milliseconds: 100);
+          final fish = Goldfish();
+          const timeOffset = Duration(milliseconds: 100);
 
-          async.elapse(fish.lifetime);
-          async.elapse(timeOffset);
+          async.elapse(fish.lifetime + timeOffset);
 
           expect(fish.state, FishState.dead);
         });
@@ -93,21 +90,22 @@ void main() {
     });
   });
 
-  group("Fish temperature reaction", () {
+  group('Fish temperature reaction', () {
     /// Реакция на нормальную температуру
-    test("Normal temperature reaction", () {
+    test('Normal temperature reaction', () {
       final fish = Goldfish();
-
-      fish.react(const PoolState(temperature: 20, pollution: 0));
+      fish.react(PoolState(
+          temperature: (fish.minTemp + fish.maxTemp) / 2, pollution: 0));
 
       expect(fish.health, fish.maxHealth);
     });
 
     /// Реакция на высокую температуру
-    test("High temperature reaction", () {
+    test('High temperature reaction', () {
       final fish = Goldfish();
 
-      const newPoolState = PoolState(temperature: 28, pollution: 0);
+      final newPoolState =
+          PoolState(temperature: fish.maxTemp + 2, pollution: 0);
 
       fish.react(newPoolState);
 
@@ -118,12 +116,13 @@ void main() {
     });
 
     /// Реакция на низкую температуру
-    test("Low temperature reaction", () {
+    test('Low temperature reaction', () {
       final fish = Goldfish();
 
-      const newPoolState = PoolState(temperature: 14, pollution: 0);
+      final newPoolState =
+          PoolState(temperature: fish.minTemp - 2, pollution: 0);
 
-      fish.react(const PoolState(temperature: 14, pollution: 0));
+      fish.react(newPoolState);
 
       expect(
           fish.health,
@@ -132,24 +131,22 @@ void main() {
     });
 
     /// Смерть из-за несоблюдения температурных условий
-    test("Lethal temperature condition", () {
+    test('Lethal temperature condition', () {
       final fish = Goldfish();
 
-      const veryHighTemp = 50;
-
-      fish.react(
-          PoolState(temperature: fish.maxTemp + veryHighTemp, pollution: 0));
+      fish.react(PoolState(temperature: fish.maxTemp * 2, pollution: 0));
 
       expect(fish.state, FishState.dead);
     });
   });
 
-  group("Fish pollution reaction", () {
+  group('Fish pollution reaction', () {
     /// Реакция на загрязнение
-    test("Increase pollution reaction", () {
+    test('Increase pollution reaction', () {
       final fish = Goldfish();
 
-      const poolState = PoolState(temperature: 20, pollution: 0.1);
+      final poolState = PoolState(
+          temperature: (fish.minTemp + fish.maxTemp) / 2, pollution: 0.1);
 
       fish.react(poolState);
 
@@ -160,18 +157,18 @@ void main() {
                 PetFishReactPoolStateStrategy.pollutionHarmParam *
                 fish.sensitivity,
       );
-
-      fish.react(const PoolState(temperature: 20, pollution: 0.5));
     });
 
     /// Смерть из-за несоблюдения условий чистоты
-    test("Lethal pollution", () {
+    test('Lethal pollution', () {
       final fish = Goldfish();
-
       fish
-        ..react(const PoolState(temperature: 20, pollution: 0.1))
-        ..react(const PoolState(temperature: 20, pollution: 0.5))
-        ..react(const PoolState(temperature: 20, pollution: 0.9));
+        ..react(PoolState(
+            temperature: (fish.minTemp + fish.maxTemp) / 2, pollution: 0.1))
+        ..react(PoolState(
+            temperature: (fish.minTemp + fish.maxTemp) / 2, pollution: 0.5))
+        ..react(PoolState(
+            temperature: (fish.minTemp + fish.maxTemp) / 2, pollution: 0.9));
 
       expect(fish.state, FishState.dead);
     });
@@ -180,8 +177,8 @@ void main() {
   group('Fish born', () {
     /// Размножение рыб
     test('Fish born', () {
-      Fish carp = CarpFish();
-      Fish goldFish = Goldfish();
+      final Fish carp = CarpFish();
+      final Fish goldFish = Goldfish();
 
       expect(carp.birth().runtimeType, carp.runtimeType);
       expect(goldFish.birth().runtimeType, goldFish.runtimeType);

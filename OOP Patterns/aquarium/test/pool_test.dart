@@ -53,14 +53,14 @@ void main() {
 
   /// Изменение температуры в бассейне
   test('Change temperature', () {
-    double initialTemp = 20;
+    const initialTemp = 20.0;
     final pool = Pool(
-      state: PoolState(temperature: initialTemp, pollution: 0),
+      state: const PoolState(temperature: initialTemp, pollution: 0),
       capacity: 1,
     );
     expect(pool.state.temperature, initialTemp);
 
-    double newTemp = 30;
+    const newTemp = 30.0;
     pool.changeTemperature(newTemp);
     expect(pool.state.temperature, newTemp);
   });

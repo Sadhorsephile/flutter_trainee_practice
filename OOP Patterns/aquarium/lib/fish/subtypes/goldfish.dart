@@ -9,10 +9,10 @@ class Goldfish extends Fish {
   final FishAppearance appearance = FishAppearance(description: 'Gold Scales');
 
   @override
-  double get minTemp => 18.0;
+  double get minTemp => 18;
 
   @override
-  double get maxTemp => 26.0;
+  double get maxTemp => 26;
 
   @override
   double get sensitivity => 5;
@@ -21,7 +21,6 @@ class Goldfish extends Fish {
   @override
   final double maxHealth = 100;
 
-  /// Период времени, через который у рыбы возрастет голод.
   @override
   Duration get hungerTime => const Duration(milliseconds: 500);
 
@@ -38,18 +37,6 @@ class Goldfish extends Fish {
   @override
   ReactPoolStateStrategy get reactPoolStateStrategy =>
       PetFishReactPoolStateStrategy();
-
-  Goldfish() {
-    super.health = maxHealth;
-
-    super.reactPoolStateStrategy = reactPoolStateStrategy;
-
-    super.hunger = 0;
-    super.hungerIncreasing = hungerIncreasing;
-    super.hungerSafeLimit = hungerSafeLimit;
-    super.hungerHarm = hungerHarm;
-    super.hungerTime = hungerTime;
-  }
 
   /// Паттерн "Прототип"
   @override

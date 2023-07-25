@@ -9,10 +9,10 @@ class CarpFish extends Fish {
       FishAppearance(description: 'Silver Scales');
 
   @override
-  double get minTemp => 16.0;
+  double get minTemp => 16;
 
   @override
-  double get maxTemp => 24.0;
+  double get maxTemp => 24;
 
   @override
   double get sensitivity => 4;
@@ -36,18 +36,6 @@ class CarpFish extends Fish {
   double get hungerSafeLimit => 50;
   @override
   double get hungerHarm => 0.1;
-
-  CarpFish() {
-    super.health = maxHealth;
-
-    super.reactPoolStateStrategy = reactPoolStateStrategy;
-
-    super.hunger = 0;
-    super.hungerIncreasing = hungerIncreasing;
-    super.hungerSafeLimit = hungerSafeLimit;
-    super.hungerHarm = hungerHarm;
-    super.hungerTime = hungerTime;
-  }
 
   /// Паттерн "Прототип"
   @override

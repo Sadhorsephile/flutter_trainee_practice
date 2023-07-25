@@ -38,7 +38,7 @@ class Pool implements AquariumObservable<Fish> {
     fishes = [];
 
     /// Автоматическое загрязнение
-    Timer.periodic(pollutionDuration, (Timer t) => pollute());
+    Timer.periodic(pollutionDuration, (_) => pollute());
   }
 
   /// Добавить рыбу в бассейн.
