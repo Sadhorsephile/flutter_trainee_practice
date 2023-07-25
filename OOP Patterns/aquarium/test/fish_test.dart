@@ -98,7 +98,7 @@ void main() {
     test("Normal temperature reaction", () {
       final fish = Goldfish();
 
-      fish.react(PoolState(temperature: 20, pollution: 0));
+      fish.react(const PoolState(temperature: 20, pollution: 0));
 
       expect(fish.health, fish.maxHealth);
     });
@@ -107,7 +107,7 @@ void main() {
     test("High temperature reaction", () {
       final fish = Goldfish();
 
-      final newPoolState = PoolState(temperature: 28, pollution: 0);
+      const newPoolState = PoolState(temperature: 28, pollution: 0);
 
       fish.react(newPoolState);
 
@@ -121,9 +121,9 @@ void main() {
     test("Low temperature reaction", () {
       final fish = Goldfish();
 
-      final newPoolState = PoolState(temperature: 14, pollution: 0);
+      const newPoolState = PoolState(temperature: 14, pollution: 0);
 
-      fish.react(PoolState(temperature: 14, pollution: 0));
+      fish.react(const PoolState(temperature: 14, pollution: 0));
 
       expect(
           fish.health,
@@ -149,7 +149,7 @@ void main() {
     test("Increase pollution reaction", () {
       final fish = Goldfish();
 
-      final poolState = PoolState(temperature: 20, pollution: 0.1);
+      const poolState = PoolState(temperature: 20, pollution: 0.1);
 
       fish.react(poolState);
 
@@ -161,7 +161,7 @@ void main() {
                 fish.sensitivity,
       );
 
-      fish.react(PoolState(temperature: 20, pollution: 0.5));
+      fish.react(const PoolState(temperature: 20, pollution: 0.5));
     });
 
     /// Смерть из-за несоблюдения условий чистоты
@@ -169,9 +169,9 @@ void main() {
       final fish = Goldfish();
 
       fish
-        ..react(PoolState(temperature: 20, pollution: 0.1))
-        ..react(PoolState(temperature: 20, pollution: 0.5))
-        ..react(PoolState(temperature: 20, pollution: 0.9));
+        ..react(const PoolState(temperature: 20, pollution: 0.1))
+        ..react(const PoolState(temperature: 20, pollution: 0.5))
+        ..react(const PoolState(temperature: 20, pollution: 0.9));
 
       expect(fish.state, FishState.dead);
     });

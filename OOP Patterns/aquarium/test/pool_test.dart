@@ -11,7 +11,7 @@ void main() {
     /// Добавить рыбу в бассейн
     test('Add fish to the pool', () {
       final pool = Pool(
-        state: PoolState(temperature: 20, pollution: 0),
+        state: const PoolState(temperature: 20, pollution: 0),
         capacity: 1,
       );
       final fish = Goldfish();
@@ -22,7 +22,7 @@ void main() {
     /// Убрать рыбу из бассейна
     test('Remove fish from the pool', () {
       final pool = Pool(
-        state: PoolState(temperature: 20, pollution: 0),
+        state: const PoolState(temperature: 20, pollution: 0),
         capacity: 1,
       );
       final fish = Goldfish();
@@ -38,7 +38,7 @@ void main() {
   test('Pool pollution', () async {
     fakeAsync((async) {
       final pool = Pool(
-        state: PoolState(temperature: 20, pollution: 0),
+        state: const PoolState(temperature: 20, pollution: 0),
         capacity: 1,
       );
 
@@ -71,7 +71,7 @@ void main() {
     test('Notify fishes about pollution', () {
       fakeAsync((async) {
         final pool = Pool(
-          state: PoolState(temperature: 20, pollution: 0),
+          state: const PoolState(temperature: 20, pollution: 0),
           capacity: 1,
         );
         final fish = Goldfish();
@@ -92,7 +92,7 @@ void main() {
     /// Оповещение рыб об изменениях температуры
     test('Notify fishes about temperature changing', () {
       final pool = Pool(
-        state: PoolState(temperature: 20, pollution: 0),
+        state: const PoolState(temperature: 20, pollution: 0),
         capacity: 1,
       );
       final fish = Goldfish();

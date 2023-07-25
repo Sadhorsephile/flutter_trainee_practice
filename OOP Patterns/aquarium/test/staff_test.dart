@@ -15,7 +15,7 @@ void main() {
       fakeAsync((async) {
         const poolCapacity = 8;
         final pool = Pool(
-          state: PoolState(temperature: 20, pollution: 0),
+          state: const PoolState(temperature: 20, pollution: 0),
           capacity: poolCapacity,
         );
         final fishFactory = EvenFishFactory();
@@ -32,7 +32,7 @@ void main() {
     test('Fish feed', () {
       fakeAsync((async) {
         final pool = Pool(
-          state: PoolState(temperature: 20, pollution: 0),
+          state: const PoolState(temperature: 20, pollution: 0),
           capacity: 2,
         );
         final fishFactory = EvenFishFactory();
@@ -69,7 +69,7 @@ void main() {
     test('Удаление мертвых рыб', () {
       fakeAsync((async) {
         final pool = Pool(
-          state: PoolState(temperature: 20, pollution: 0),
+          state: const PoolState(temperature: 20, pollution: 0),
           capacity: 2,
         );
         final fishFactory = EvenFishFactory();
@@ -95,7 +95,7 @@ void main() {
   group('Pool service', () {
     test('Temperature normalization', () {
       final pool = Pool(
-        state: PoolState(temperature: 20, pollution: 0),
+        state: const PoolState(temperature: 20, pollution: 0),
         capacity: 2,
       );
       final fishFactory = EvenFishFactory();
@@ -112,7 +112,7 @@ void main() {
     test('Clean pool', () {
       fakeAsync((async) {
         final pool = Pool(
-          state: PoolState(temperature: 20, pollution: 0),
+          state: const PoolState(temperature: 20, pollution: 0),
           capacity: 2,
         );
         final fishFactory = EvenFishFactory();
