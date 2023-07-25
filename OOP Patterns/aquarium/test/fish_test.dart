@@ -84,8 +84,7 @@ void main() {
           Fish fish = Goldfish();
           Duration timeOffset = const Duration(milliseconds: 100);
 
-          async.elapse(fish.lifetime);
-          async.elapse(timeOffset);
+          async.elapse(fish.lifetime + timeOffset);
 
           expect(fish.state, FishState.dead);
         });

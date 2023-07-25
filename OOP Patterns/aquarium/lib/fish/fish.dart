@@ -43,7 +43,7 @@ abstract class Fish extends AquariumObserver {
 
   /// Коэффецент чуствительности рыбы к неблагоприятным условиям.
   /// От него зависит, как будет падать здоровье рыбы
-  /// в неблагоприятных условиях или при старении
+  /// в неблагоприятных условиях
   /// Отличается у разных подтипов.
   /// Пример значения: 5
   double get sensitivity;
@@ -82,6 +82,7 @@ abstract class Fish extends AquariumObserver {
     /// Увеличение голода
     launchHungerTimer();
 
+    /// Естественная смерть рыбы по истечению времени жизни
     Future.delayed(lifetime).then((value) => health = 0);
   }
 
@@ -89,7 +90,6 @@ abstract class Fish extends AquariumObserver {
   /// Потомки могут переопределить эту логику
   @protected
   void launchHungerTimer() {
-    /// Увеличение голода
     Timer.periodic(hungerTime, (timer) {
       /// Выключаем таймер, если рыба мертва
       if (state == FishState.dead) {

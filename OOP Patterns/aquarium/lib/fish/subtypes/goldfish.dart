@@ -21,7 +21,6 @@ class Goldfish extends Fish {
   @override
   final double maxHealth = 100;
 
-  /// Период времени, через который у рыбы возрастет голод.
   @override
   Duration get hungerTime => const Duration(milliseconds: 500);
 
