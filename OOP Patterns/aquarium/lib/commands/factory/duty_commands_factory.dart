@@ -7,6 +7,7 @@ class DutyCommandsFactory implements CommandsFactory<void> {
   /// Персонал, для которого будут создаваться команды
   final PoolStaff _poolStaff;
 
+  /// Счетчик команд для их последовательного вызова
   int _count = 0;
 
   DutyCommandsFactory({required PoolStaff staff}) : _poolStaff = staff;
