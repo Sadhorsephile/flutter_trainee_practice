@@ -12,7 +12,7 @@ abstract class Fish extends AquariumObserver {
 
   /// Состояние рыбы. Завивисит от уровня здоровья [health]
   FishState get state {
-    if (health > maxHealth * 0.7) {
+    if (health > maxHealth * healthyLimit) {
       return FishState.healthy;
     } else if (health <= 0) {
       return FishState.dead;
@@ -148,6 +148,10 @@ enum FishState {
   /// Мертвая рыба
   dead,
 }
+
+/// Процентный предел здоровья, выше которого рыба считается здоровой,
+/// а ниже (но больше 0) - больной
+const healthyLimit = 0.7;
 
 /// Класс, описывающий внешний вид рыбы
 class FishAppearance {
