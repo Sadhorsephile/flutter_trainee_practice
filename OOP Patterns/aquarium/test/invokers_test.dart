@@ -22,13 +22,13 @@ void main() {
         state: const PoolState(temperature: normalTemperature, pollution: 0),
         capacity: poolCapacity,
       )..addObserver(Goldfish());
-      final random = MockRandom();
-      when<int>(() => random.nextInt(any())).thenReturn(1);
+      final mockRandom = MockRandom();
+      when<int>(() => mockRandom.nextInt(6)).thenReturn(1);
+      when<int>(() => mockRandom.nextInt(40)).thenReturn(30);
       final commandsFactory = NatureEventFactory(
         pool: pool,
-        random: random,
+        random: mockRandom,
       );
-      final mockRandom = MockRandom();
 
       /// Запуск цикла событий
       RandomInvoker(
