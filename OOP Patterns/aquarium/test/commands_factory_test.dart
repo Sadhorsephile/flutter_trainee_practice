@@ -14,14 +14,20 @@ import 'mock/random_mock.dart';
 void main() {
   /// Тесты для фабрики команд персонала
   group('DutyCommandsFactory tests', () {
-    /// Проверка соответсвия типов комманд
+    /// Проверка соответствия типов комманд
     test('Type correspondence for duty commands', () {
       final pool = Pool(
-        state: const PoolState(temperature: normalTemperature, pollution: 0),
+        state: const PoolState(
+          temperature: normalTemperature,
+          pollution: 0,
+        ),
         capacity: 1,
       );
       final fishFactory = EvenFishFactory();
-      final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+      final staff = PoolStaff(
+        pool: pool,
+        fishFactory: fishFactory,
+      );
       final commandsFactory = DutyCommandsFactory(staff: staff);
 
       final command1 = commandsFactory.giveCommand();
@@ -35,7 +41,10 @@ void main() {
         capacity: 1,
       );
       final fishFactory = EvenFishFactory();
-      final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+      final staff = PoolStaff(
+        pool: pool,
+        fishFactory: fishFactory,
+      );
       final commandsFactory = DutyCommandsFactory(staff: staff);
 
       final command1 = commandsFactory.giveCommand();
@@ -52,26 +61,38 @@ void main() {
     /// Проверка соответствия типов комманд
     test('Type correspondence for duty commands', () {
       final pool = Pool(
-        state: const PoolState(temperature: normalTemperature, pollution: 0),
+        state: const PoolState(
+          temperature: normalTemperature,
+          pollution: 0,
+        ),
         capacity: 1,
       );
       final random = MockRandom();
       when<int>(() => random.nextInt(any())).thenReturn(1);
-      final commandsFactory = NatureEventFactory(pool: pool, random: random);
+      final commandsFactory = NatureEventFactory(
+        pool: pool,
+        random: random,
+      );
 
       final command = commandsFactory.giveCommand();
       expect(command, isA<NatureEvent>());
     });
 
-    /// Различные варианты комманд
+    /// Различные варианты команд
     test('Type correspondence for duty commands', () {
       final pool = Pool(
-        state: const PoolState(temperature: normalTemperature, pollution: 0),
+        state: const PoolState(
+          temperature: normalTemperature,
+          pollution: 0,
+        ),
         capacity: 1,
       );
       final random = MockRandom();
       when<int>(() => random.nextInt(any())).thenReturn(1);
-      final commandsFactory = NatureEventFactory(pool: pool, random: random);
+      final commandsFactory = NatureEventFactory(
+        pool: pool,
+        random: random,
+      );
 
       /// В зависимости от различных параметров
       /// будут возвращаться разные типы комманд

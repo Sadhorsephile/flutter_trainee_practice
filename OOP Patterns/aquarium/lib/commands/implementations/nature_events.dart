@@ -27,7 +27,7 @@ class ChangeNatureTemperature implements NatureEvent {
 
   @override
   void call() {
-    final newTemperature = _random.nextInt(maxTemperature).toDouble();
+    final newTemperature = _random.nextInt(maxTemperature.toInt()).toDouble();
     _pool.changeTemperature(newTemperature);
   }
 }

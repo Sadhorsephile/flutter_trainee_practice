@@ -27,4 +27,4 @@ class PoolState {
 const normalTemperature = 20.0;
 
 /// Максимальная температура среды
-const maxTemperature = 40;
+const maxTemperature = 40.0;

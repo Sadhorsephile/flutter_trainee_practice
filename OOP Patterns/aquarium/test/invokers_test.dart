@@ -58,11 +58,17 @@ void main() {
     fakeAsync((async) {
       const capacity = 2;
       final pool = Pool(
-        state: const PoolState(temperature: normalTemperature, pollution: 0),
+        state: const PoolState(
+          temperature: normalTemperature,
+          pollution: 0,
+        ),
         capacity: capacity,
       );
       final fishFactory = EvenFishFactory();
-      final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+      final staff = PoolStaff(
+        pool: pool,
+        fishFactory: fishFactory,
+      );
       final commandsFactory = DutyCommandsFactory(staff: staff);
 
       // Изначально бассейн пуст
@@ -86,9 +92,9 @@ void main() {
       expect(pool.state.pollution, 0);
 
       // Повышаем температуру вручную
-      pool.changeTemperature(normalTemperature * 2);
+      pool.changeTemperature(maxTemperature);
 
-      expect(pool.state.temperature, normalTemperature * 2);
+      expect(pool.state.temperature, maxTemperature);
 
       async.elapse(ScheduledInvoker.dutyDelay);
 

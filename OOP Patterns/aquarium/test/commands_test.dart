@@ -20,11 +20,17 @@ void main() {
     test('CleanPoolDuty test', () {
       fakeAsync((async) {
         final pool = Pool(
-          state: const PoolState(temperature: normalTemperature, pollution: 0),
+          state: const PoolState(
+            temperature: normalTemperature,
+            pollution: 0,
+          ),
           capacity: 1,
         );
         final fishFactory = EvenFishFactory();
-        final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+        final staff = PoolStaff(
+          pool: pool,
+          fishFactory: fishFactory,
+        );
 
         const timeWithoutCleaning = Duration(seconds: 10);
         async.elapse(timeWithoutCleaning);
@@ -39,14 +45,17 @@ void main() {
     /// Тест команды для установки нормальной температуры
     test('SetNormalTempDuty test', () {
       final pool = Pool(
-        state: const PoolState(temperature: normalTemperature, pollution: 0),
+        state: const PoolState(
+          temperature: normalTemperature,
+          pollution: 0,
+        ),
         capacity: 1,
       );
       final fishFactory = EvenFishFactory();
       final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
 
-      pool.changeTemperature(normalTemperature * 2);
-      expect(pool.state.temperature, normalTemperature * 2);
+      pool.changeTemperature(maxTemperature);
+      expect(pool.state.temperature, maxTemperature);
 
       final setNormalTempCommand = SetNormalTempDuty(staff: staff);
       setNormalTempCommand();
@@ -58,11 +67,17 @@ void main() {
       fakeAsync((async) {
         const poolCapacity = 2;
         final pool = Pool(
-          state: const PoolState(temperature: normalTemperature, pollution: 0),
+          state: const PoolState(
+            temperature: normalTemperature,
+            pollution: 0,
+          ),
           capacity: poolCapacity,
         );
         final fishFactory = EvenFishFactory();
-        final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+        final staff = PoolStaff(
+          pool: pool,
+          fishFactory: fishFactory,
+        );
 
         // Первоначальное заполнение бассейна рыбами
 
@@ -78,17 +93,25 @@ void main() {
         const timeBeforeFeed = Duration(seconds: 1);
         async.elapse(timeBeforeFeed);
 
+        /// Уровень голода рыбы после прошествия времени [timeBeforeFeed]
+        /// для первой рыбы
+        final hungerAfterTimeBeforeFeedFish1 = pool.fishes[0].hungerIncreasing *
+            (timeBeforeFeed.inMilliseconds /
+                pool.fishes[0].hungerTime.inMilliseconds);
+
         expect(
           pool.fishes[0].hunger,
-          pool.fishes[0].hungerIncreasing *
-              (timeBeforeFeed.inMilliseconds /
-                  pool.fishes[0].hungerTime.inMilliseconds),
+          hungerAfterTimeBeforeFeedFish1,
         );
+
+        /// Уровень голода рыбы после прошествия времени [timeBeforeFeed]
+        /// для второй рыбы
+        final hungerAfterTimeBeforeFeedFish2 = pool.fishes[1].hungerIncreasing *
+            (timeBeforeFeed.inMilliseconds /
+                pool.fishes[1].hungerTime.inMilliseconds);
         expect(
           pool.fishes[1].hunger,
-          pool.fishes[1].hungerIncreasing *
-              (timeBeforeFeed.inMilliseconds /
-                  pool.fishes[1].hungerTime.inMilliseconds),
+          hungerAfterTimeBeforeFeedFish2,
         );
 
         serveFishesCommand();
@@ -129,7 +152,10 @@ void main() {
     /// Тест для случайного изменения температуры
     test('ChangeNatureTemperature test', () {
       final pool = Pool(
-        state: const PoolState(temperature: normalTemperature, pollution: 0),
+        state: const PoolState(
+          temperature: normalTemperature,
+          pollution: 0,
+        ),
         capacity: 1,
       );
       final random = MockRandom();
