@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:aquarium/commands/command.dart';
 import 'package:aquarium/pool/pool.dart';
+import 'package:aquarium/pool/pool_state.dart';
 import 'package:aquarium/utils/list_utils.dart';
 
 /// Команда, представляющая природные события.
@@ -20,7 +21,7 @@ class ChangeNatureTemperature implements NatureEvent {
   @override
   void call() {
     final random = Random();
-    final newTemperature = random.nextInt(40).toDouble();
+    final newTemperature = random.nextInt(maxTemperature).toDouble();
     _pool.changeTemperature(newTemperature);
   }
 }
