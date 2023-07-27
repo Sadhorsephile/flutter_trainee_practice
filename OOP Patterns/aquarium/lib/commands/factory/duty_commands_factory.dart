@@ -15,14 +15,14 @@ class DutyCommandsFactory implements CommandsFactory<void> {
   @override
   DutyCommand giveCommand([_]) {
     _count++;
-    if (_count == 1) {
-      return ServeFishesDuty(staff: _poolStaff);
-    }
-    if (_count == 2) {
-      return CleanPoolDuty(staff: _poolStaff);
-    } else {
-      _count = 0;
-      return SetNormalTempDuty(staff: _poolStaff);
+    switch (_count) {
+      case 1:
+        return ServeFishesDuty(staff: _poolStaff);
+      case 2:
+        return CleanPoolDuty(staff: _poolStaff);
+      default:
+        _count = 0;
+        return SetNormalTempDuty(staff: _poolStaff);
     }
   }
 }
