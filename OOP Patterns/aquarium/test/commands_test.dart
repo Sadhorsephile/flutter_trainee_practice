@@ -27,7 +27,8 @@ void main() {
         async.elapse(timeWithoutCleaning);
         expect(pool.state.pollution, greaterThan(0));
 
-        CleanPoolDuty(staff: staff).execute();
+        final cleanPoolCommand = CleanPoolDuty(staff: staff);
+        cleanPoolCommand();
         expect(pool.state.pollution, 0);
       });
     });
@@ -44,7 +45,8 @@ void main() {
       pool.changeTemperature(normalTemperature * 2);
       expect(pool.state.temperature, normalTemperature * 2);
 
-      SetNormalTempDuty(staff: staff).execute();
+      final setNormalTempCommand = SetNormalTempDuty(staff: staff);
+      setNormalTempCommand();
       expect(pool.state.temperature, normalTemperature);
     });
 
@@ -63,7 +65,8 @@ void main() {
 
         expect(pool.fishes, isEmpty);
 
-        ServeFishesDuty(staff: staff).execute();
+        final serveFishesCommand = ServeFishesDuty(staff: staff);
+        serveFishesCommand();
         expect(pool.fishes.length, poolCapacity);
 
         // Кормление рыб
@@ -85,7 +88,7 @@ void main() {
                   pool.fishes[1].hungerTime.inMilliseconds),
         );
 
-        ServeFishesDuty(staff: staff).execute();
+        serveFishesCommand();
 
         expect(pool.fishes[0].hunger, 0);
         expect(pool.fishes[1].hunger, 0);
@@ -98,7 +101,7 @@ void main() {
         expect(pool.fishes[0].state, FishState.dead);
         expect(pool.fishes[1].state, FishState.dead);
 
-        ServeFishesDuty(staff: staff).execute();
+        serveFishesCommand();
 
         expect(pool.fishes[0].state, FishState.healthy);
         expect(pool.fishes[1].state, FishState.healthy);
@@ -111,7 +114,7 @@ void main() {
 
         expect(pool.fishes.length, greaterThan(poolCapacity));
 
-        ServeFishesDuty(staff: staff).execute();
+        serveFishesCommand();
 
         expect(pool.fishes.length, poolCapacity);
       });
@@ -129,7 +132,8 @@ void main() {
 
       expect(pool.state.temperature, normalTemperature);
 
-      ChangeNatureTemperature(pool: pool).execute();
+      final changeTempCommand = ChangeNatureTemperature(pool: pool);
+      changeTempCommand();
 
       expect(pool.state.temperature,
           predicate((temp) => temp != normalTemperature));
@@ -144,7 +148,8 @@ void main() {
 
       // Пустой аквариум
 
-      BornFish(pool: pool).execute();
+      final bornFish = BornFish(pool: pool);
+      bornFish();
 
       // В пустом аквариуме рыб родиться не может
       expect(pool.fishes, isEmpty);
@@ -154,7 +159,7 @@ void main() {
       pool.addObserver(Goldfish());
       expect(pool.fishes.length, 1);
 
-      BornFish(pool: pool).execute();
+      bornFish();
       expect(pool.fishes.length, 2);
       expect(pool.fishes.first.runtimeType, pool.fishes.last.runtimeType);
     });

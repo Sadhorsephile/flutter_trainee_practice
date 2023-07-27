@@ -32,7 +32,8 @@ class RandomInvoker implements Invoker {
     while (true) {
       await Future<void>.delayed(eventDelay);
       final param = _random.nextInt(10);
-      _natureEventFactory.giveCommand(param).execute();
+      final natureEvent = _natureEventFactory.giveCommand(param);
+      natureEvent();
     }
   }
 }
@@ -54,7 +55,8 @@ class ScheduledInvoker implements Invoker {
       /// Выполняем каждую из трех обязанностей
       for (var i = 0; i < 3; i++) {
         await Future<void>.delayed(dutyDelay);
-        _dutyCommandsFactory.giveCommand().execute();
+        final dutyCommand = _dutyCommandsFactory.giveCommand();
+        dutyCommand();
       }
     }
   }

@@ -18,7 +18,7 @@ final class ChangeNatureTemperature implements NatureEvent {
   ChangeNatureTemperature({required Pool pool}) : _pool = pool;
 
   @override
-  void execute() {
+  void call() {
     final random = Random();
     final newTemperature = random.nextInt(40).toDouble();
     _pool.changeTemperature(newTemperature);
@@ -34,7 +34,7 @@ final class BornFish implements NatureEvent {
   BornFish({required Pool pool}) : _pool = pool;
 
   @override
-  void execute() {
+  void call() {
     final fishToBirth = _pool.fishes.getRandom();
     final newbornFish = fishToBirth?.birth();
     if (newbornFish != null) {

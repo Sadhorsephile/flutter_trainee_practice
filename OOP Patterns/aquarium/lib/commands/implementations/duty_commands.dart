@@ -17,7 +17,7 @@ final class CleanPoolDuty implements DutyCommand {
   CleanPoolDuty({required PoolStaff staff}) : _poolStaff = staff;
 
   @override
-  void execute() => _poolStaff.cleanPool();
+  void call() => _poolStaff.cleanPool();
 }
 
 
@@ -29,7 +29,7 @@ final class ServeFishesDuty implements DutyCommand {
   ServeFishesDuty({required PoolStaff staff}) : _poolStaff = staff;
 
   @override
-  void execute() => _poolStaff.serveFishes();
+  void call() => _poolStaff.serveFishes();
 }
 
 /// Команда для установки нормальной температуры в бассейне
@@ -40,5 +40,5 @@ final class SetNormalTempDuty implements DutyCommand {
   SetNormalTempDuty({required PoolStaff staff}) : _poolStaff = staff;
 
   @override
-  void execute() => _poolStaff.setNormalTemperature();
+  void call() => _poolStaff.setNormalTemperature();
 }
