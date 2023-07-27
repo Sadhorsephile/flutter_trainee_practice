@@ -1,4 +1,6 @@
 import 'package:aquarium/commands/command.dart';
+import 'package:aquarium/logger/base_logger.dart';
+import 'package:aquarium/logger/res/log_res.dart';
 import 'package:aquarium/pool/staff.dart';
 
 /// Команда, представляющая обязанности персонала
@@ -14,10 +16,19 @@ final class CleanPoolDuty implements DutyCommand {
   /// Персонал для исполнения команды
   final PoolStaff _poolStaff;
 
-  CleanPoolDuty({required PoolStaff staff}) : _poolStaff = staff;
+  final AppLogger _appLogger;
+
+  CleanPoolDuty({
+    required PoolStaff staff,
+    required AppLogger logger,
+  }) : _poolStaff = staff,
+       _appLogger = logger;
 
   @override
-  void execute() => _poolStaff.cleanPool();
+  void execute() {
+    _poolStaff.cleanPool();
+    _appLogger.log(LogEventData(dateTime: DateTime.now(), description: LogRes.staffCleanPool));
+  }
 }
 
 
@@ -26,10 +37,19 @@ final class ServeFishesDuty implements DutyCommand {
   /// Персонал для исполнения команды
   final PoolStaff _poolStaff;
 
-  ServeFishesDuty({required PoolStaff staff}) : _poolStaff = staff;
+  final AppLogger _appLogger;
+
+  ServeFishesDuty({
+    required PoolStaff staff,
+    required AppLogger logger,
+  }) : _poolStaff = staff,
+       _appLogger = logger;
 
   @override
-  void execute() => _poolStaff.serveFishes();
+  void execute() {
+    _poolStaff.serveFishes();
+    _appLogger.log(LogEventData(dateTime: DateTime.now(), description: LogRes.staffServeFishes));
+  }
 }
 
 /// Команда для установки нормальной температуры в бассейне
@@ -37,8 +57,17 @@ final class SetNormalTempDuty implements DutyCommand {
   /// Персонал для исполнения команды
   final PoolStaff _poolStaff;
 
-  SetNormalTempDuty({required PoolStaff staff}) : _poolStaff = staff;
+  final AppLogger _appLogger;
+
+  SetNormalTempDuty({
+    required PoolStaff staff,
+    required AppLogger logger,
+  }) : _poolStaff = staff,
+       _appLogger = logger;
 
   @override
-  void execute() => _poolStaff.setNormalTemperature();
+  void execute() {
+    _poolStaff.setNormalTemperature();
+    _appLogger.log(LogEventData(dateTime: DateTime.now(), description: LogRes.staffSetNormalTemp));
+  }
 }

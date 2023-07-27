@@ -1,5 +1,7 @@
 import 'dart:math';
 import 'package:aquarium/commands/command.dart';
+import 'package:aquarium/logger/base_logger.dart';
+import 'package:aquarium/logger/res/log_res.dart';
 import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/utils/list_utils.dart';
 
@@ -15,13 +17,20 @@ final class ChangeNatureTemperature implements NatureEvent {
   /// Бассейн, в котором будет выполняться события
   final Pool _pool;
 
-  ChangeNatureTemperature({required Pool pool}) : _pool = pool;
+  final AppLogger _appLogger;
+
+  ChangeNatureTemperature({
+    required Pool pool,
+    required AppLogger logger,
+  }) : _pool = pool,
+        _appLogger = logger;
 
   @override
   void execute() {
     final random = Random();
     final newTemperature = random.nextInt(40).toDouble();
     _pool.changeTemperature(newTemperature);
+    _appLogger.log(LogEventData(dateTime: DateTime.now(), description: LogRes.changingTemp(newTemperature) ),);
   }
 
 }
@@ -31,7 +40,13 @@ final class BornFish implements NatureEvent {
   /// Бассейн, в котором будет выполняться событие
   final Pool _pool;
 
-  BornFish({required Pool pool}) : _pool = pool;
+  final AppLogger _appLogger;
+
+  BornFish({
+    required Pool pool,
+    required AppLogger logger,
+  }) : _pool = pool,
+        _appLogger = logger;
 
   @override
   void execute() {
@@ -39,6 +54,7 @@ final class BornFish implements NatureEvent {
     final newbornFish = fishToBirth?.birth();
     if (newbornFish != null) {
       _pool.addObserver(newbornFish);
+      _appLogger.log(LogEventData(dateTime: DateTime.now(), description: LogRes.fishBirth));
     }
   }
 

@@ -3,6 +3,7 @@ import 'package:aquarium/commands/factory/natures_event_factory.dart';
 import 'package:aquarium/fish/fish_factory.dart';
 import 'package:aquarium/fish/subtypes/goldfish.dart';
 import 'package:aquarium/invokers/invoker.dart';
+import 'package:aquarium/logger/print_logger.dart';
 import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/pool/pool_state.dart';
 import 'package:aquarium/pool/staff.dart';
@@ -21,7 +22,8 @@ void main() {
         state: const PoolState(temperature: normalTemperature, pollution: 0),
         capacity: poolCapacity,
       )..addObserver(Goldfish());
-      final commandsFactory = NatureEventFactory(pool: pool);
+      final logger = PrintLogger();
+      final commandsFactory = NatureEventFactory(pool: pool, logger: logger);
       final mockRandom = MockRandom();
 
       /// Запуск цикла событий
@@ -57,7 +59,8 @@ void main() {
       );
       final fishFactory = EvenFishFactory();
       final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
-      final commandsFactory = DutyCommandsFactory(staff: staff);
+      final logger = PrintLogger();
+      final commandsFactory = DutyCommandsFactory(staff: staff, logger: logger);
 
       // Изначально бассейн пуст
       expect(pool.fishes, isEmpty);

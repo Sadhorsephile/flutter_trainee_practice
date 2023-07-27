@@ -1,5 +1,6 @@
 import 'package:aquarium/commands/factory/commands_factory.dart';
 import 'package:aquarium/commands/implementations/nature_events.dart';
+import 'package:aquarium/logger/base_logger.dart';
 import 'package:aquarium/pool/pool.dart';
 
 /// Фабрика, которая возвращает команды типа [NatureEvent]
@@ -7,7 +8,13 @@ class NatureEventFactory extends CommandsFactory<int?> {
   /// Бассейн, для которого будут создаваться события
   final Pool _pool;
 
-  NatureEventFactory({required Pool pool}) : _pool = pool;
+  final AppLogger _appLogger;
+
+  NatureEventFactory({
+    required Pool pool,
+    required AppLogger logger,
+  })  : _pool = pool,
+        _appLogger = logger;
 
   /// Необходимо передать в качестве параметра целое число (случайное)
   ///
@@ -17,12 +24,12 @@ class NatureEventFactory extends CommandsFactory<int?> {
   @override
   NatureEvent giveCommand([int? param]) {
     if (param == null) {
-      return ChangeNatureTemperature(pool: _pool);
+      return ChangeNatureTemperature(pool: _pool, logger: _appLogger);
     }
     if (param <= 5) {
-      return ChangeNatureTemperature(pool: _pool);
+      return ChangeNatureTemperature(pool: _pool, logger: _appLogger);
     } else {
-      return BornFish(pool: _pool);
+      return BornFish(pool: _pool, logger: _appLogger);
     }
   }
 }

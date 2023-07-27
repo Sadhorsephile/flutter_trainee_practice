@@ -4,6 +4,7 @@ import 'package:aquarium/fish/fish.dart';
 import 'package:aquarium/fish/fish_factory.dart';
 import 'package:aquarium/fish/subtypes/carp_fish.dart';
 import 'package:aquarium/fish/subtypes/goldfish.dart';
+import 'package:aquarium/logger/print_logger.dart';
 import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/pool/pool_state.dart';
 import 'package:aquarium/pool/staff.dart';
@@ -22,12 +23,13 @@ void main() {
         );
         final fishFactory = EvenFishFactory();
         final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+        final logger = PrintLogger();
 
         const timeWithoutCleaning = Duration(seconds: 10);
         async.elapse(timeWithoutCleaning);
         expect(pool.state.pollution, greaterThan(0));
 
-        CleanPoolDuty(staff: staff).execute();
+        CleanPoolDuty(staff: staff, logger: logger).execute();
         expect(pool.state.pollution, 0);
       });
     });
@@ -40,11 +42,12 @@ void main() {
       );
       final fishFactory = EvenFishFactory();
       final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+      final logger = PrintLogger();
 
       pool.changeTemperature(normalTemperature * 2);
       expect(pool.state.temperature, normalTemperature * 2);
 
-      SetNormalTempDuty(staff: staff).execute();
+      SetNormalTempDuty(staff: staff, logger: logger).execute();
       expect(pool.state.temperature, normalTemperature);
     });
 
@@ -58,12 +61,13 @@ void main() {
         );
         final fishFactory = EvenFishFactory();
         final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+        final logger = PrintLogger();
 
         // Первоначальное заполнение бассейна рыбами
 
         expect(pool.fishes, isEmpty);
 
-        ServeFishesDuty(staff: staff).execute();
+        ServeFishesDuty(staff: staff, logger: logger).execute();
         expect(pool.fishes.length, poolCapacity);
 
         // Кормление рыб
@@ -85,7 +89,7 @@ void main() {
                   pool.fishes[1].hungerTime.inMilliseconds),
         );
 
-        ServeFishesDuty(staff: staff).execute();
+        ServeFishesDuty(staff: staff, logger: logger).execute();
 
         expect(pool.fishes[0].hunger, 0);
         expect(pool.fishes[1].hunger, 0);
@@ -98,7 +102,7 @@ void main() {
         expect(pool.fishes[0].state, FishState.dead);
         expect(pool.fishes[1].state, FishState.dead);
 
-        ServeFishesDuty(staff: staff).execute();
+        ServeFishesDuty(staff: staff, logger: logger).execute();
 
         expect(pool.fishes[0].state, FishState.healthy);
         expect(pool.fishes[1].state, FishState.healthy);
@@ -111,7 +115,7 @@ void main() {
 
         expect(pool.fishes.length, greaterThan(poolCapacity));
 
-        ServeFishesDuty(staff: staff).execute();
+        ServeFishesDuty(staff: staff, logger: logger).execute();
 
         expect(pool.fishes.length, poolCapacity);
       });
@@ -126,10 +130,11 @@ void main() {
         state: const PoolState(temperature: normalTemperature, pollution: 0),
         capacity: 1,
       );
+      final logger = PrintLogger();
 
       expect(pool.state.temperature, normalTemperature);
 
-      ChangeNatureTemperature(pool: pool).execute();
+      ChangeNatureTemperature(pool: pool, logger: logger).execute();
 
       expect(pool.state.temperature,
           predicate((temp) => temp != normalTemperature));
@@ -141,10 +146,11 @@ void main() {
         state: const PoolState(temperature: normalTemperature, pollution: 0),
         capacity: 1,
       );
+      final logger = PrintLogger();
 
       // Пустой аквариум
 
-      BornFish(pool: pool).execute();
+      BornFish(pool: pool, logger: logger).execute();
 
       // В пустом аквариуме рыб родиться не может
       expect(pool.fishes, isEmpty);
@@ -154,7 +160,7 @@ void main() {
       pool.addObserver(Goldfish());
       expect(pool.fishes.length, 1);
 
-      BornFish(pool: pool).execute();
+      BornFish(pool: pool, logger: logger).execute();
       expect(pool.fishes.length, 2);
       expect(pool.fishes.first.runtimeType, pool.fishes.last.runtimeType);
     });

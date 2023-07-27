@@ -3,6 +3,7 @@ import 'package:aquarium/commands/factory/natures_event_factory.dart';
 import 'package:aquarium/commands/implementations/duty_commands.dart';
 import 'package:aquarium/commands/implementations/nature_events.dart';
 import 'package:aquarium/fish/fish_factory.dart';
+import 'package:aquarium/logger/print_logger.dart';
 import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/pool/pool_state.dart';
 import 'package:aquarium/pool/staff.dart';
@@ -17,9 +18,10 @@ void main() {
         state: const PoolState(temperature: normalTemperature, pollution: 0),
         capacity: 1,
       );
+      final logger = PrintLogger();
       final fishFactory = EvenFishFactory();
       final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
-      final commandsFactory = DutyCommandsFactory(staff: staff);
+      final commandsFactory = DutyCommandsFactory(staff: staff, logger: logger);
 
       final command1 = commandsFactory.giveCommand();
       expect(command1, isA<DutyCommand>());
@@ -31,9 +33,10 @@ void main() {
         state: const PoolState(temperature: normalTemperature, pollution: 0),
         capacity: 1,
       );
+      final logger = PrintLogger();
       final fishFactory = EvenFishFactory();
       final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
-      final commandsFactory = DutyCommandsFactory(staff: staff);
+      final commandsFactory = DutyCommandsFactory(staff: staff, logger: logger);
 
       final command1 = commandsFactory.giveCommand();
       final command2 = commandsFactory.giveCommand();
@@ -52,7 +55,8 @@ void main() {
         state: const PoolState(temperature: normalTemperature, pollution: 0),
         capacity: 1,
       );
-      final commandsFactory = NatureEventFactory(pool: pool);
+      final logger = PrintLogger();
+      final commandsFactory = NatureEventFactory(pool: pool, logger: logger);
 
       final command = commandsFactory.giveCommand();
       expect(command, isA<NatureEvent>());
@@ -64,7 +68,8 @@ void main() {
         state: const PoolState(temperature: normalTemperature, pollution: 0),
         capacity: 1,
       );
-      final commandsFactory = NatureEventFactory(pool: pool);
+      final logger = PrintLogger();
+      final commandsFactory = NatureEventFactory(pool: pool, logger: logger);
 
       /// В зависимости от различных параметров
       /// будут возвращаться разные типы комманд
