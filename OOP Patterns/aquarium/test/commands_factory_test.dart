@@ -7,6 +7,9 @@ import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/pool/pool_state.dart';
 import 'package:aquarium/pool/staff.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+import 'mock/random_mock.dart';
 
 void main() {
   /// Тесты для фабрики команд персонала
@@ -52,7 +55,9 @@ void main() {
         state: const PoolState(temperature: normalTemperature, pollution: 0),
         capacity: 1,
       );
-      final commandsFactory = NatureEventFactory(pool: pool);
+      final random = MockRandom();
+      when<int>(() => random.nextInt(any())).thenReturn(1);
+      final commandsFactory = NatureEventFactory(pool: pool, random: random);
 
       final command = commandsFactory.giveCommand();
       expect(command, isA<NatureEvent>());
@@ -64,7 +69,9 @@ void main() {
         state: const PoolState(temperature: normalTemperature, pollution: 0),
         capacity: 1,
       );
-      final commandsFactory = NatureEventFactory(pool: pool);
+      final random = MockRandom();
+      when<int>(() => random.nextInt(any())).thenReturn(1);
+      final commandsFactory = NatureEventFactory(pool: pool, random: random);
 
       /// В зависимости от различных параметров
       /// будут возвращаться разные типы комманд

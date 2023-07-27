@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:aquarium/commands/factory/commands_factory.dart';
 import 'package:aquarium/commands/implementations/nature_events.dart';
 import 'package:aquarium/pool/pool.dart';
@@ -7,7 +9,14 @@ class NatureEventFactory extends CommandsFactory<int?> {
   /// Бассейн, для которого будут создаваться события
   final Pool _pool;
 
-  NatureEventFactory({required Pool pool}) : _pool = pool;
+  /// Генератор случайных чисел
+  final Random _random;
+
+  NatureEventFactory({
+    required Pool pool,
+    required Random random,
+  })  : _pool = pool,
+        _random = random;
 
   /// Необходимо передать в качестве параметра целое число (случайное)
   ///
@@ -17,10 +26,10 @@ class NatureEventFactory extends CommandsFactory<int?> {
   @override
   NatureEvent giveCommand([int? param]) {
     if (param == null) {
-      return ChangeNatureTemperature(pool: _pool);
+      return ChangeNatureTemperature(pool: _pool, random: _random);
     }
     if (param <= 5) {
-      return ChangeNatureTemperature(pool: _pool);
+      return ChangeNatureTemperature(pool: _pool, random: _random);
     } else {
       return BornFish(pool: _pool);
     }

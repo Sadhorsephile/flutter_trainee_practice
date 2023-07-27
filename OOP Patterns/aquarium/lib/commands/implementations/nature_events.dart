@@ -16,12 +16,18 @@ class ChangeNatureTemperature implements NatureEvent {
   /// Бассейн, в котором будет выполняться события
   final Pool _pool;
 
-  ChangeNatureTemperature({required Pool pool}) : _pool = pool;
+  /// Генератор случайных чисел
+  final Random _random;
+
+  ChangeNatureTemperature({
+    required Pool pool,
+    required Random random,
+  })  : _pool = pool,
+        _random = random;
 
   @override
   void call() {
-    final random = Random();
-    final newTemperature = random.nextInt(maxTemperature).toDouble();
+    final newTemperature = _random.nextInt(maxTemperature).toDouble();
     _pool.changeTemperature(newTemperature);
   }
 }

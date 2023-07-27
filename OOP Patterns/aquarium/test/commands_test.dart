@@ -9,6 +9,9 @@ import 'package:aquarium/pool/pool_state.dart';
 import 'package:aquarium/pool/staff.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+import 'mock/random_mock.dart';
 
 void main() {
   /// Тесты комманд персонала
@@ -129,10 +132,15 @@ void main() {
         state: const PoolState(temperature: normalTemperature, pollution: 0),
         capacity: 1,
       );
+      final random = MockRandom();
+      when<int>(() => random.nextInt(any())).thenReturn(1);
 
       expect(pool.state.temperature, normalTemperature);
 
-      final changeTempCommand = ChangeNatureTemperature(pool: pool);
+      final changeTempCommand = ChangeNatureTemperature(
+        pool: pool,
+        random: random,
+      );
       changeTempCommand();
 
       expect(pool.state.temperature,
