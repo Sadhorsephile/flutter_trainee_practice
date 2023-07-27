@@ -6,7 +6,7 @@ extension RandomItem<T> on List<T> {
   /// Или null если список пустой
   T? getRandom() {
     final random = Random();
-    if (length == 0) {
+    if (isEmpty) {
       return null;
     }
     final index = random.nextInt(length);
