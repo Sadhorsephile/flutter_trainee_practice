@@ -45,7 +45,7 @@ void main() {
       when<int>(() => mockRandom.nextInt(NatureEventsEnum.values.length))
           .thenReturn(NatureEventsEnum.changeTemp.index);
 
-      async.elapse(RandomInvoker.eventDelay);
+      async.elapse(RandomInvoker.defaultEventDelay);
       expect(pool.state.temperature,
           predicate((temp) => temp != normalTemperature));
 
@@ -58,7 +58,7 @@ void main() {
 
       expect(pool.fishes.length, lessThan(poolCapacity));
 
-      async.elapse(RandomInvoker.eventDelay);
+      async.elapse(RandomInvoker.defaultEventDelay);
       expect(pool.fishes.length, poolCapacity);
     });
   });

@@ -15,7 +15,7 @@ class RandomInvoker implements Invoker {
   final Random _random;
 
   /// Задержка между событиями
-  static const eventDelay = Duration(seconds: 10);
+  static const defaultEventDelay = Duration(seconds: 10);
 
   RandomInvoker({
     required NatureEventFactory commandsFactory,
@@ -27,8 +27,8 @@ class RandomInvoker implements Invoker {
   Future<void> live() async {
     while (true) {
       // Рандомизируем задержку
-      final durationOrder = _random.nextInt(6);
-      await Future<void>.delayed(eventDelay * durationOrder);
+      final durationModifier = _random.nextInt(6);
+      await Future<void>.delayed(defaultEventDelay * durationModifier);
 
       final natureEvent = _natureEventFactory.giveCommand(
         NatureEventsEnum.values.getRandom(
