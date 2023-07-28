@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:aquarium/commands/implementations/duty_commands.dart';
 import 'package:aquarium/commands/implementations/nature_events.dart';
 import 'package:aquarium/fish/fish.dart';
@@ -10,6 +12,9 @@ import 'package:aquarium/pool/pool_state.dart';
 import 'package:aquarium/pool/staff.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+import 'mock/random_mock.dart';
 
 void main() {
   /// Тесты комманд персонала
@@ -18,18 +23,25 @@ void main() {
     test('CleanPoolDuty test', () {
       fakeAsync((async) {
         final pool = Pool(
-          state: const PoolState(temperature: normalTemperature, pollution: 0),
+          state: const PoolState(
+            temperature: normalTemperature,
+            pollution: 0,
+          ),
           capacity: 1,
         );
         final fishFactory = EvenFishFactory();
-        final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+        final staff = PoolStaff(
+          pool: pool,
+          fishFactory: fishFactory,
+        );
         final logger = PrintLogger();
 
         const timeWithoutCleaning = Duration(seconds: 10);
         async.elapse(timeWithoutCleaning);
         expect(pool.state.pollution, greaterThan(0));
 
-        CleanPoolDuty(staff: staff, logger: logger).execute();
+        final cleanPoolCommand = CleanPoolDuty(staff: staff, logger: logger);
+        cleanPoolCommand();
         expect(pool.state.pollution, 0);
       });
     });
@@ -37,17 +49,21 @@ void main() {
     /// Тест команды для установки нормальной температуры
     test('SetNormalTempDuty test', () {
       final pool = Pool(
-        state: const PoolState(temperature: normalTemperature, pollution: 0),
+        state: const PoolState(
+          temperature: normalTemperature,
+          pollution: 0,
+        ),
         capacity: 1,
       );
       final fishFactory = EvenFishFactory();
       final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
       final logger = PrintLogger();
 
-      pool.changeTemperature(normalTemperature * 2);
-      expect(pool.state.temperature, normalTemperature * 2);
+      pool.changeTemperature(maxTemperature);
+      expect(pool.state.temperature, maxTemperature);
 
-      SetNormalTempDuty(staff: staff, logger: logger).execute();
+      final setNormalTempCommand = SetNormalTempDuty(staff: staff, logger: logger);
+      setNormalTempCommand();
       expect(pool.state.temperature, normalTemperature);
     });
 
@@ -56,18 +72,25 @@ void main() {
       fakeAsync((async) {
         const poolCapacity = 2;
         final pool = Pool(
-          state: const PoolState(temperature: normalTemperature, pollution: 0),
+          state: const PoolState(
+            temperature: normalTemperature,
+            pollution: 0,
+          ),
           capacity: poolCapacity,
         );
         final fishFactory = EvenFishFactory();
-        final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+        final staff = PoolStaff(
+          pool: pool,
+          fishFactory: fishFactory,
+        );
         final logger = PrintLogger();
 
         // Первоначальное заполнение бассейна рыбами
 
         expect(pool.fishes, isEmpty);
 
-        ServeFishesDuty(staff: staff, logger: logger).execute();
+        final serveFishesCommand = ServeFishesDuty(staff: staff, logger: logger);
+        serveFishesCommand();
         expect(pool.fishes.length, poolCapacity);
 
         // Кормление рыб
@@ -76,20 +99,28 @@ void main() {
         const timeBeforeFeed = Duration(seconds: 1);
         async.elapse(timeBeforeFeed);
 
+        /// Уровень голода рыбы после прошествия времени [timeBeforeFeed]
+        /// для первой рыбы
+        final hungerAfterTimeBeforeFeedFish1 = pool.fishes[0].hungerIncreasing *
+            (timeBeforeFeed.inMilliseconds /
+                pool.fishes[0].hungerTime.inMilliseconds);
+
         expect(
           pool.fishes[0].hunger,
-          pool.fishes[0].hungerIncreasing *
-              (timeBeforeFeed.inMilliseconds /
-                  pool.fishes[0].hungerTime.inMilliseconds),
-        );
-        expect(
-          pool.fishes[1].hunger,
-          pool.fishes[1].hungerIncreasing *
-              (timeBeforeFeed.inMilliseconds /
-                  pool.fishes[1].hungerTime.inMilliseconds),
+          hungerAfterTimeBeforeFeedFish1,
         );
 
-        ServeFishesDuty(staff: staff, logger: logger).execute();
+        /// Уровень голода рыбы после прошествия времени [timeBeforeFeed]
+        /// для второй рыбы
+        final hungerAfterTimeBeforeFeedFish2 = pool.fishes[1].hungerIncreasing *
+            (timeBeforeFeed.inMilliseconds /
+                pool.fishes[1].hungerTime.inMilliseconds);
+        expect(
+          pool.fishes[1].hunger,
+          hungerAfterTimeBeforeFeedFish2,
+        );
+
+        serveFishesCommand();
 
         expect(pool.fishes[0].hunger, 0);
         expect(pool.fishes[1].hunger, 0);
@@ -102,7 +133,7 @@ void main() {
         expect(pool.fishes[0].state, FishState.dead);
         expect(pool.fishes[1].state, FishState.dead);
 
-        ServeFishesDuty(staff: staff, logger: logger).execute();
+        serveFishesCommand();
 
         expect(pool.fishes[0].state, FishState.healthy);
         expect(pool.fishes[1].state, FishState.healthy);
@@ -115,7 +146,7 @@ void main() {
 
         expect(pool.fishes.length, greaterThan(poolCapacity));
 
-        ServeFishesDuty(staff: staff, logger: logger).execute();
+        serveFishesCommand();
 
         expect(pool.fishes.length, poolCapacity);
       });
@@ -127,14 +158,22 @@ void main() {
     /// Тест для случайного изменения температуры
     test('ChangeNatureTemperature test', () {
       final pool = Pool(
-        state: const PoolState(temperature: normalTemperature, pollution: 0),
+        state: const PoolState(
+          temperature: normalTemperature,
+          pollution: 0,
+        ),
         capacity: 1,
       );
       final logger = PrintLogger();
+      final random = Random();
 
       expect(pool.state.temperature, normalTemperature);
 
-      ChangeNatureTemperature(pool: pool, logger: logger).execute();
+      final changeTempCommand = ChangeNatureTemperature(
+        pool: pool,
+        random: random,
+      );
+      changeTempCommand();
 
       expect(pool.state.temperature,
           predicate((temp) => temp != normalTemperature));
@@ -147,10 +186,12 @@ void main() {
         capacity: 1,
       );
       final logger = PrintLogger();
+      final random = MockRandom();
 
       // Пустой аквариум
 
-      BornFish(pool: pool, logger: logger).execute();
+      final bornFish = BornFish(pool: pool, random: random);
+      bornFish();
 
       // В пустом аквариуме рыб родиться не может
       expect(pool.fishes, isEmpty);
@@ -158,9 +199,11 @@ void main() {
       // Добавить рыбу в аквариум
 
       pool.addObserver(Goldfish());
+      // Для выбора рыбы
+      when<int>(() => random.nextInt(pool.fishes.length)).thenReturn(0);
       expect(pool.fishes.length, 1);
 
-      BornFish(pool: pool, logger: logger).execute();
+      bornFish();
       expect(pool.fishes.length, 2);
       expect(pool.fishes.first.runtimeType, pool.fishes.last.runtimeType);
     });

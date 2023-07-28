@@ -4,32 +4,25 @@ import 'package:aquarium/logger/base_logger.dart';
 import 'package:aquarium/pool/staff.dart';
 
 /// Фабрика, которая возвращает команды типа [DutyCommand]
-class DutyCommandsFactory implements CommandsFactory<void> {
+class DutyCommandsFactory implements CommandsFactory<DutyCommandsEnum> {
   /// Персонал, для которого будут создаваться команды
   final PoolStaff _poolStaff;
 
   final AppLogger _appLogger;
 
-  /// Счетчик команд для их последовательного вызова
-  int _count = 0;
-
-  DutyCommandsFactory({
-    required PoolStaff staff,
-    required AppLogger logger,
-  })  : _poolStaff = staff,
+  DutyCommandsFactory({required PoolStaff staff}) : _poolStaff = staff,
         _appLogger = logger;
 
+  /// Для получения команды необходимо передать [DutyCommandsEnum? command]
   @override
-  DutyCommand giveCommand([_]) {
-    _count++;
-    if (_count == 1) {
-      return ServeFishesDuty(staff: _poolStaff, logger: _appLogger);
-    }
-    if (_count == 2) {
-      return CleanPoolDuty(staff: _poolStaff, logger: _appLogger);
-    } else {
-      _count = 0;
-      return SetNormalTempDuty(staff: _poolStaff, logger: _appLogger);
+  DutyCommand giveCommand(DutyCommandsEnum command) {
+    switch (command) {
+      case DutyCommandsEnum.serveFishes:
+        return ServeFishesDuty(staff: _poolStaff, logger: _appLogger);
+      case DutyCommandsEnum.cleanPool:
+        return CleanPoolDuty(staff: _poolStaff, logger: _appLogger);
+      case DutyCommandsEnum.setNormalTemp:
+        return SetNormalTempDuty(staff: _poolStaff, logger: _appLogger);
     }
   }
 }

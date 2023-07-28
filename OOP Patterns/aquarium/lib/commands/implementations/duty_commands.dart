@@ -9,10 +9,25 @@ import 'package:aquarium/pool/staff.dart';
 /// - [CleanPoolDuty]
 /// - [ServeFishesDuty]
 /// - [SetNormalTempDuty]
-abstract final interface class DutyCommand extends Command {}
+sealed class DutyCommand extends Command {
+  /// Тип команды (для соответствия)
+  /// При создании новых экземпляров
+  /// нужно задать дополнительное поле в enum
+  abstract final DutyCommandsEnum type;
+}
+
+/// Перечисление комманд персонала
+enum DutyCommandsEnum {
+  cleanPool,
+  serveFishes,
+  setNormalTemp,
+}
 
 /// Команда для очистки бассейна
-final class CleanPoolDuty implements DutyCommand {
+class CleanPoolDuty implements DutyCommand {
+  @override
+  DutyCommandsEnum get type => DutyCommandsEnum.cleanPool;
+
   /// Персонал для исполнения команды
   final PoolStaff _poolStaff;
 
@@ -25,15 +40,17 @@ final class CleanPoolDuty implements DutyCommand {
        _appLogger = logger;
 
   @override
-  void execute() {
+  void call() {
     _poolStaff.cleanPool();
     _appLogger.log(LogEventData(dateTime: DateTime.now(), description: LogRes.staffCleanPool));
   }
 }
 
-
 /// Команда для обслуживания рыб
-final class ServeFishesDuty implements DutyCommand {
+class ServeFishesDuty implements DutyCommand {
+  @override
+  DutyCommandsEnum get type => DutyCommandsEnum.serveFishes;
+
   /// Персонал для исполнения команды
   final PoolStaff _poolStaff;
 
@@ -46,14 +63,17 @@ final class ServeFishesDuty implements DutyCommand {
        _appLogger = logger;
 
   @override
-  void execute() {
+  void call() {
     _poolStaff.serveFishes();
     _appLogger.log(LogEventData(dateTime: DateTime.now(), description: LogRes.staffServeFishes));
   }
 }
 
 /// Команда для установки нормальной температуры в бассейне
-final class SetNormalTempDuty implements DutyCommand {
+class SetNormalTempDuty implements DutyCommand {
+  @override
+  DutyCommandsEnum get type => DutyCommandsEnum.setNormalTemp;
+
   /// Персонал для исполнения команды
   final PoolStaff _poolStaff;
 
@@ -66,7 +86,7 @@ final class SetNormalTempDuty implements DutyCommand {
        _appLogger = logger;
 
   @override
-  void execute() {
+  void call() {
     _poolStaff.setNormalTemperature();
     _appLogger.log(LogEventData(dateTime: DateTime.now(), description: LogRes.staffSetNormalTemp));
   }

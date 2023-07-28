@@ -15,11 +15,17 @@ void main() {
       fakeAsync((async) {
         const poolCapacity = 8;
         final pool = Pool(
-          state: const PoolState(temperature: 20, pollution: 0),
+          state: const PoolState(
+            temperature: 20,
+            pollution: 0,
+          ),
           capacity: poolCapacity,
         );
         final fishFactory = EvenFishFactory();
-        final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+        final staff = PoolStaff(
+          pool: pool,
+          fishFactory: fishFactory,
+        );
 
         expect(pool.fishes.length, 0);
 
@@ -32,30 +38,42 @@ void main() {
     test('Fish feed', () {
       fakeAsync((async) {
         final pool = Pool(
-          state: const PoolState(temperature: 20, pollution: 0),
+          state: const PoolState(
+            temperature: 20,
+            pollution: 0,
+          ),
           capacity: 2,
         );
         final fishFactory = EvenFishFactory();
         pool
           ..addObserver(Goldfish())
           ..addObserver(CarpFish());
-        final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+        final staff = PoolStaff(
+          pool: pool,
+          fishFactory: fishFactory,
+        );
 
         /// Задержка, чтобы рыбы проголодались
         const timeBeforeFeed = Duration(seconds: 1);
         async.elapse(timeBeforeFeed);
 
+        /// Остаток здоровья после голодания первой рыбы
+        final healthRemainingFish1 = pool.fishes[0].hungerIncreasing *
+            (timeBeforeFeed.inMilliseconds /
+                pool.fishes[0].hungerTime.inMilliseconds);
+
+        /// Остаток здоровья после голодания второй рыбы
+        final healthRemainingFish2 = pool.fishes[1].hungerIncreasing *
+            (timeBeforeFeed.inMilliseconds /
+                pool.fishes[1].hungerTime.inMilliseconds);
+
         expect(
           pool.fishes[0].hunger,
-          pool.fishes[0].hungerIncreasing *
-              (timeBeforeFeed.inMilliseconds /
-                  pool.fishes[0].hungerTime.inMilliseconds),
+          healthRemainingFish1,
         );
         expect(
           pool.fishes[1].hunger,
-          pool.fishes[1].hungerIncreasing *
-              (timeBeforeFeed.inMilliseconds /
-                  pool.fishes[1].hungerTime.inMilliseconds),
+          healthRemainingFish2,
         );
 
         staff.serveFishes();
@@ -69,14 +87,20 @@ void main() {
     test('Удаление мертвых рыб', () {
       fakeAsync((async) {
         final pool = Pool(
-          state: const PoolState(temperature: 20, pollution: 0),
+          state: const PoolState(
+            temperature: 20,
+            pollution: 0,
+          ),
           capacity: 2,
         );
         final fishFactory = EvenFishFactory();
         pool
           ..addObserver(Goldfish())
           ..addObserver(CarpFish());
-        final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+        final staff = PoolStaff(
+          pool: pool,
+          fishFactory: fishFactory,
+        );
 
         /// Задержка в кормежке, из-за которой рыбы погибнут
         async.elapse(const Duration(seconds: 100));
@@ -95,11 +119,17 @@ void main() {
   group('Pool service', () {
     test('Temperature normalization', () {
       final pool = Pool(
-        state: const PoolState(temperature: 20, pollution: 0),
+        state: const PoolState(
+          temperature: 20,
+          pollution: 0,
+        ),
         capacity: 2,
       );
       final fishFactory = EvenFishFactory();
-      final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+      final staff = PoolStaff(
+        pool: pool,
+        fishFactory: fishFactory,
+      );
       const newTemperature = 34.0;
 
       pool.changeTemperature(newTemperature);
@@ -112,11 +142,17 @@ void main() {
     test('Clean pool', () {
       fakeAsync((async) {
         final pool = Pool(
-          state: const PoolState(temperature: 20, pollution: 0),
+          state: const PoolState(
+            temperature: 20,
+            pollution: 0,
+          ),
           capacity: 2,
         );
         final fishFactory = EvenFishFactory();
-        final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+        final staff = PoolStaff(
+          pool: pool,
+          fishFactory: fishFactory,
+        );
 
         const timeBeforeCleaning = Duration(seconds: 10);
         async.elapse(timeBeforeCleaning);

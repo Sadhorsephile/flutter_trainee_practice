@@ -1,8 +1,10 @@
 import 'package:aquarium/commands/factory/duty_commands_factory.dart';
 import 'package:aquarium/commands/factory/natures_event_factory.dart';
+import 'package:aquarium/commands/implementations/nature_events.dart';
 import 'package:aquarium/fish/fish_factory.dart';
 import 'package:aquarium/fish/subtypes/goldfish.dart';
-import 'package:aquarium/invokers/invoker.dart';
+import 'package:aquarium/invokers/random_invoker.dart';
+import 'package:aquarium/invokers/scheduled_invoker.dart';
 import 'package:aquarium/logger/print_logger.dart';
 import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/pool/pool_state.dart';
@@ -25,6 +27,14 @@ void main() {
       final logger = PrintLogger();
       final commandsFactory = NatureEventFactory(pool: pool, logger: logger);
       final mockRandom = MockRandom();
+      // Для задержки
+      when<int>(() => mockRandom.nextInt(6)).thenReturn(1);
+      // Для температуры
+      when<int>(() => mockRandom.nextInt(40)).thenReturn(30);
+      final commandsFactory = NatureEventFactory(
+        pool: pool,
+        random: mockRandom,
+      );
 
       /// Запуск цикла событий
       RandomInvoker(
@@ -34,17 +44,24 @@ void main() {
 
       // Проверка вызовы события изменения температуры
 
-      when<int>(() => mockRandom.nextInt(10)).thenReturn(1);
-      async.elapse(RandomInvoker.eventDelay);
+      // Для вызова события изменения температуры
+      when<int>(() => mockRandom.nextInt(NatureEventsEnum.values.length))
+          .thenReturn(NatureEventsEnum.changeTemp.index);
+
+      async.elapse(RandomInvoker.defaultEventDelay);
       expect(pool.state.temperature,
           predicate((temp) => temp != normalTemperature));
 
       // Проверка вызова события рождения рыбы
+      when<int>(() => mockRandom.nextInt(NatureEventsEnum.values.length))
+          .thenReturn(NatureEventsEnum.bornFish.index);
+
+      // Для выбора рыбы
+      when<int>(() => mockRandom.nextInt(pool.fishes.length)).thenReturn(0);
 
       expect(pool.fishes.length, lessThan(poolCapacity));
 
-      when<int>(() => mockRandom.nextInt(10)).thenReturn(8);
-      async.elapse(RandomInvoker.eventDelay);
+      async.elapse(RandomInvoker.defaultEventDelay);
       expect(pool.fishes.length, poolCapacity);
     });
   });
@@ -54,11 +71,17 @@ void main() {
     fakeAsync((async) {
       const capacity = 2;
       final pool = Pool(
-        state: const PoolState(temperature: normalTemperature, pollution: 0),
+        state: const PoolState(
+          temperature: normalTemperature,
+          pollution: 0,
+        ),
         capacity: capacity,
       );
       final fishFactory = EvenFishFactory();
-      final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+      final staff = PoolStaff(
+        pool: pool,
+        fishFactory: fishFactory,
+      );
       final logger = PrintLogger();
       final commandsFactory = DutyCommandsFactory(staff: staff, logger: logger);
 
@@ -66,11 +89,17 @@ void main() {
       expect(pool.fishes, isEmpty);
 
       /// Запуск цикла событий
-      ScheduledInvoker(
+      final invoker = ScheduledInvoker(
         commandsFactory: commandsFactory,
-      ).live();
+      )..live();
 
-      async.elapse(ScheduledInvoker.dutyDelay);
+      // Проверка активности таймеров
+
+      expect(invoker.cleanTimer.isActive, true);
+      expect(invoker.serveTimer.isActive, true);
+      expect(invoker.setNormalTempTimer.isActive, true);
+
+      async.elapse(ScheduledInvoker.serveDelay);
 
       // После выполнения первой обязанности бассейн наполнился рыбами
       expect(pool.fishes.length, capacity);
@@ -79,18 +108,26 @@ void main() {
       expect(pool.state.pollution, greaterThan(0));
 
       // После выполнения второй обязанности бассейн чист
-      async.elapse(ScheduledInvoker.dutyDelay);
+      async.elapse(ScheduledInvoker.cleanDelay - ScheduledInvoker.serveDelay);
       expect(pool.state.pollution, 0);
 
       // Повышаем температуру вручную
-      pool.changeTemperature(normalTemperature * 2);
+      pool.changeTemperature(maxTemperature);
 
-      expect(pool.state.temperature, normalTemperature * 2);
+      expect(pool.state.temperature, maxTemperature);
 
-      async.elapse(ScheduledInvoker.dutyDelay);
+      async.elapse(
+          ScheduledInvoker.setNormalTempDelay - ScheduledInvoker.cleanDelay);
 
       // Выполнение третьей обязанности по нормализации температуры
       expect(pool.state.temperature, normalTemperature);
+
+      // Проверка выключения инвокера
+
+      invoker.dispose();
+      expect(invoker.cleanTimer.isActive, false);
+      expect(invoker.serveTimer.isActive, false);
+      expect(invoker.setNormalTempTimer.isActive, false);
     });
   });
 }

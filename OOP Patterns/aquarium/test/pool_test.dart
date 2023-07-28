@@ -11,7 +11,10 @@ void main() {
     /// Добавить рыбу в бассейн
     test('Add fish to the pool', () {
       final pool = Pool(
-        state: const PoolState(temperature: 20, pollution: 0),
+        state: const PoolState(
+          temperature: 20,
+          pollution: 0,
+        ),
         capacity: 1,
       );
       final fish = Goldfish();
@@ -22,7 +25,10 @@ void main() {
     /// Убрать рыбу из бассейна
     test('Remove fish from the pool', () {
       final pool = Pool(
-        state: const PoolState(temperature: 20, pollution: 0),
+        state: const PoolState(
+          temperature: 20,
+          pollution: 0,
+        ),
         capacity: 1,
       );
       final fish = Goldfish();
@@ -38,7 +44,10 @@ void main() {
   test('Pool pollution', () async {
     fakeAsync((async) {
       final pool = Pool(
-        state: const PoolState(temperature: 20, pollution: 0),
+        state: const PoolState(
+          temperature: 20,
+          pollution: 0,
+        ),
         capacity: 1,
       );
 
@@ -55,7 +64,10 @@ void main() {
   test('Change temperature', () {
     const initialTemp = 20.0;
     final pool = Pool(
-      state: const PoolState(temperature: initialTemp, pollution: 0),
+      state: const PoolState(
+        temperature: initialTemp,
+        pollution: 0,
+      ),
       capacity: 1,
     );
     expect(pool.state.temperature, initialTemp);
@@ -71,7 +83,10 @@ void main() {
     test('Notify fishes about pollution', () {
       fakeAsync((async) {
         final pool = Pool(
-          state: const PoolState(temperature: 20, pollution: 0),
+          state: const PoolState(
+            temperature: 20,
+            pollution: 0,
+          ),
           capacity: 1,
         );
         final fish = Goldfish();
@@ -80,12 +95,16 @@ void main() {
         const timeWithoutCleaning = Duration(seconds: 1, milliseconds: 100);
         async.elapse(timeWithoutCleaning);
 
+        /// Остаток здоровья рыбы после загрязнения
+        final healthRemaining = fish.maxHealth -
+            Pool.pollutionIncreasing *
+                fish.sensitivity *
+                PetFishReactPoolStateStrategy.pollutionHarmParam;
+
         expect(
-            pool.fishes.first.health,
-            fish.maxHealth -
-                Pool.pollutionIncreasing *
-                    fish.sensitivity *
-                    PetFishReactPoolStateStrategy.pollutionHarmParam);
+          pool.fishes.first.health,
+          healthRemaining,
+        );
       });
     });
 
@@ -102,8 +121,11 @@ void main() {
 
       pool.changeTemperature(newTemperature);
 
-      expect(fish.health,
-          fish.maxHealth - (fish.minTemp - newTemperature) * fish.sensitivity);
+      /// Остаток здоровья рыбы после изменения температуры
+      final healthRemaining =
+          fish.maxHealth - (fish.minTemp - newTemperature) * fish.sensitivity;
+
+      expect(fish.health, healthRemaining);
     });
   });
 }
