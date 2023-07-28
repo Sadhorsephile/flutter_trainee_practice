@@ -85,9 +85,15 @@ void main() {
       expect(pool.fishes, isEmpty);
 
       /// Запуск цикла событий
-      ScheduledInvoker(
+      final invoker = ScheduledInvoker(
         commandsFactory: commandsFactory,
-      ).live();
+      )..live();
+
+      // Проверка активности таймеров
+
+      expect(invoker.cleanTimer.isActive, true);
+      expect(invoker.serveTimer.isActive, true);
+      expect(invoker.setNormalTempTimer.isActive, true);
 
       async.elapse(ScheduledInvoker.serveDelay);
 
@@ -111,6 +117,13 @@ void main() {
 
       // Выполнение третьей обязанности по нормализации температуры
       expect(pool.state.temperature, normalTemperature);
+
+      // Проверка выключения инвокера
+
+      invoker.dispose();
+      expect(invoker.cleanTimer.isActive, false);
+      expect(invoker.serveTimer.isActive, false);
+      expect(invoker.setNormalTempTimer.isActive, false);
     });
   });
 }
