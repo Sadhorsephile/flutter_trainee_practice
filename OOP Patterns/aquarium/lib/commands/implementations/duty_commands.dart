@@ -36,13 +36,14 @@ class CleanPoolDuty implements DutyCommand {
   CleanPoolDuty({
     required PoolStaff staff,
     required AppLogger logger,
-  }) : _poolStaff = staff,
-       _appLogger = logger;
+  })  : _poolStaff = staff,
+        _appLogger = logger;
 
   @override
   void call() {
     _poolStaff.cleanPool();
-    _appLogger.log(LogEventData(dateTime: DateTime.now(), description: LogRes.staffCleanPool));
+    _appLogger.log(LogEventData(
+        dateTime: DateTime.now(), description: LogRes.staffCleanPool));
   }
 }
 
@@ -59,13 +60,14 @@ class ServeFishesDuty implements DutyCommand {
   ServeFishesDuty({
     required PoolStaff staff,
     required AppLogger logger,
-  }) : _poolStaff = staff,
-       _appLogger = logger;
+  })  : _poolStaff = staff,
+        _appLogger = logger;
 
   @override
   void call() {
     _poolStaff.serveFishes();
-    _appLogger.log(LogEventData(dateTime: DateTime.now(), description: LogRes.staffServeFishes));
+    _appLogger.log(LogEventData(
+        dateTime: DateTime.now(), description: LogRes.staffServeFishes));
   }
 }
 
@@ -82,12 +84,13 @@ class SetNormalTempDuty implements DutyCommand {
   SetNormalTempDuty({
     required PoolStaff staff,
     required AppLogger logger,
-  }) : _poolStaff = staff,
-       _appLogger = logger;
+  })  : _poolStaff = staff,
+        _appLogger = logger;
 
   @override
   void call() {
     _poolStaff.setNormalTemperature();
-    _appLogger.log(LogEventData(dateTime: DateTime.now(), description: LogRes.staffSetNormalTemp));
+    _appLogger.log(LogEventData(
+        dateTime: DateTime.now(), description: LogRes.staffSetNormalTemp));
   }
 }

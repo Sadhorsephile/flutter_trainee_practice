@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:aquarium/commands/implementations/duty_commands.dart';
 import 'package:aquarium/commands/implementations/nature_events.dart';
@@ -20,6 +21,8 @@ void main() {
     );
     final fishFactory = EvenFishFactory();
     final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
+    final random = Random();
+
     expect(
         logStream.stream,
         emitsInOrder([
@@ -30,12 +33,20 @@ void main() {
           LogRes.fishBirth,
         ]));
 
-    CleanPoolDuty(staff: staff, logger: logger).execute();
-    ServeFishesDuty(staff: staff, logger: logger).execute();
-    SetNormalTempDuty(staff: staff, logger: logger).execute();
+    final cleanPoolCommand = CleanPoolDuty(staff: staff, logger: logger);
+    cleanPoolCommand();
+    final serveFishCommand = ServeFishesDuty(staff: staff, logger: logger);
+    serveFishCommand();
+    final setNormalCommand = SetNormalTempDuty(staff: staff, logger: logger);
+    setNormalCommand();
 
     //ChangeNatureTemperature(pool: pool, logger: logger).execute();
-    BornFish(pool: pool, logger: logger).execute();
+    final bornFish = BornFish(
+      pool: pool,
+      logger: logger,
+      random: random,
+    );
+    bornFish();
 
     logStream.close();
   });

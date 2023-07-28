@@ -78,15 +78,12 @@ void main() {
         capacity: 1,
       );
       final logger = PrintLogger();
-      final commandsFactory = NatureEventFactory(pool: pool, logger: logger);
       final random = MockRandom();
+      final commandsFactory =
+          NatureEventFactory(pool: pool, logger: logger, random: random);
       // Для получения природного события
       when<int>(() => random.nextInt(NatureEventsEnum.values.length))
           .thenReturn(NatureEventsEnum.changeTemp.index);
-      final commandsFactory = NatureEventFactory(
-        pool: pool,
-        random: random,
-      );
 
       final command = commandsFactory.giveCommand(NatureEventsEnum.changeTemp);
       expect(command, isA<NatureEvent>());
@@ -102,13 +99,13 @@ void main() {
         capacity: 1,
       );
       final logger = PrintLogger();
-      final commandsFactory = NatureEventFactory(pool: pool, logger: logger);
       final random = MockRandom();
       // Для температуры
       when<int>(() => random.nextInt(any())).thenReturn(1);
       final commandsFactory = NatureEventFactory(
         pool: pool,
         random: random,
+        logger: logger,
       );
 
       /// В зависимости от различных параметров

@@ -62,7 +62,8 @@ void main() {
       pool.changeTemperature(maxTemperature);
       expect(pool.state.temperature, maxTemperature);
 
-      final setNormalTempCommand = SetNormalTempDuty(staff: staff, logger: logger);
+      final setNormalTempCommand =
+          SetNormalTempDuty(staff: staff, logger: logger);
       setNormalTempCommand();
       expect(pool.state.temperature, normalTemperature);
     });
@@ -89,7 +90,8 @@ void main() {
 
         expect(pool.fishes, isEmpty);
 
-        final serveFishesCommand = ServeFishesDuty(staff: staff, logger: logger);
+        final serveFishesCommand =
+            ServeFishesDuty(staff: staff, logger: logger);
         serveFishesCommand();
         expect(pool.fishes.length, poolCapacity);
 
@@ -172,6 +174,7 @@ void main() {
       final changeTempCommand = ChangeNatureTemperature(
         pool: pool,
         random: random,
+        logger: logger,
       );
       changeTempCommand();
 
@@ -190,7 +193,11 @@ void main() {
 
       // Пустой аквариум
 
-      final bornFish = BornFish(pool: pool, random: random);
+      final bornFish = BornFish(
+        pool: pool,
+        random: random,
+        logger: logger,
+      );
       bornFish();
 
       // В пустом аквариуме рыб родиться не может

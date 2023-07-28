@@ -25,16 +25,16 @@ void main() {
         capacity: poolCapacity,
       )..addObserver(Goldfish());
       final logger = PrintLogger();
-      final commandsFactory = NatureEventFactory(pool: pool, logger: logger);
       final mockRandom = MockRandom();
+      final commandsFactory = NatureEventFactory(
+        pool: pool,
+        logger: logger,
+        random: mockRandom,
+      );
       // Для задержки
       when<int>(() => mockRandom.nextInt(6)).thenReturn(1);
       // Для температуры
       when<int>(() => mockRandom.nextInt(40)).thenReturn(30);
-      final commandsFactory = NatureEventFactory(
-        pool: pool,
-        random: mockRandom,
-      );
 
       /// Запуск цикла событий
       RandomInvoker(

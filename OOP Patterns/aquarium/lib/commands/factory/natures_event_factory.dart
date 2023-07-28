@@ -13,11 +13,15 @@ class NatureEventFactory extends CommandsFactory<NatureEventsEnum> {
   /// Генератор случайных чисел
   final Random _random;
 
+  final AppLogger _appLogger;
+
   NatureEventFactory({
     required Pool pool,
     required Random random,
+    required AppLogger logger,
   })  : _pool = pool,
-        _random = random;
+        _random = random,
+        _appLogger = logger;
 
   /// Необходимо передать в качестве параметра целое число (случайное)
   ///
@@ -31,9 +35,14 @@ class NatureEventFactory extends CommandsFactory<NatureEventsEnum> {
         return BornFish(
           pool: _pool,
           random: _random,
+          logger: _appLogger,
         );
       case NatureEventsEnum.changeTemp:
-        return ChangeNatureTemperature(pool: _pool, random: _random);
+        return ChangeNatureTemperature(
+          pool: _pool,
+          random: _random,
+          logger: _appLogger,
+        );
     }
   }
 }

@@ -38,21 +38,21 @@ class ChangeNatureTemperature implements NatureEvent {
   ChangeNatureTemperature({
     required Pool pool,
     required Random random,
-  })  : _pool = pool,
-        _random = random;
-  final AppLogger _appLogger;
-
-  ChangeNatureTemperature({
-    required Pool pool,
     required AppLogger logger,
-  }) : _pool = pool,
+  })  : _pool = pool,
+        _random = random,
         _appLogger = logger;
+  final AppLogger _appLogger;
 
   @override
   void call() {
     final newTemperature = _random.nextInt(maxTemperature.toInt()).toDouble();
     _pool.changeTemperature(newTemperature);
-    _appLogger.log(LogEventData(dateTime: DateTime.now(), description: LogRes.changingTemp(newTemperature) ),);
+    _appLogger.log(
+      LogEventData(
+          dateTime: DateTime.now(),
+          description: LogRes.changingTemp(newTemperature)),
+    );
   }
 }
 
@@ -66,18 +66,16 @@ class BornFish implements NatureEvent {
 
   final Random _random;
 
-  BornFish({
-    required Pool pool,
-    required Random random,
-  })  : _pool = pool,
-        _random = random;
-  final AppLogger _appLogger;
-
-  BornFish({
-    required Pool pool,
-    required AppLogger logger,
-  }) : _pool = pool,
+  BornFish(
+      {required Pool pool,
+      required Random random,
+      required AppLogger logger,
+      s})
+      : _pool = pool,
+        _random = random,
         _appLogger = logger;
+
+  final AppLogger _appLogger;
 
   @override
   void call() {
@@ -85,7 +83,8 @@ class BornFish implements NatureEvent {
     final newbornFish = fishToBirth?.birth();
     if (newbornFish != null) {
       _pool.addObserver(newbornFish);
-      _appLogger.log(LogEventData(dateTime: DateTime.now(), description: LogRes.fishBirth));
+      _appLogger.log(LogEventData(
+          dateTime: DateTime.now(), description: LogRes.fishBirth));
     }
   }
 }

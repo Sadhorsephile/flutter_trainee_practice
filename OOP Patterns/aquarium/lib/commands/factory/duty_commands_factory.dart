@@ -10,7 +10,10 @@ class DutyCommandsFactory implements CommandsFactory<DutyCommandsEnum> {
 
   final AppLogger _appLogger;
 
-  DutyCommandsFactory({required PoolStaff staff}) : _poolStaff = staff,
+  DutyCommandsFactory({
+    required PoolStaff staff,
+    required AppLogger logger,
+  })  : _poolStaff = staff,
         _appLogger = logger;
 
   /// Для получения команды необходимо передать [DutyCommandsEnum? command]

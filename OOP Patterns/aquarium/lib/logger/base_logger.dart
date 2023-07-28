@@ -1,7 +1,3 @@
-import 'dart:async';
-
-import 'package:flutter/foundation.dart';
-
 abstract class AppLogger {
   void log(LogEventData data);
 }
