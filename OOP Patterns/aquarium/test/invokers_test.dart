@@ -1,5 +1,6 @@
 import 'package:aquarium/commands/factory/duty_commands_factory.dart';
 import 'package:aquarium/commands/factory/natures_event_factory.dart';
+import 'package:aquarium/commands/implementations/nature_events.dart';
 import 'package:aquarium/fish/fish_factory.dart';
 import 'package:aquarium/fish/subtypes/goldfish.dart';
 import 'package:aquarium/invokers/random_invoker.dart';
@@ -23,7 +24,9 @@ void main() {
         capacity: poolCapacity,
       )..addObserver(Goldfish());
       final mockRandom = MockRandom();
+      // Для задержки
       when<int>(() => mockRandom.nextInt(6)).thenReturn(1);
+      // Для температуры
       when<int>(() => mockRandom.nextInt(40)).thenReturn(30);
       final commandsFactory = NatureEventFactory(
         pool: pool,
@@ -38,16 +41,23 @@ void main() {
 
       // Проверка вызовы события изменения температуры
 
-      when<int>(() => mockRandom.nextInt(10)).thenReturn(1);
+      // Для вызова события изменения температуры
+      when<int>(() => mockRandom.nextInt(NatureEventsEnum.values.length))
+          .thenReturn(NatureEventsEnum.changeTemp.index);
+
       async.elapse(RandomInvoker.eventDelay);
       expect(pool.state.temperature,
           predicate((temp) => temp != normalTemperature));
 
       // Проверка вызова события рождения рыбы
+      when<int>(() => mockRandom.nextInt(NatureEventsEnum.values.length))
+          .thenReturn(NatureEventsEnum.bornFish.index);
+
+      // Для выбора рыбы
+      when<int>(() => mockRandom.nextInt(pool.fishes.length)).thenReturn(0);
 
       expect(pool.fishes.length, lessThan(poolCapacity));
 
-      when<int>(() => mockRandom.nextInt(10)).thenReturn(8);
       async.elapse(RandomInvoker.eventDelay);
       expect(pool.fishes.length, poolCapacity);
     });

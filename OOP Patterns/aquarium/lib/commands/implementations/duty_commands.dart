@@ -7,7 +7,12 @@ import 'package:aquarium/pool/staff.dart';
 /// - [CleanPoolDuty]
 /// - [ServeFishesDuty]
 /// - [SetNormalTempDuty]
-sealed class DutyCommand extends Command {}
+sealed class DutyCommand extends Command {
+  /// Тип команды (для соответствия)
+  /// При создании новых экземпляров
+  /// нужно задать дополнительное поле в enum
+  abstract final DutyCommandsEnum type;
+}
 
 /// Перечисление комманд персонала
 enum DutyCommandsEnum {
@@ -18,6 +23,9 @@ enum DutyCommandsEnum {
 
 /// Команда для очистки бассейна
 class CleanPoolDuty implements DutyCommand {
+  @override
+  DutyCommandsEnum get type => DutyCommandsEnum.cleanPool;
+
   /// Персонал для исполнения команды
   final PoolStaff _poolStaff;
 
@@ -29,6 +37,9 @@ class CleanPoolDuty implements DutyCommand {
 
 /// Команда для обслуживания рыб
 class ServeFishesDuty implements DutyCommand {
+  @override
+  DutyCommandsEnum get type => DutyCommandsEnum.serveFishes;
+
   /// Персонал для исполнения команды
   final PoolStaff _poolStaff;
 
@@ -40,6 +51,9 @@ class ServeFishesDuty implements DutyCommand {
 
 /// Команда для установки нормальной температуры в бассейне
 class SetNormalTempDuty implements DutyCommand {
+  @override
+  DutyCommandsEnum get type => DutyCommandsEnum.setNormalTemp;
+
   /// Персонал для исполнения команды
   final PoolStaff _poolStaff;
 

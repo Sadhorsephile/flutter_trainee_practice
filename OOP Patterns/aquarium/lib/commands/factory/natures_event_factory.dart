@@ -5,7 +5,7 @@ import 'package:aquarium/commands/implementations/nature_events.dart';
 import 'package:aquarium/pool/pool.dart';
 
 /// Фабрика, которая возвращает команды типа [NatureEvent]
-class NatureEventFactory extends CommandsFactory<int?> {
+class NatureEventFactory extends CommandsFactory<NatureEventsEnum> {
   /// Бассейн, для которого будут создаваться события
   final Pool _pool;
 
@@ -24,14 +24,15 @@ class NatureEventFactory extends CommandsFactory<int?> {
   /// то возвращает событие [ChangeNatureTemperature]
   /// Иначе возвращает событие [BornFish]
   @override
-  NatureEvent giveCommand([int? param]) {
-    if (param == null) {
-      return ChangeNatureTemperature(pool: _pool, random: _random);
-    }
-    if (param <= 5) {
-      return ChangeNatureTemperature(pool: _pool, random: _random);
-    } else {
-      return BornFish(pool: _pool);
+  NatureEvent giveCommand(NatureEventsEnum natureEvent) {
+    switch (natureEvent) {
+      case NatureEventsEnum.bornFish:
+        return BornFish(
+          pool: _pool,
+          random: _random,
+        );
+      case NatureEventsEnum.changeTemp:
+        return ChangeNatureTemperature(pool: _pool, random: _random);
     }
   }
 }

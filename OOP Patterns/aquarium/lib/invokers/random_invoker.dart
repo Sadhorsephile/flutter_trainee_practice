@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import 'package:aquarium/commands/factory/natures_event_factory.dart';
+import 'package:aquarium/commands/implementations/nature_events.dart';
 import 'package:aquarium/invokers/invoker.dart';
+import 'package:aquarium/utils/list_utils.dart';
 
 /// Сущность, которая управляет жизнью системы
 /// запуская случайные события
@@ -28,8 +30,11 @@ class RandomInvoker implements Invoker {
       final durationOrder = _random.nextInt(6);
       await Future<void>.delayed(eventDelay * durationOrder);
 
-      final param = _random.nextInt(10);
-      final natureEvent = _natureEventFactory.giveCommand(param);
+      final natureEvent = _natureEventFactory.giveCommand(
+        NatureEventsEnum.values.getRandom(
+          random: _random,
+        )!,
+      );
       natureEvent();
     }
   }

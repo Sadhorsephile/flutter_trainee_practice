@@ -9,10 +9,24 @@ import 'package:aquarium/utils/list_utils.dart';
 /// Реализации
 /// - [ChangeNatureTemperature]
 /// - [BornFish]
-sealed class NatureEvent extends Command {}
+sealed class NatureEvent extends Command {
+  /// Тип команды (для соответствия)
+  /// При создании новых экземпляров
+  /// нужно задать дополнительное поле в enum
+  abstract final NatureEventsEnum type;
+}
+
+/// Перечисление событий природв персонала
+enum NatureEventsEnum {
+  changeTemp,
+  bornFish,
+}
 
 /// Событие для изменения температуры
 class ChangeNatureTemperature implements NatureEvent {
+  @override
+  NatureEventsEnum get type => NatureEventsEnum.changeTemp;
+
   /// Бассейн, в котором будет выполняться события
   final Pool _pool;
 
@@ -34,14 +48,23 @@ class ChangeNatureTemperature implements NatureEvent {
 
 /// Событие для рождения рыбы
 class BornFish implements NatureEvent {
+  @override
+  NatureEventsEnum get type => NatureEventsEnum.bornFish;
+
   /// Бассейн, в котором будет выполняться событие
   final Pool _pool;
 
-  BornFish({required Pool pool}) : _pool = pool;
+  final Random _random;
+
+  BornFish({
+    required Pool pool,
+    required Random random,
+  })  : _pool = pool,
+        _random = random;
 
   @override
   void call() {
-    final fishToBirth = _pool.fishes.getRandom();
+    final fishToBirth = _pool.fishes.getRandom(random: _random);
     final newbornFish = fishToBirth?.birth();
     if (newbornFish != null) {
       _pool.addObserver(newbornFish);

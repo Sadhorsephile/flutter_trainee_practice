@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:aquarium/commands/implementations/duty_commands.dart';
 import 'package:aquarium/commands/implementations/nature_events.dart';
 import 'package:aquarium/fish/fish.dart';
@@ -158,8 +160,7 @@ void main() {
         ),
         capacity: 1,
       );
-      final random = MockRandom();
-      when<int>(() => random.nextInt(any())).thenReturn(1);
+      final random = Random();
 
       expect(pool.state.temperature, normalTemperature);
 
@@ -179,10 +180,11 @@ void main() {
         state: const PoolState(temperature: normalTemperature, pollution: 0),
         capacity: 1,
       );
+      final random = MockRandom();
 
       // Пустой аквариум
 
-      final bornFish = BornFish(pool: pool);
+      final bornFish = BornFish(pool: pool, random: random);
       bornFish();
 
       // В пустом аквариуме рыб родиться не может
@@ -191,6 +193,8 @@ void main() {
       // Добавить рыбу в аквариум
 
       pool.addObserver(Goldfish());
+      // Для выбора рыбы
+      when<int>(() => random.nextInt(pool.fishes.length)).thenReturn(0);
       expect(pool.fishes.length, 1);
 
       bornFish();

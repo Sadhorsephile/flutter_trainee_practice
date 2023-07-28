@@ -11,7 +11,7 @@ class DutyCommandsFactory implements CommandsFactory<DutyCommandsEnum> {
 
   /// Для получения команды необходимо передать [DutyCommandsEnum? command]
   @override
-  DutyCommand giveCommand([DutyCommandsEnum? command]) {
+  DutyCommand giveCommand(DutyCommandsEnum command) {
     switch (command) {
       case DutyCommandsEnum.serveFishes:
         return ServeFishesDuty(staff: _poolStaff);
@@ -19,8 +19,6 @@ class DutyCommandsFactory implements CommandsFactory<DutyCommandsEnum> {
         return CleanPoolDuty(staff: _poolStaff);
       case DutyCommandsEnum.setNormalTemp:
         return SetNormalTempDuty(staff: _poolStaff);
-      default:
-        throw Exception('Неизвестная комманда');
     }
   }
 }

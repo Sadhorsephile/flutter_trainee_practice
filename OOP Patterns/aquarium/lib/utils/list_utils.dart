@@ -4,8 +4,7 @@ import 'dart:math';
 extension RandomItem<T> on List<T> {
   /// Получить случайный элемент списка
   /// Или null если список пустой
-  T? getRandom() {
-    final random = Random();
+  T? getRandom({required Random random}) {
     if (isEmpty) {
       return null;
     }

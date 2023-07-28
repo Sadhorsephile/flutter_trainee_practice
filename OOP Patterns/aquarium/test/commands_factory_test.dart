@@ -75,13 +75,15 @@ void main() {
         capacity: 1,
       );
       final random = MockRandom();
-      when<int>(() => random.nextInt(any())).thenReturn(1);
+      // Для получения природного события
+      when<int>(() => random.nextInt(NatureEventsEnum.values.length))
+          .thenReturn(NatureEventsEnum.changeTemp.index);
       final commandsFactory = NatureEventFactory(
         pool: pool,
         random: random,
       );
 
-      final command = commandsFactory.giveCommand();
+      final command = commandsFactory.giveCommand(NatureEventsEnum.changeTemp);
       expect(command, isA<NatureEvent>());
     });
 
@@ -95,6 +97,7 @@ void main() {
         capacity: 1,
       );
       final random = MockRandom();
+      // Для температуры
       when<int>(() => random.nextInt(any())).thenReturn(1);
       final commandsFactory = NatureEventFactory(
         pool: pool,
@@ -103,12 +106,10 @@ void main() {
 
       /// В зависимости от различных параметров
       /// будут возвращаться разные типы комманд
-      final command1 = commandsFactory.giveCommand(1);
-      final command2 = commandsFactory.giveCommand(6);
-      final command3 = commandsFactory.giveCommand();
+      final command1 = commandsFactory.giveCommand(NatureEventsEnum.changeTemp);
+      final command2 = commandsFactory.giveCommand(NatureEventsEnum.bornFish);
       expect(command1, isA<ChangeNatureTemperature>());
       expect(command2, isA<BornFish>());
-      expect(command3, isA<ChangeNatureTemperature>());
     });
   });
 }
