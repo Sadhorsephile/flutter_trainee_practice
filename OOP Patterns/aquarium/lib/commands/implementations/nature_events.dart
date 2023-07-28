@@ -66,12 +66,11 @@ class BornFish implements NatureEvent {
 
   final Random _random;
 
-  BornFish(
-      {required Pool pool,
-      required Random random,
-      required AppLogger logger,
-      s})
-      : _pool = pool,
+  BornFish({
+    required Pool pool,
+    required Random random,
+    required AppLogger logger,
+  })  : _pool = pool,
         _random = random,
         _appLogger = logger;
 
