@@ -79,7 +79,7 @@ void main() {
         commandsFactory: commandsFactory,
       ).live();
 
-      async.elapse(ScheduledInvoker.dutyDelay);
+      async.elapse(ScheduledInvoker.serveDelay);
 
       // После выполнения первой обязанности бассейн наполнился рыбами
       expect(pool.fishes.length, capacity);
@@ -88,7 +88,7 @@ void main() {
       expect(pool.state.pollution, greaterThan(0));
 
       // После выполнения второй обязанности бассейн чист
-      async.elapse(ScheduledInvoker.dutyDelay);
+      async.elapse(ScheduledInvoker.cleanDelay - ScheduledInvoker.serveDelay);
       expect(pool.state.pollution, 0);
 
       // Повышаем температуру вручную
@@ -96,7 +96,8 @@ void main() {
 
       expect(pool.state.temperature, maxTemperature);
 
-      async.elapse(ScheduledInvoker.dutyDelay);
+      async.elapse(
+          ScheduledInvoker.setNormalTempDelay - ScheduledInvoker.cleanDelay);
 
       // Выполнение третьей обязанности по нормализации температуры
       expect(pool.state.temperature, normalTemperature);

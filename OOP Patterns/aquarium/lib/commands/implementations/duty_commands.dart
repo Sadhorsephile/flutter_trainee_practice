@@ -9,6 +9,13 @@ import 'package:aquarium/pool/staff.dart';
 /// - [SetNormalTempDuty]
 sealed class DutyCommand extends Command {}
 
+/// Перечисление комманд персонала
+enum DutyCommandsEnum {
+  cleanPool,
+  serveFishes,
+  setNormalTemp,
+}
+
 /// Команда для очистки бассейна
 class CleanPoolDuty implements DutyCommand {
   /// Персонал для исполнения команды

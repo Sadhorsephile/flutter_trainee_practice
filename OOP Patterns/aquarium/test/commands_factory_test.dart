@@ -30,7 +30,8 @@ void main() {
       );
       final commandsFactory = DutyCommandsFactory(staff: staff);
 
-      final command1 = commandsFactory.giveCommand();
+      final command1 =
+          commandsFactory.giveCommand(DutyCommandsEnum.setNormalTemp);
       expect(command1, isA<DutyCommand>());
     });
 
@@ -47,9 +48,15 @@ void main() {
       );
       final commandsFactory = DutyCommandsFactory(staff: staff);
 
-      final command1 = commandsFactory.giveCommand();
-      final command2 = commandsFactory.giveCommand();
-      final command3 = commandsFactory.giveCommand();
+      final command1 = commandsFactory.giveCommand(
+        DutyCommandsEnum.serveFishes,
+      );
+      final command2 = commandsFactory.giveCommand(
+        DutyCommandsEnum.cleanPool,
+      );
+      final command3 = commandsFactory.giveCommand(
+        DutyCommandsEnum.setNormalTemp,
+      );
 
       expect(command1, isA<ServeFishesDuty>());
       expect(command2, isA<CleanPoolDuty>());

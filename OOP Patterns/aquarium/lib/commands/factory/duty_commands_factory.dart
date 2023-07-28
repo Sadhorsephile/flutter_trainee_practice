@@ -3,26 +3,24 @@ import 'package:aquarium/commands/implementations/duty_commands.dart';
 import 'package:aquarium/pool/staff.dart';
 
 /// Фабрика, которая возвращает команды типа [DutyCommand]
-class DutyCommandsFactory implements CommandsFactory<void> {
+class DutyCommandsFactory implements CommandsFactory<DutyCommandsEnum> {
   /// Персонал, для которого будут создаваться команды
   final PoolStaff _poolStaff;
 
-  /// Счетчик команд для их последовательного вызова
-  int _count = 0;
-
   DutyCommandsFactory({required PoolStaff staff}) : _poolStaff = staff;
 
+  /// Для получения команды необходимо передать [DutyCommandsEnum? command]
   @override
-  DutyCommand giveCommand([_]) {
-    _count++;
-    switch (_count) {
-      case 1:
+  DutyCommand giveCommand([DutyCommandsEnum? command]) {
+    switch (command) {
+      case DutyCommandsEnum.serveFishes:
         return ServeFishesDuty(staff: _poolStaff);
-      case 2:
+      case DutyCommandsEnum.cleanPool:
         return CleanPoolDuty(staff: _poolStaff);
-      default:
-        _count = 0;
+      case DutyCommandsEnum.setNormalTemp:
         return SetNormalTempDuty(staff: _poolStaff);
+      default:
+        throw Exception('Неизвестная комманда');
     }
   }
 }
