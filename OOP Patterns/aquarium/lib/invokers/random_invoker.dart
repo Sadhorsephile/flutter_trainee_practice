@@ -9,9 +9,9 @@ import 'package:aquarium/utils/list_utils.dart';
 /// запуская случайные события
 class RandomInvoker implements Invoker {
   /// Является для инвокер активным
-  bool? get isActive => _isActive;
+  bool get isActive => _isActive;
 
-  bool? _isActive;
+  bool _isActive;
 
   /// Фабрика, которая создает ивенты, которые инвокер будет запускать
   final NatureEventFactory _natureEventFactory;
@@ -26,7 +26,8 @@ class RandomInvoker implements Invoker {
     required NatureEventFactory commandsFactory,
     required Random random,
   })  : _natureEventFactory = commandsFactory,
-        _random = random;
+        _random = random,
+        _isActive = false;
 
   /// Выключить инвокер
   void dispose() {
@@ -36,16 +37,13 @@ class RandomInvoker implements Invoker {
   @override
   Future<void> live() async {
     _isActive = true;
-    while (_isActive!) {
+    while (_isActive) {
       // Рандомизируем задержку
       final durationModifier = _random.nextInt(6);
       await Future<void>.delayed(defaultEventDelay * durationModifier);
 
-      final natureEvent = _natureEventFactory.giveCommand(
-        NatureEventsEnum.values.getRandom(
-          random: _random,
-        )!,
-      );
+      final natureEvent = _natureEventFactory
+          .giveCommand(NatureEventsEnum.values.getRandomOnNonEmpty(_random));
       natureEvent();
     }
   }

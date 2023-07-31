@@ -24,14 +24,9 @@ class NatureEventFactory extends CommandsFactory<NatureEventsEnum> {
         _random = random,
         _appLogger = logger;
 
-  /// Необходимо передать в качестве параметра целое число (случайное)
-  ///
-  /// Если число меньше 5 или вообще не передано (null),
-  /// то возвращает событие [ChangeNatureTemperature]
-  /// Иначе возвращает событие [BornFish]
   @override
-  NatureEvent giveCommand(NatureEventsEnum natureEvent) {
-    switch (natureEvent) {
+  NatureEvent giveCommand(NatureEventsEnum command) {
+    switch (command) {
       case NatureEventsEnum.bornFish:
         return BornFish(
           pool: _pool,

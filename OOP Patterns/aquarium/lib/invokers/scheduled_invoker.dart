@@ -9,9 +9,9 @@ import 'package:flutter/foundation.dart';
 /// запуская события по расписанию
 class ScheduledInvoker implements Invoker {
   /// Является для инвокер активным
-  bool? get isActive => _isActive;
+  bool get isActive => _isActive;
 
-  bool? _isActive;
+  bool _isActive;
 
   final DutyCommandsFactory _dutyCommandsFactory;
 
@@ -25,7 +25,8 @@ class ScheduledInvoker implements Invoker {
   static const setNormalTempDelay = Duration(seconds: 30);
 
   ScheduledInvoker({required DutyCommandsFactory commandsFactory})
-      : _dutyCommandsFactory = commandsFactory;
+      : _dutyCommandsFactory = commandsFactory,
+        _isActive = false;
 
   @visibleForTesting
   late final Timer serveTimer;
@@ -36,16 +37,18 @@ class ScheduledInvoker implements Invoker {
 
   /// Выключить инвокер
   void dispose() {
-    if (_isActive ?? false) {
+    if (_isActive) {
       serveTimer.cancel();
       cleanTimer.cancel();
       setNormalTempTimer.cancel();
+      _isActive = false;
     }
   }
 
   @override
   void live() {
-    if (_isActive != true) {
+    /// Если инвокер еще не был запущен - создаем таймеры
+    if (!_isActive) {
       _isActive = true;
       serveTimer = Timer.periodic(serveDelay, (timer) {
         final dutyCommand =
