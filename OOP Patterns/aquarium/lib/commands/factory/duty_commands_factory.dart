@@ -8,6 +8,7 @@ class DutyCommandsFactory implements CommandsFactory<DutyCommandsEnum> {
   /// Персонал, для которого будут создаваться команды
   final PoolStaff _poolStaff;
 
+  /// Логгер для событий
   final AppLogger _appLogger;
 
   DutyCommandsFactory({

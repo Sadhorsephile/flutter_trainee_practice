@@ -18,7 +18,7 @@ sealed class NatureEvent extends Command {
   abstract final NatureEventsEnum type;
 }
 
-/// Перечисление событий природв персонала
+/// Перечисление событий природы
 enum NatureEventsEnum {
   changeTemp,
   bornFish,
@@ -35,6 +35,9 @@ class ChangeNatureTemperature implements NatureEvent {
   /// Генератор случайных чисел
   final Random _random;
 
+  /// Логгер для событий
+  final AppLogger _appLogger;
+
   ChangeNatureTemperature({
     required Pool pool,
     required Random random,
@@ -42,7 +45,6 @@ class ChangeNatureTemperature implements NatureEvent {
   })  : _pool = pool,
         _random = random,
         _appLogger = logger;
-  final AppLogger _appLogger;
 
   @override
   void call() {
@@ -50,8 +52,9 @@ class ChangeNatureTemperature implements NatureEvent {
     _pool.changeTemperature(newTemperature);
     _appLogger.log(
       LogEventData(
-          dateTime: DateTime.now(),
-          description: LogRes.changingTemp(newTemperature)),
+        dateTime: DateTime.now(),
+        description: LogRes.changingTemp(newTemperature),
+      ),
     );
   }
 }
@@ -66,6 +69,9 @@ class BornFish implements NatureEvent {
 
   final Random _random;
 
+  /// Логгер для событий
+  final AppLogger _appLogger;
+
   BornFish({
     required Pool pool,
     required Random random,
@@ -74,16 +80,18 @@ class BornFish implements NatureEvent {
         _random = random,
         _appLogger = logger;
 
-  final AppLogger _appLogger;
-
   @override
   void call() {
     final fishToBirth = _pool.fishes.getRandom(random: _random);
     final newbornFish = fishToBirth?.birth();
     if (newbornFish != null) {
       _pool.addObserver(newbornFish);
-      _appLogger.log(LogEventData(
-          dateTime: DateTime.now(), description: LogRes.fishBirth));
+      _appLogger.log(
+        LogEventData(
+          dateTime: DateTime.now(),
+          description: LogRes.fishBirth,
+        ),
+      );
     }
   }
 }

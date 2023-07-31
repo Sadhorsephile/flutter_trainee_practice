@@ -13,6 +13,7 @@ class NatureEventFactory extends CommandsFactory<NatureEventsEnum> {
   /// Генератор случайных чисел
   final Random _random;
 
+  /// Логгер для событий
   final AppLogger _appLogger;
 
   NatureEventFactory({

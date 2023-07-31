@@ -1,10 +1,14 @@
+/// Базовый класс для логгеров
+/// Для создани логгеров используется паттерн декоратор
 abstract class AppLogger {
-  void log(LogEventData data);
+  /// Вложенный логгер для событий
+  abstract final AppLogger? logger;
+
+  void log(LogEventData data) => logger?.log(data);
 }
 
+/// Сущность события для логирования
 class LogEventData {
-  // Object actor;
-  // String action;
   DateTime dateTime;
   String description;
 

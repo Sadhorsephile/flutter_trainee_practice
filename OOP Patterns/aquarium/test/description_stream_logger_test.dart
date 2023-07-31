@@ -1,36 +1,44 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:aquarium/commands/implementations/duty_commands.dart';
 import 'package:aquarium/commands/implementations/nature_events.dart';
 import 'package:aquarium/fish/fish_factory.dart';
 import 'package:aquarium/logger/description_stream_logger.dart';
+import 'package:aquarium/logger/print_logger.dart';
 import 'package:aquarium/logger/res/log_res.dart';
 import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/pool/pool_state.dart';
 import 'package:aquarium/pool/staff.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+import 'mock/random_mock.dart';
 
 void main() {
   test('Description Stream Logger test', () {
     final logStream = StreamController<String>();
-    final logger = DescriptionStreamLogger(logStream: logStream);
+    final logger =
+        PrintLogger(logger: DescriptionStreamLogger(logStream: logStream));
     final pool = Pool(
       state: const PoolState(temperature: normalTemperature, pollution: 0),
       capacity: 1,
     );
     final fishFactory = EvenFishFactory();
     final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
-    final random = Random();
+    final random = MockRandom();
+
+    const newTemp = 30;
+    when<int>(() => random.nextInt(maxTemperature.toInt())).thenReturn(newTemp);
 
     expect(
         logStream.stream,
         emitsInOrder([
-          LogRes.staffCleanPool,
-          LogRes.staffServeFishes,
-          LogRes.staffSetNormalTemp,
-          //LogRes.changingTemp(temp)
-          LogRes.fishBirth,
+          predicate<String>((item) => item.contains(LogRes.staffCleanPool)),
+          predicate<String>((item) => item.contains(LogRes.staffServeFishes)),
+          predicate<String>((item) => item.contains(LogRes.staffSetNormalTemp)),
+          predicate<String>(
+              (item) => item.contains(LogRes.changingTemp(newTemp.toDouble()))),
+          predicate<String>((item) => item.contains(LogRes.fishBirth)),
         ]));
 
     final cleanPoolCommand = CleanPoolDuty(staff: staff, logger: logger);
@@ -40,7 +48,14 @@ void main() {
     final setNormalCommand = SetNormalTempDuty(staff: staff, logger: logger);
     setNormalCommand();
 
-    //ChangeNatureTemperature(pool: pool, logger: logger).execute();
+    final changeTemp = ChangeNatureTemperature(
+      pool: pool,
+      logger: logger,
+      random: random,
+    );
+    changeTemp();
+
+    when<int>(() => random.nextInt(pool.fishes.length)).thenReturn(0);
     final bornFish = BornFish(
       pool: pool,
       logger: logger,

@@ -1,21 +1,28 @@
 import 'dart:async';
 
 import 'package:aquarium/logger/base_logger.dart';
+import 'package:intl/intl.dart';
 
 /// Логгер который заносит описание событий в стрим
 class DescriptionStreamLogger extends AppLogger {
-  final AppLogger? _logger;
+  /// Вложенный логгер для событий
+  @override
+  final AppLogger? logger;
 
+  /// Стрим для записи событий
   StreamController<String> logStream;
+
+  /// Формат для строки данных
+  static DateFormat formatter = DateFormat('dd.MM.YYYY hh:mm:ss');
 
   DescriptionStreamLogger({
     required this.logStream,
-    AppLogger? logger,
-  }) : _logger = logger;
+    this.logger,
+  });
 
   @override
   void log(LogEventData data) {
-    logStream.add(data.description);
-    _logger?.log(data);
+    logStream.add('${formatter.format(data.dateTime)}: ${data.description}');
+    super.log(data);
   }
 }
