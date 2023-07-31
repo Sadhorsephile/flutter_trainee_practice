@@ -8,7 +8,7 @@ class PrintLogger extends AppLogger {
   final AppLogger? logger;
 
   /// Формат для строки данных
-  static DateFormat formatter = DateFormat('dd.MM.YYYY hh:mm:ss');
+  static DateFormat formatter = DateFormat('dd.MM.yyyy hh:mm:ss');
 
   PrintLogger({
     this.logger,
@@ -17,7 +17,7 @@ class PrintLogger extends AppLogger {
   @override
   void log(LogEventData data) {
     if (kDebugMode) {
-      print('${formatter.format(data.dateTime)}: ${data.description}');
+      print('${formatter.format(data.dateTime)} : ${data.description}');
     }
     super.log(data);
   }

@@ -13,7 +13,7 @@ class DescriptionStreamLogger extends AppLogger {
   StreamController<String> logStream;
 
   /// Формат для строки данных
-  static DateFormat formatter = DateFormat('dd.MM.YYYY hh:mm:ss');
+  static DateFormat formatter = DateFormat('dd.MM.yyyy hh:mm:ss');
 
   DescriptionStreamLogger({
     required this.logStream,
@@ -22,7 +22,7 @@ class DescriptionStreamLogger extends AppLogger {
 
   @override
   void log(LogEventData data) {
-    logStream.add('${formatter.format(data.dateTime)}: ${data.description}');
+    logStream.add('${formatter.format(data.dateTime)} : ${data.description}');
     super.log(data);
   }
 }
