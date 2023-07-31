@@ -64,7 +64,7 @@ class BornFish implements NatureEvent {
 
   @override
   void call() {
-    final fishToBirth = _pool.fishes.getRandom(random: _random);
+    final fishToBirth = _pool.fishes.getRandomOrNull(_random);
     final newbornFish = fishToBirth?.birth();
     if (newbornFish != null) {
       _pool.addObserver(newbornFish);

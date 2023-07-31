@@ -11,7 +11,7 @@ void main() {
     test('no element', () {
       final list = [];
       final random = Random();
-      final randomItem = list.getRandom(random: random);
+      final randomItem = list.getRandomOrNull(random);
 
       expect(randomItem, null);
     });
@@ -21,7 +21,7 @@ void main() {
       const onlyOneItem = 'item1';
       final list = [onlyOneItem];
       final random = Random();
-      final randomItem = list.getRandom(random: random);
+      final randomItem = list.getRandomOrNull(random);
 
       expect(randomItem, onlyOneItem);
     });
@@ -32,7 +32,7 @@ void main() {
       const item2 = 'item2';
       final list = [item1, item2];
       final random = Random();
-      final randomItem = list.getRandom(random: random);
+      final randomItem = list.getRandomOrNull(random);
 
       expect(randomItem, predicate((item) => item == item1 || item == item2));
     });
@@ -41,7 +41,7 @@ void main() {
     test('test contains element', () {
       final list = List.generate(10, (index) => index);
       final random = Random();
-      final randomItem = list.getRandom(random: random);
+      final randomItem = list.getRandomOrNull(random);
 
       expect(list, contains(randomItem));
     });

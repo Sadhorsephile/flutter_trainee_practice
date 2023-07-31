@@ -41,11 +41,8 @@ class RandomInvoker implements Invoker {
       final durationModifier = _random.nextInt(6);
       await Future<void>.delayed(defaultEventDelay * durationModifier);
 
-      final natureEvent = _natureEventFactory.giveCommand(
-        NatureEventsEnum.values.getRandom(
-          random: _random,
-        )!,
-      );
+      final natureEvent = _natureEventFactory
+          .giveCommand(NatureEventsEnum.values.getRandomOnNonEmpty(_random));
       natureEvent();
     }
   }
