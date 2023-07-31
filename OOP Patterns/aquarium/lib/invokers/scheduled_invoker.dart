@@ -37,17 +37,19 @@ class ScheduledInvoker implements Invoker {
 
   /// Выключить инвокер
   void dispose() {
-    if (_isActive ?? false) {
+    if (_isActive) {
       serveTimer.cancel();
       cleanTimer.cancel();
       setNormalTempTimer.cancel();
+      _isActive = false;
     }
   }
 
   @override
   void live() {
-    _isActive = true;
-    if (_isActive) {
+    /// Если инвокер еще не был запущен - создаем таймеры
+    if (!_isActive) {
+      _isActive = true;
       serveTimer = Timer.periodic(serveDelay, (timer) {
         final dutyCommand =
             _dutyCommandsFactory.giveCommand(DutyCommandsEnum.serveFishes);
