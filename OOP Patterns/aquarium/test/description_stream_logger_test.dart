@@ -18,12 +18,12 @@ void main() {
   test('Description Stream Logger test', () {
     final logStream = StreamController<String>();
     final logger =
-        PrintLogger(logger: DescriptionStreamLogger(logStream: logStream));
+        ConsoleLogger(logger: DescriptionStreamLogger(logStream: logStream));
     final pool = Pool(
       state: const PoolState(temperature: normalTemperature, pollution: 0),
       capacity: 1,
     );
-    final fishFactory = EvenFishFactory();
+    final fishFactory = EvenFishFactory(logger: logger);
     final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
     final random = MockRandom();
 

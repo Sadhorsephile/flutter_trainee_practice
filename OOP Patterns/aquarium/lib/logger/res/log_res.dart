@@ -10,4 +10,8 @@ class LogRes {
   static String changingTemp(double temp) =>
       'Температура в бассейне стала $temp C';
   static const fishBirth = 'Родилась новая рыба';
+
+  static const oldFishDeath = 'Рыба умерла от старости';
+  static const hungryFishDeath = 'Рыба умерла от голода';
+  static const reactPoolFishDeath = 'Условия среды погубили рыбу';
 }

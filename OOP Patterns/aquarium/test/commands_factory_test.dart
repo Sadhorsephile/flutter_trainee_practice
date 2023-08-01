@@ -24,8 +24,8 @@ void main() {
         ),
         capacity: 1,
       );
-      final logger = PrintLogger();
-      final fishFactory = EvenFishFactory();
+      final logger = ConsoleLogger();
+      final fishFactory = EvenFishFactory(logger: logger);
       final staff = PoolStaff(
         pool: pool,
         fishFactory: fishFactory,
@@ -43,8 +43,8 @@ void main() {
         state: const PoolState(temperature: normalTemperature, pollution: 0),
         capacity: 1,
       );
-      final logger = PrintLogger();
-      final fishFactory = EvenFishFactory();
+      final logger = ConsoleLogger();
+      final fishFactory = EvenFishFactory(logger: logger);
       final staff = PoolStaff(
         pool: pool,
         fishFactory: fishFactory,
@@ -77,7 +77,7 @@ void main() {
         ),
         capacity: 1,
       );
-      final logger = PrintLogger();
+      final logger = ConsoleLogger();
       final random = MockRandom();
       final commandsFactory =
           NatureEventFactory(pool: pool, logger: logger, random: random);
@@ -98,7 +98,7 @@ void main() {
         ),
         capacity: 1,
       );
-      final logger = PrintLogger();
+      final logger = ConsoleLogger();
       final random = MockRandom();
       // Для температуры
       when<int>(() => random.nextInt(any())).thenReturn(1);

@@ -2,7 +2,7 @@ import 'package:aquarium/logger/base_logger.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
-class PrintLogger extends AppLogger {
+class ConsoleLogger extends AppLogger {
   /// Вложенный логгер для событий
   @override
   final AppLogger? logger;
@@ -10,7 +10,7 @@ class PrintLogger extends AppLogger {
   /// Формат для строки данных
   static DateFormat formatter = DateFormat('dd.MM.yyyy hh:mm:ss');
 
-  PrintLogger({
+  ConsoleLogger({
     this.logger,
   });
 

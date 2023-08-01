@@ -37,7 +37,9 @@ class CarpFish extends Fish {
   @override
   double get hungerHarm => 0.1;
 
+  CarpFish({required super.logger});
+
   /// Паттерн "Прототип"
   @override
-  Fish birth() => CarpFish();
+  Fish birth() => CarpFish(logger: logger);
 }

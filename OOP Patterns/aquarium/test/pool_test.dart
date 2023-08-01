@@ -1,5 +1,6 @@
 import 'package:aquarium/fish/strategy/react_pool_strategy.dart';
 import 'package:aquarium/fish/subtypes/goldfish.dart';
+import 'package:aquarium/logger/print_logger.dart';
 import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/pool/pool_state.dart';
 import 'package:fake_async/fake_async.dart';
@@ -10,6 +11,7 @@ void main() {
   group('Fish list', () {
     /// Добавить рыбу в бассейн
     test('Add fish to the pool', () {
+      final logger = ConsoleLogger();
       final pool = Pool(
         state: const PoolState(
           temperature: 20,
@@ -17,13 +19,14 @@ void main() {
         ),
         capacity: 1,
       );
-      final fish = Goldfish();
+      final fish = Goldfish(logger: logger);
       pool.addObserver(fish);
       expect(pool.fishes, contains(fish));
     });
 
     /// Убрать рыбу из бассейна
     test('Remove fish from the pool', () {
+      final logger = ConsoleLogger();
       final pool = Pool(
         state: const PoolState(
           temperature: 20,
@@ -31,9 +34,10 @@ void main() {
         ),
         capacity: 1,
       );
-      final fish = Goldfish();
+      final fish = Goldfish(logger: logger);
 
       pool.addObserver(fish);
+      expect(pool.fishes.length, 1);
       pool.removeObserver(fish);
 
       expect(pool.fishes, isEmpty);
@@ -82,6 +86,7 @@ void main() {
     /// Оповещение рыб о загрязнениях
     test('Notify fishes about pollution', () {
       fakeAsync((async) {
+        final logger = ConsoleLogger();
         final pool = Pool(
           state: const PoolState(
             temperature: 20,
@@ -89,7 +94,7 @@ void main() {
           ),
           capacity: 1,
         );
-        final fish = Goldfish();
+        final fish = Goldfish(logger: logger);
         pool.addObserver(fish);
 
         const timeWithoutCleaning = Duration(seconds: 1, milliseconds: 100);
@@ -110,11 +115,12 @@ void main() {
 
     /// Оповещение рыб об изменениях температуры
     test('Notify fishes about temperature changing', () {
+      final logger = ConsoleLogger();
       final pool = Pool(
         state: const PoolState(temperature: 20, pollution: 0),
         capacity: 1,
       );
-      final fish = Goldfish();
+      final fish = Goldfish(logger: logger);
       pool.addObserver(fish);
 
       const newTemperature = 16.0;

@@ -38,7 +38,9 @@ class Goldfish extends Fish {
   ReactPoolStateStrategy get reactPoolStateStrategy =>
       PetFishReactPoolStateStrategy();
 
+  Goldfish({required super.logger});
+
   /// Паттерн "Прототип"
   @override
-  Fish birth() => Goldfish();
+  Fish birth() => Goldfish(logger: logger);
 }

@@ -2,6 +2,7 @@ import 'package:aquarium/fish/fish.dart';
 import 'package:aquarium/fish/fish_factory.dart';
 import 'package:aquarium/fish/subtypes/carp_fish.dart';
 import 'package:aquarium/fish/subtypes/goldfish.dart';
+import 'package:aquarium/logger/print_logger.dart';
 import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/pool/pool_state.dart';
 import 'package:aquarium/pool/staff.dart';
@@ -13,6 +14,7 @@ void main() {
     /// Первоначальное добавление рыб
     test('Adding first fishes', () {
       fakeAsync((async) {
+        final logger = ConsoleLogger();
         const poolCapacity = 8;
         final pool = Pool(
           state: const PoolState(
@@ -21,7 +23,7 @@ void main() {
           ),
           capacity: poolCapacity,
         );
-        final fishFactory = EvenFishFactory();
+        final fishFactory = EvenFishFactory(logger: logger);
         final staff = PoolStaff(
           pool: pool,
           fishFactory: fishFactory,
@@ -37,6 +39,7 @@ void main() {
     /// Кормление рыб
     test('Fish feed', () {
       fakeAsync((async) {
+        final logger = ConsoleLogger();
         final pool = Pool(
           state: const PoolState(
             temperature: 20,
@@ -44,10 +47,10 @@ void main() {
           ),
           capacity: 2,
         );
-        final fishFactory = EvenFishFactory();
+        final fishFactory = EvenFishFactory(logger: logger);
         pool
-          ..addObserver(Goldfish())
-          ..addObserver(CarpFish());
+          ..addObserver(Goldfish(logger: logger))
+          ..addObserver(CarpFish(logger: logger));
         final staff = PoolStaff(
           pool: pool,
           fishFactory: fishFactory,
@@ -86,6 +89,7 @@ void main() {
     /// Удаление мертвых рыб и последующее подселение новых
     test('Удаление мертвых рыб', () {
       fakeAsync((async) {
+        final logger = ConsoleLogger();
         final pool = Pool(
           state: const PoolState(
             temperature: 20,
@@ -93,10 +97,10 @@ void main() {
           ),
           capacity: 2,
         );
-        final fishFactory = EvenFishFactory();
+        final fishFactory = EvenFishFactory(logger: logger);
         pool
-          ..addObserver(Goldfish())
-          ..addObserver(CarpFish());
+          ..addObserver(Goldfish(logger: logger))
+          ..addObserver(CarpFish(logger: logger));
         final staff = PoolStaff(
           pool: pool,
           fishFactory: fishFactory,
@@ -118,6 +122,7 @@ void main() {
 
   group('Pool service', () {
     test('Temperature normalization', () {
+      final logger = ConsoleLogger();
       final pool = Pool(
         state: const PoolState(
           temperature: 20,
@@ -125,7 +130,7 @@ void main() {
         ),
         capacity: 2,
       );
-      final fishFactory = EvenFishFactory();
+      final fishFactory = EvenFishFactory(logger: logger);
       final staff = PoolStaff(
         pool: pool,
         fishFactory: fishFactory,
@@ -141,6 +146,7 @@ void main() {
 
     test('Clean pool', () {
       fakeAsync((async) {
+        final logger = ConsoleLogger();
         final pool = Pool(
           state: const PoolState(
             temperature: 20,
@@ -148,7 +154,7 @@ void main() {
           ),
           capacity: 2,
         );
-        final fishFactory = EvenFishFactory();
+        final fishFactory = EvenFishFactory(logger: logger);
         final staff = PoolStaff(
           pool: pool,
           fishFactory: fishFactory,

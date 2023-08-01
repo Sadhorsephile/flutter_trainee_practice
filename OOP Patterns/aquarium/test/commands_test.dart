@@ -29,12 +29,12 @@ void main() {
           ),
           capacity: 1,
         );
-        final fishFactory = EvenFishFactory();
+        final logger = ConsoleLogger();
+        final fishFactory = EvenFishFactory(logger: logger);
         final staff = PoolStaff(
           pool: pool,
           fishFactory: fishFactory,
         );
-        final logger = PrintLogger();
 
         const timeWithoutCleaning = Duration(seconds: 10);
         async.elapse(timeWithoutCleaning);
@@ -55,9 +55,9 @@ void main() {
         ),
         capacity: 1,
       );
-      final fishFactory = EvenFishFactory();
+      final logger = ConsoleLogger();
+      final fishFactory = EvenFishFactory(logger: logger);
       final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
-      final logger = PrintLogger();
 
       pool.changeTemperature(maxTemperature);
       expect(pool.state.temperature, maxTemperature);
@@ -79,12 +79,12 @@ void main() {
           ),
           capacity: poolCapacity,
         );
-        final fishFactory = EvenFishFactory();
+        final logger = ConsoleLogger();
+        final fishFactory = EvenFishFactory(logger: logger);
         final staff = PoolStaff(
           pool: pool,
           fishFactory: fishFactory,
         );
-        final logger = PrintLogger();
 
         // Первоначальное заполнение бассейна рыбами
 
@@ -143,8 +143,8 @@ void main() {
         // Переселение лишних рыб
 
         pool
-          ..addObserver(Goldfish())
-          ..addObserver(CarpFish());
+          ..addObserver(Goldfish(logger: logger))
+          ..addObserver(CarpFish(logger: logger));
 
         expect(pool.fishes.length, greaterThan(poolCapacity));
 
@@ -166,7 +166,7 @@ void main() {
         ),
         capacity: 1,
       );
-      final logger = PrintLogger();
+      final logger = ConsoleLogger();
       final random = Random();
 
       expect(pool.state.temperature, normalTemperature);
@@ -188,7 +188,7 @@ void main() {
         state: const PoolState(temperature: normalTemperature, pollution: 0),
         capacity: 1,
       );
-      final logger = PrintLogger();
+      final logger = ConsoleLogger();
       final random = MockRandom();
 
       // Пустой аквариум
@@ -205,7 +205,7 @@ void main() {
 
       // Добавить рыбу в аквариум
 
-      pool.addObserver(Goldfish());
+      pool.addObserver(Goldfish(logger: logger));
       // Для выбора рыбы
       when<int>(() => random.nextInt(pool.fishes.length)).thenReturn(0);
       expect(pool.fishes.length, 1);
