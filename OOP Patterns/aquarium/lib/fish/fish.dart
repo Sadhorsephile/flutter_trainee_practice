@@ -171,15 +171,12 @@ abstract class Fish extends AquariumObserver {
   Fish birth();
 
   @override
-  String toString() {
-    final description = '''
+  String toString() => '''
    Fish #$hashCode
     Subtype: $runtimeType
     Health: $health
     Hunger: $hunger 
     ''';
-    return description;
-  }
 }
 
 /// Состояние рыбы

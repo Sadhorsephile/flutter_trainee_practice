@@ -17,8 +17,11 @@ class ConsoleLogger extends AppLogger {
   @override
   void log(LogEventData data) {
     if (kDebugMode) {
-      print(
-          '${formatter.format(data.dateTime)} : ${data.description}\n ${data.object}');
+      print('${formatter.format(data.dateTime)} : ${data.description}');
+      // Выводим отдельной строкой информацию об объекте если она передана
+      if (data.object != null) {
+        print(data.object);
+      }
     }
     super.log(data);
   }

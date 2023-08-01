@@ -47,8 +47,17 @@ class CleanPoolDuty implements DutyCommand {
       LogEventData(
         dateTime: DateTime.now(),
         description: LogRes.staffCleanPool,
+        object: this,
       ),
     );
+  }
+
+  @override
+  String toString() {
+    return '''
+    Command: $runtimeType # $hashCode
+    Receiver: ${_poolStaff.runtimeType} # ${_poolStaff.hashCode}
+    ''';
   }
 }
 
@@ -76,8 +85,17 @@ class ServeFishesDuty implements DutyCommand {
       LogEventData(
         dateTime: DateTime.now(),
         description: LogRes.staffServeFishes,
+        object: this,
       ),
     );
+  }
+
+  @override
+  String toString() {
+    return '''
+    Command: $runtimeType # $hashCode
+    Receiver: ${_poolStaff.runtimeType} # ${_poolStaff.hashCode}
+    ''';
   }
 }
 
@@ -105,7 +123,16 @@ class SetNormalTempDuty implements DutyCommand {
       LogEventData(
         dateTime: DateTime.now(),
         description: LogRes.staffSetNormalTemp,
+        object: this,
       ),
     );
+  }
+
+  @override
+  String toString() {
+    return '''
+    Command: $runtimeType # $hashCode
+    Receiver: ${_poolStaff.runtimeType} # ${_poolStaff.hashCode}
+    ''';
   }
 }

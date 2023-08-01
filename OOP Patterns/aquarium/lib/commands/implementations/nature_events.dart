@@ -54,8 +54,17 @@ class ChangeNatureTemperature implements NatureEvent {
       LogEventData(
         dateTime: DateTime.now(),
         description: LogRes.changingTemp(newTemperature),
+        object: this,
       ),
     );
+  }
+
+  @override
+  String toString() {
+    return '''
+    Command: $runtimeType # $hashCode
+    Receiver: ${_pool.runtimeType} # ${_pool.hashCode}
+    ''';
   }
 }
 
@@ -90,8 +99,17 @@ class BornFish implements NatureEvent {
         LogEventData(
           dateTime: DateTime.now(),
           description: LogRes.fishBirth,
+          object: this,
         ),
       );
     }
+  }
+
+  @override
+  String toString() {
+    return '''
+    Command: $runtimeType # $hashCode
+    Receiver: ${_pool.runtimeType} # ${_pool.hashCode}
+    ''';
   }
 }
