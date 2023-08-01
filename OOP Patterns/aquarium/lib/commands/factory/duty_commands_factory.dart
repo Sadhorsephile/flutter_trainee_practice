@@ -17,7 +17,6 @@ class DutyCommandsFactory implements CommandsFactory<DutyCommandsEnum> {
   })  : _poolStaff = staff,
         _appLogger = logger;
 
-  /// Для получения команды необходимо передать [DutyCommandsEnum? command]
   @override
   DutyCommand giveCommand(DutyCommandsEnum command) {
     switch (command) {
