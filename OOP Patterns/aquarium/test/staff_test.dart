@@ -2,7 +2,7 @@ import 'package:aquarium/fish/fish.dart';
 import 'package:aquarium/fish/fish_factory.dart';
 import 'package:aquarium/fish/subtypes/carp_fish.dart';
 import 'package:aquarium/fish/subtypes/goldfish.dart';
-import 'package:aquarium/logger/print_logger.dart';
+import 'package:aquarium/logger/console_logger.dart';
 import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/pool/pool_state.dart';
 import 'package:aquarium/pool/staff.dart';

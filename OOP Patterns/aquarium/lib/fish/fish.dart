@@ -98,6 +98,7 @@ abstract class Fish extends AquariumObserver {
           LogEventData(
             dateTime: DateTime.now(),
             description: LogRes.oldFishDeath,
+            object: this,
           ),
         );
       },
@@ -125,6 +126,7 @@ abstract class Fish extends AquariumObserver {
             LogEventData(
               dateTime: DateTime.now(),
               description: LogRes.hungryFishDeath,
+              object: this,
             ),
           );
         }
@@ -157,6 +159,7 @@ abstract class Fish extends AquariumObserver {
         LogEventData(
           dateTime: DateTime.now(),
           description: LogRes.reactPoolFishDeath,
+          object: this,
         ),
       );
     }
@@ -166,6 +169,17 @@ abstract class Fish extends AquariumObserver {
   /// Родиться может только рыба того же типа (наследник Fish)
   /// Часть паттерна "Прототип"
   Fish birth();
+
+  @override
+  String toString() {
+    final description = '''
+   Fish #$hashCode
+    Subtype: $runtimeType
+    Health: $health
+    Hunger: $hunger 
+    ''';
+    return description;
+  }
 }
 
 /// Состояние рыбы

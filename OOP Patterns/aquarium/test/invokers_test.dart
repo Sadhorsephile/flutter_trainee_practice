@@ -5,7 +5,7 @@ import 'package:aquarium/fish/fish_factory.dart';
 import 'package:aquarium/fish/subtypes/goldfish.dart';
 import 'package:aquarium/invokers/random_invoker.dart';
 import 'package:aquarium/invokers/scheduled_invoker.dart';
-import 'package:aquarium/logger/print_logger.dart';
+import 'package:aquarium/logger/console_logger.dart';
 import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/pool/pool_state.dart';
 import 'package:aquarium/pool/staff.dart';

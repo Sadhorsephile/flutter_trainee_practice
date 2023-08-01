@@ -3,7 +3,7 @@ import 'package:aquarium/commands/factory/natures_event_factory.dart';
 import 'package:aquarium/commands/implementations/duty_commands.dart';
 import 'package:aquarium/commands/implementations/nature_events.dart';
 import 'package:aquarium/fish/fish_factory.dart';
-import 'package:aquarium/logger/print_logger.dart';
+import 'package:aquarium/logger/console_logger.dart';
 import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/pool/pool_state.dart';
 import 'package:aquarium/pool/staff.dart';

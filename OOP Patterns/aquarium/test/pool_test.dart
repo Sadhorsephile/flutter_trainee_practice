@@ -1,6 +1,6 @@
 import 'package:aquarium/fish/strategy/react_pool_strategy.dart';
 import 'package:aquarium/fish/subtypes/goldfish.dart';
-import 'package:aquarium/logger/print_logger.dart';
+import 'package:aquarium/logger/console_logger.dart';
 import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/pool/pool_state.dart';
 import 'package:fake_async/fake_async.dart';
