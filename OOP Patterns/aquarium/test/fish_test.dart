@@ -20,8 +20,8 @@ void main() {
     test('Sick state', () {
       final fish = Goldfish();
 
-      // Специально задаем здоровье для проверки
-      fish.health = fish.maxHealth / 2;
+      // Специально задаем здоровье меньше уровня для проверки
+      fish.health = fish.maxHealth * healthyLimit - 1;
       expect(fish.state, FishState.sick);
     });
 
@@ -43,13 +43,20 @@ void main() {
 
         async.elapse(timeBeforeFeed);
 
+        /// Уровень голода по прошествии времени [timeBeforeFeed]
+        final hungerIncreaseDuringTime =
+            (timeBeforeFeed.inMilliseconds ~/ fish.hungerTime.inMilliseconds) *
+                fish.hungerIncreasing;
+
         expect(
           fish.hunger,
-          (timeBeforeFeed.inMilliseconds ~/ fish.hungerTime.inMilliseconds) *
-              fish.hungerIncreasing,
+          hungerIncreaseDuringTime,
         );
 
-        expect(fish.health, fish.maxHealth - (fish.hunger * fish.hungerHarm));
+        /// Остаток здоровья после голодания
+        final healthRemaining =
+            fish.maxHealth - (fish.hunger * fish.hungerHarm);
+        expect(fish.health, healthRemaining);
 
         fish.feed();
 
@@ -95,7 +102,9 @@ void main() {
     test('Normal temperature reaction', () {
       final fish = Goldfish();
       fish.react(PoolState(
-          temperature: (fish.minTemp + fish.maxTemp) / 2, pollution: 0));
+        temperature: (fish.minTemp + fish.maxTemp) / 2,
+        pollution: 0,
+      ));
 
       expect(fish.health, fish.maxHealth);
     });
@@ -104,30 +113,45 @@ void main() {
     test('High temperature reaction', () {
       final fish = Goldfish();
 
-      final newPoolState =
-          PoolState(temperature: fish.maxTemp + 2, pollution: 0);
+      final newTemperature = fish.maxTemp + 2;
+
+      final newPoolState = PoolState(
+        temperature: newTemperature,
+        pollution: 0,
+      );
 
       fish.react(newPoolState);
 
+      /// Остаток здоровья после повышения температуры до [newTemperature]
+      final healthRemaining = fish.maxHealth -
+          (newPoolState.temperature - fish.maxTemp) * fish.sensitivity;
+
       expect(
-          fish.health,
-          fish.maxHealth -
-              (newPoolState.temperature - fish.maxTemp) * fish.sensitivity);
+        fish.health,
+        healthRemaining,
+      );
     });
 
     /// Реакция на низкую температуру
     test('Low temperature reaction', () {
       final fish = Goldfish();
 
-      final newPoolState =
-          PoolState(temperature: fish.minTemp - 2, pollution: 0);
+      final newTemperature = fish.minTemp - 2;
+      final newPoolState = PoolState(
+        temperature: newTemperature,
+        pollution: 0,
+      );
 
       fish.react(newPoolState);
 
+      /// Остаток здоровья после уменьшения температуры до [newTemperature]
+      final healthRemaining = fish.maxHealth -
+          (fish.minTemp - newPoolState.temperature) * fish.sensitivity;
+
       expect(
-          fish.health,
-          fish.maxHealth -
-              (fish.minTemp - newPoolState.temperature) * fish.sensitivity);
+        fish.health,
+        healthRemaining,
+      );
     });
 
     /// Смерть из-за несоблюдения температурных условий
@@ -150,12 +174,15 @@ void main() {
 
       fish.react(poolState);
 
+      /// Остаток здоровья после загрязнения
+      final healthRemaining = fish.maxHealth -
+          poolState.pollution *
+              PetFishReactPoolStateStrategy.pollutionHarmParam *
+              fish.sensitivity;
+
       expect(
         fish.health,
-        fish.maxHealth -
-            poolState.pollution *
-                PetFishReactPoolStateStrategy.pollutionHarmParam *
-                fish.sensitivity,
+        healthRemaining,
       );
     });
 

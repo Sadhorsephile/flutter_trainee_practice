@@ -11,13 +11,13 @@ abstract class FishFactory {
 /// Фабрика, которая возвращает разные экземпляры класса рыб равномерно
 class EvenFishFactory implements FishFactory {
   /// Счетчик созданных рыб
-  int count = 0;
+  int _count = 0;
 
   /// Поочередно возвращает [CarpFish] и [Goldfish]
   @override
   Fish createFish() {
-    count++;
-    if (count.isEven) {
+    _count++;
+    if (_count.isEven) {
       return CarpFish();
     } else {
       return Goldfish();
