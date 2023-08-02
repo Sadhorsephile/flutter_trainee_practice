@@ -16,8 +16,9 @@ class WeatherModel extends Bloc<WeatherEvent, WeatherState> {
   }
 
   /// Обработать намерение о получении данных о погоде
-  void _onGetWeather(GetWeatherEvent event, Emitter<WeatherState> emit) {
+  void _onGetWeather(GetWeatherEvent event, Emitter<WeatherState> emit) async {
     emit(LoadingState());
+    await Future<void>.delayed(Duration(seconds: 1));
     var currentCity = event.cityId;
     if (isError) {
       emit(ErrorState(error: 'Произошла ошибка: isError', cityId: currentCity));

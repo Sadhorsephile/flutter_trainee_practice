@@ -34,19 +34,22 @@ class _WeatherViewState extends State<WeatherView> {
               builder: (context, state) {
                 switch (state) {
                   case LoadingState():
-                    return CircularProgressIndicator();
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 100),
+                      child: Center(child: CircularProgressIndicator()),
+                    );
                   case ErrorState():
                     return Column(
                       children: [
                         CityGroupWidget(
                           state: state,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 50,
                         ),
                         Text(
                           state.error,
-                          style: TextStyle(color: Colors.red),
+                          style: const TextStyle(color: Colors.red),
                         ),
                       ],
                     );
