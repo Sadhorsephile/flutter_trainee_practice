@@ -13,17 +13,20 @@ class WeatherPresenter {
 
   final error = ValueNotifier<String?>(null);
 
+  final isLoading = ValueNotifier<bool?>(null);
+
   WeatherPresenter({required this.model}) {
     /// Установить отображаемый город
     currentCity.value = model.currentCitiId;
-    try {
-      /// Вызывает методы у модели и получает от неё данные
-      currentCityTemp.value = model.getWeather(currentCity.value);
-    } on Exception catch (_) {
-      /// Также передает информацию об ошибках
-      currentCityTemp.value = null;
-      error.value = 'Произошла ошибка';
-    }
+    onChanged(currentCity.value);
+    // try {
+    //   /// Вызывает методы у модели и получает от неё данные
+    //   currentCityTemp.value = model.getWeather(currentCity.value);
+    // } on Exception catch (_) {
+    //   /// Также передает информацию об ошибках
+    //   currentCityTemp.value = null;
+    //   error.value = 'Произошла ошибка';
+    // }
   }
 
   void dispose() {
@@ -32,9 +35,15 @@ class WeatherPresenter {
     error.dispose();
   }
 
-  void onChanged(int? id) {
+  void onChanged(int? id) async {
+    currentCity.value = id ?? currentCity.value;
+
     /// Очистить ошибку
     error.value = null;
+    isLoading.value = true;
+    // Имитация загрузки
+    await Future<void>.delayed(Duration(seconds: 1));
+
     try {
       /// Запросить данные из модели и подготовить к отображению
       currentCityTemp.value = model.getWeather(id);
@@ -44,7 +53,8 @@ class WeatherPresenter {
       error.value = 'Произошла ошибка';
     } finally {
       /// Сменить данные для текущего города
-      currentCity.value = model.currentCitiId;
+
+      isLoading.value = false;
     }
   }
 }
