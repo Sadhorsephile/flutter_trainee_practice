@@ -59,11 +59,14 @@ class WeatherViewWidgetModel extends WidgetModel<WeatherView, WeatherModel>
   }
 
   @override
-  void onCityChange(int? cityId) {
+  void onCityChange(int? cityId) async {
     try {
       errorState.content(null);
       currentCityIdState.content(cityId);
       temperatureState.loading();
+
+      /// Имитация загрузки
+      await Future<void>.delayed(Duration(seconds: 1));
 
       /// Вызываются методы у модели
       final newTemperature = model.getWeather(cityId);

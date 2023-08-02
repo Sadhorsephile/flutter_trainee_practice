@@ -68,6 +68,9 @@ class WeatherView extends ElementaryWidget<IWeatherWidgetModel> {
                   ),
                   EntityStateNotifierBuilder<double>(
                       listenableEntityState: wm.temperatureState,
+                      loadingBuilder: (_, __) {
+                        return CircularProgressIndicator();
+                      },
                       builder: (context, temperature) {
                         if (temperature != null) {
                           return Column(
