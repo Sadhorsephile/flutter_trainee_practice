@@ -9,16 +9,59 @@ class WeatherView extends StatefulWidget {
   const WeatherView({required this.presenter, super.key});
 
   @override
-  State<WeatherView> createState() => _WeatherViewState();
+  State<WeatherView> createState() => WeatherViewState();
 }
 
-class _WeatherViewState extends State<WeatherView> {
+class WeatherViewState extends State<WeatherView> {
+  /// Определяем интерфейс взамодействия с View
+
+  int _currentCity = 0;
+
+  int get currentCity => _currentCity;
+
+  set currentCity(int value) {
+    setState(() {
+      _currentCity = value;
+    });
+  }
+
+  double? _currentCityTemp;
+
+  double? get currentCityTemp => _currentCityTemp;
+
+  set currentCityTemp(double? value) {
+    setState(() {
+      _currentCityTemp = value;
+    });
+  }
+
+  String? _error;
+
+  String? get error => _error;
+
+  set error(String? value) {
+    setState(() {
+      _error = value;
+    });
+  }
+
+  bool? _isLoading;
+
+  bool? get isLoading => _isLoading;
+
+  set isLoading(bool? value) {
+    setState(() {
+      _isLoading = value;
+    });
+  }
+
   WeatherPresenter get presenter => widget.presenter;
 
+  /// Передаем ссылку на интерфейс View при инициализации
   @override
-  void dispose() {
-    presenter.dispose();
-    super.dispose();
+  void initState() {
+    presenter.init(this);
+    super.initState();
   }
 
   @override
@@ -28,125 +71,95 @@ class _WeatherViewState extends State<WeatherView> {
         title: const Text('MVP'),
       ),
       body: SafeArea(
-        child: ValueListenableBuilder(
-          /// Презентор передает данные для пользователя
-          /// View их отображает
-          valueListenable: presenter.currentCity,
-          builder: (context, currentCity, child) {
-            /// View их отображает
-            return Center(
-              child: Column(
+        child: Center(
+          child: Column(
+            children: [
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      Radio<int>(
-                        value: 1,
-                        groupValue: currentCity,
+                  Radio<int>(
+                    value: 1,
+                    groupValue: currentCity,
 
-                        /// Пользователь вызывает методы у презентора
-                        onChanged: (value) => presenter.onChanged(value),
-                      ),
-                      const Text('Воронеж'),
-                    ],
+                    /// Пользователь вызывает методы у презентора
+                    onChanged: (value) => presenter.onChanged(value),
                   ),
-                  Row(
-                    children: [
-                      Radio(
-                        value: 2,
-                        groupValue: currentCity,
-                        onChanged: (value) => presenter.onChanged(value),
-                      ),
-                      const Text('Елец'),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Radio(
-                        value: 3,
-                        groupValue: currentCity,
-                        onChanged: (value) => presenter.onChanged(value),
-                      ),
-                      const Text('Москва'),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Radio(
-                        value: 4,
-                        groupValue: currentCity,
-                        onChanged: (value) => presenter.onChanged(value),
-                      ),
-                      const Text('Краснодар'),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  ValueListenableBuilder(
-                    valueListenable: presenter.isLoading,
-                    builder: (context, isLoading, child) {
-                      if (isLoading == true) {
-                        return const CircularProgressIndicator();
-                      }
-
-                      return Column(
-                        children: [
-                          ValueListenableBuilder(
-                            valueListenable: presenter.currentCityTemp,
-                            builder: (context, temperature, child) {
-                              if (temperature != null) {
-                                return Text('Температура: $temperature C');
-                              }
-
-                              return const SizedBox.shrink();
-                            },
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          ValueListenableBuilder(
-                            valueListenable: presenter.currentCityTemp,
-                            builder: (context, temperature, child) {
-                              if (temperature != null) {
-                                return Stack(
-                                  children: [
-                                    Container(
-                                      height: 4,
-                                      width: 200,
-                                      color: Colors.grey,
-                                    ),
-                                    Container(
-                                      height: 4,
-                                      width: temperature * 5,
-                                      color: Colors.red,
-                                    ),
-                                  ],
-                                );
-                              }
-
-                              return const SizedBox.shrink();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                  ValueListenableBuilder(
-                    valueListenable: presenter.error,
-                    builder: (context, error, child) {
-                      if (error != null) {
-                        return Text(
-                          error,
-                          style: const TextStyle(color: Colors.red),
-                        );
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
+                  const Text('Воронеж'),
                 ],
               ),
-            );
-          },
+              Row(
+                children: [
+                  Radio(
+                    value: 2,
+                    groupValue: currentCity,
+                    onChanged: (value) => presenter.onChanged(value),
+                  ),
+                  const Text('Елец'),
+                ],
+              ),
+              Row(
+                children: [
+                  Radio(
+                    value: 3,
+                    groupValue: currentCity,
+                    onChanged: (value) => presenter.onChanged(value),
+                  ),
+                  const Text('Москва'),
+                ],
+              ),
+              Row(
+                children: [
+                  Radio(
+                    value: 4,
+                    groupValue: currentCity,
+                    onChanged: (value) => presenter.onChanged(value),
+                  ),
+                  const Text('Краснодар'),
+                ],
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              Builder(
+                builder: (context) {
+                  if (isLoading == true) {
+                    return const CircularProgressIndicator();
+                  }
+
+                  if (currentCityTemp != null) {
+                    return Column(
+                      children: [
+                        Text('Температура: $currentCityTemp C'),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        if (currentCityTemp != null)
+                          Stack(
+                            children: [
+                              Container(
+                                height: 4,
+                                width: 200,
+                                color: Colors.grey,
+                              ),
+                              Container(
+                                height: 4,
+                                width: currentCityTemp! * 5,
+                                color: Colors.red,
+                              ),
+                            ],
+                          ),
+                      ],
+                    );
+                  }
+                  return SizedBox.shrink();
+                },
+              ),
+              if (error != null)
+                Text(
+                  error!,
+                  style: const TextStyle(color: Colors.red),
+                ),
+            ],
+          ),
         ),
       ),
     );

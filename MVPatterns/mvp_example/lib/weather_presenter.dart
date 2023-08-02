@@ -1,60 +1,43 @@
-import 'package:flutter/material.dart';
 import 'package:mvp_example/weather_model.dart';
+import 'package:mvp_example/weather_view.dart';
 
 /// Связывает модель и отображение.
 /// Один презентер связан с одной View
 class WeatherPresenter {
-  WeatherModel model;
+  /// Презентер отправляет запросы к модели
+  final WeatherModel model;
 
-  /// Готовит данные для отображения
-  final currentCity = ValueNotifier<int>(0);
+  /// Презентер вызывает методы у View через его интерфейс
+  late final WeatherViewState state;
 
-  final currentCityTemp = ValueNotifier<double?>(null);
+  WeatherPresenter({required this.model});
 
-  final error = ValueNotifier<String?>(null);
-
-  final isLoading = ValueNotifier<bool?>(null);
-
-  WeatherPresenter({required this.model}) {
-    /// Установить отображаемый город
-    currentCity.value = model.currentCitiId;
-    onChanged(currentCity.value);
-    // try {
-    //   /// Вызывает методы у модели и получает от неё данные
-    //   currentCityTemp.value = model.getWeather(currentCity.value);
-    // } on Exception catch (_) {
-    //   /// Также передает информацию об ошибках
-    //   currentCityTemp.value = null;
-    //   error.value = 'Произошла ошибка';
-    // }
-  }
-
-  void dispose() {
-    currentCity.dispose();
-    currentCityTemp.dispose();
-    error.dispose();
+  void init(WeatherViewState widgetState) {
+    state = widgetState;
+    state.currentCity = model.currentCitiId;
+    onChanged(state.currentCity);
   }
 
   void onChanged(int? id) async {
-    currentCity.value = id ?? currentCity.value;
+    state.currentCity = id ?? state.currentCity;
 
     /// Очистить ошибку
-    error.value = null;
-    isLoading.value = true;
+    state.error = null;
+    state.isLoading = true;
     // Имитация загрузки
     await Future<void>.delayed(Duration(seconds: 1));
 
     try {
       /// Запросить данные из модели и подготовить к отображению
-      currentCityTemp.value = model.getWeather(id);
+      state.currentCityTemp = model.getWeather(id);
     } on Exception catch (_) {
       /// Подготовить к отображению ошибку
-      currentCityTemp.value = null;
-      error.value = 'Произошла ошибка';
+      state.currentCityTemp = null;
+      state.error = 'Произошла ошибка';
     } finally {
       /// Сменить данные для текущего города
 
-      isLoading.value = false;
+      state.isLoading = false;
     }
   }
 }
