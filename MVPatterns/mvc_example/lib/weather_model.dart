@@ -22,6 +22,7 @@ class WeatherModel {
 
   void initModel() async {
     isLoading.value = true;
+    // Имитация загрузки
     await Future<void>.delayed(Duration(seconds: 1));
     currentCity.value = initialCitiId;
     getWeather(initialCitiId);
