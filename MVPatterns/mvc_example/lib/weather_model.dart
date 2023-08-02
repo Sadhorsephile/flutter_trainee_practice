@@ -12,15 +12,20 @@ class WeatherModel {
 
   final error = ValueNotifier<String?>(null);
 
+  final isLoading = ValueNotifier<bool?>(null);
+
   /// Присутствует ли ошибка (для демо)
   //bool isError = true;
   bool isError = false;
 
   WeatherModel({required this.initialCitiId});
 
-  void initModel() {
+  void initModel() async {
+    isLoading.value = true;
+    await Future<void>.delayed(Duration(seconds: 1));
     currentCity.value = initialCitiId;
     getWeather(initialCitiId);
+    isLoading.value = false;
     error.addListener(() {
       currentCityTemp.value = null;
     });
@@ -36,8 +41,10 @@ class WeatherModel {
   final List<double> _weatherData = [22, 20, 18, 28];
 
   /// Получить данные (погоду для конкретного города)
-  void getWeather(int cityId) {
+  void getWeather(int cityId) async {
     error.value = null;
+    isLoading.value = true;
+    await Future<void>.delayed(Duration(seconds: 1));
 
     /// Отвечает на запросы, меняя свое состояние
     currentCity.value = cityId;
@@ -54,9 +61,9 @@ class WeatherModel {
         currentCityTemp.value = _weatherData[2];
       case 4:
         error.value = 'Произошла ошибка: case 4';
-        return;
       default:
         error.value = 'Нет данных о погоде';
     }
+    isLoading.value = false;
   }
 }

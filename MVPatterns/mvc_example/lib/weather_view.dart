@@ -99,39 +99,52 @@ class _WeatherViewState extends State<WeatherView> {
                     height: 50,
                   ),
                   ValueListenableBuilder(
-                    valueListenable: model.currentCityTemp,
-                    builder: (context, temperature, child) {
-                      if (temperature != null) {
-                        return Text('Температура: $temperature C');
+                    valueListenable: model.isLoading,
+                    builder: (context, isLoading, child) {
+                      if (isLoading == true) {
+                        return const CircularProgressIndicator();
                       }
 
-                      return const SizedBox.shrink();
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ValueListenableBuilder(
-                    valueListenable: model.currentCityTemp,
-                    builder: (context, temperature, child) {
-                      if (temperature != null) {
-                        return Stack(
-                          children: [
-                            Container(
-                              height: 4,
-                              width: 200,
-                              color: Colors.grey,
-                            ),
-                            Container(
-                              height: 4,
-                              width: temperature * 5,
-                              color: Colors.red,
-                            ),
-                          ],
-                        );
-                      }
+                      return Column(
+                        children: [
+                          ValueListenableBuilder(
+                            valueListenable: model.currentCityTemp,
+                            builder: (context, temperature, child) {
+                              if (temperature != null) {
+                                return Text('Температура: $temperature C');
+                              }
 
-                      return const SizedBox.shrink();
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          ValueListenableBuilder(
+                            valueListenable: model.currentCityTemp,
+                            builder: (context, temperature, child) {
+                              if (temperature != null) {
+                                return Stack(
+                                  children: [
+                                    Container(
+                                      height: 4,
+                                      width: 200,
+                                      color: Colors.grey,
+                                    ),
+                                    Container(
+                                      height: 4,
+                                      width: temperature * 5,
+                                      color: Colors.red,
+                                    ),
+                                  ],
+                                );
+                              }
+
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                        ],
+                      );
                     },
                   ),
                   ValueListenableBuilder(
