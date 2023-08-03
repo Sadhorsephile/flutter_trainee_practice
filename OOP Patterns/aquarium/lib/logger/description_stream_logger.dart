@@ -10,15 +10,18 @@ class DescriptionStreamLogger extends AppLogger {
   final AppLogger? logger;
 
   /// Стрим для записи событий
-  StreamController<String> logStream;
+  final StreamController<String> logStream;
 
   /// Формат для строки данных
   static DateFormat formatter = DateFormat('dd.MM.yyyy hh:mm:ss');
 
   DescriptionStreamLogger({
-    required this.logStream,
     this.logger,
-  });
+  }) : logStream = StreamController<String>();
+
+  void dispose() {
+    logStream.close();
+  }
 
   @override
   void log(LogEventData data) {
