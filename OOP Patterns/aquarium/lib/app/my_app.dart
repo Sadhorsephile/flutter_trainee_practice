@@ -27,15 +27,25 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late final Pool pool;
   late final DescriptionStreamLogger logger;
+  late final RandomInvoker natureInvoker;
+  late final ScheduledInvoker staffInvoker;
+
+  static const poolCapacity = 2;
+
+  static const initialPoolState = PoolState(
+    temperature: normalTemperature,
+    pollution: 0,
+  );
 
   @override
   void initState() {
     logger = DescriptionStreamLogger(logger: ConsoleLogger());
-    const poolCapacity = 2;
     pool = Pool(
-      state: const PoolState(temperature: normalTemperature, pollution: 0),
+      state: initialPoolState,
       capacity: poolCapacity,
-    )..addObserver(Goldfish(logger: logger));
+    )..addObserver(
+        Goldfish(logger: logger),
+      );
     final fishFactory = EvenFishFactory(logger: logger);
     final staff = PoolStaff(
       pool: pool,
@@ -51,20 +61,26 @@ class _MyAppState extends State<MyApp> {
         DutyCommandsFactory(staff: staff, logger: logger);
 
     /// Запуск цикла событий
-    RandomInvoker(
+    natureInvoker = RandomInvoker(
       commandsFactory: natureCommandsFactory,
       random: random,
-    ).live();
-
-    ScheduledInvoker(
+    );
+    staffInvoker = ScheduledInvoker(
       commandsFactory: dutyCommandsFactory,
-    ).live();
+    );
+
+    natureInvoker.live();
+    staffInvoker.live();
+
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    natureInvoker.dispose();
+    staffInvoker.dispose();
+    logger.dispose();
+    pool.dispose();
     super.dispose();
   }
 
@@ -73,8 +89,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Provider<DescriptionStreamLogger>(
         create: (_) => logger,
-        child: ChangeNotifierProvider(
-          create: (context) => pool,
+        child: ChangeNotifierProvider<Pool>(
+          create: (_) => pool,
           child: const PoolScreen(),
         ),
       ),

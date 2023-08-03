@@ -25,12 +25,14 @@ class _FishWidgetState extends State<FishWidget>
   double? top = 0;
   double? left = Random().nextInt(300).toDouble() + 10;
 
-  // scale
-  // sick - blend
+  static Duration get moveSpeed => const Duration(seconds: 2);
+
+  // TODO(AndrewVorotyntsev): grow up - scale
+  // TODO(AndrewVorotyntsev): sick - blend
 
   @override
   void initState() {
-    timer = Timer.periodic(Duration(seconds: 2), (timer) {
+    timer = Timer.periodic(moveSpeed, (timer) {
       if (widget.fish.state == FishState.dead) {
         top = -50;
         return;
@@ -45,23 +47,19 @@ class _FishWidgetState extends State<FishWidget>
   @override
   Widget build(BuildContext context) {
     return AnimatedPositioned(
+      /// Связываем сущность рыбы с её виджетом
       key: ValueKey<Fish>(fish),
       top: top,
       left: left,
-      // top: fish.state != FishState.dead
-      //     ? Random().nextInt(100).toDouble() + 50
-      //     : 0,
-      // left: fish.state != FishState.dead
-      //     ? Random().nextInt(100).toDouble() + 50
-      //     : null,
-      duration: Duration(seconds: 2),
+      duration: moveSpeed,
       child: AnimatedContainer(
         height: 100,
         width: 100,
         transform: Matrix4.rotationZ(
-            (fish.state != FishState.dead ? 0 : 180 * 2 * pi) / 360),
+          (fish.state != FishState.dead ? 0 : 180 * 2 * pi) / 360,
+        ),
         transformAlignment: Alignment.center,
-        duration: Duration(seconds: 2),
+        duration: moveSpeed,
         child: Image(image: AssetImage(fish.appearance.asset)),
       ),
     );

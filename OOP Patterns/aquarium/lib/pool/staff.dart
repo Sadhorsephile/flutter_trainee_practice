@@ -17,13 +17,14 @@ class PoolStaff {
         _fishFactory = fishFactory;
 
   /// Обслужить всех рыб в аквариуме
-  void serveFishes() async {
+  Future<void> serveFishes() async {
     /// Убрать мертвых рыб
     _pool.fishes.removeWhere((value) => value.state == FishState.dead);
 
-    await Future.delayed(Duration(milliseconds: 200));
+    /// Задержка, чтобы обязанности не выполнялись одновременно
+    await Future<void>.delayed(const Duration(milliseconds: 200));
 
-    /// Покормить рыб
+    /// Покормить рыsб
     for (final fish in _pool.fishes) {
       fish.feed();
     }

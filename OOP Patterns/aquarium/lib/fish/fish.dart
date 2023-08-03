@@ -152,6 +152,7 @@ abstract class Fish extends AquariumObserver {
   /// Часть паттерна "Наблюдатель"
   @override
   void react(PoolState newState) {
+    /// Реагируют только живые рыбы
     if (state != FishState.dead) {
       final healthHarm = reactPoolStateStrategy.react(this, newState);
       health -= healthHarm;

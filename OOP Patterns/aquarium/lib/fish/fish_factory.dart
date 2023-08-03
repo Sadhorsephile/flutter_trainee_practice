@@ -32,12 +32,13 @@ class EvenFishFactory implements FishFactory {
   }
 }
 
-class TestFishFactory implements FishFactory {
+/// Фабрика для создания бессмертных рыб [] для дебага
+class DebugFishFactory implements FishFactory {
   /// Логгер для рыб
   AppLogger logger;
 
-  TestFishFactory({required this.logger});
+  DebugFishFactory({required this.logger});
 
   @override
-  Fish createFish() => TestFish(logger: logger);
+  Fish createFish() => ImmortalFish(logger: logger);
 }

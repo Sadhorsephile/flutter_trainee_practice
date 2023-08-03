@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Цвета, используемые в приложении
 class AppColors {
   static const appbarColor = Colors.white;
   static const scaffoldColor = Colors.black;

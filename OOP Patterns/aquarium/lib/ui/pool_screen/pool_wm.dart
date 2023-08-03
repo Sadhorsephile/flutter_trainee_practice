@@ -5,7 +5,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/// Абстракция Widget Model
+/// Абстракция Widget Model для экрана бассейна
 abstract class IPoolWidgetModel extends IWidgetModel {
   BuildContext get context;
 
@@ -16,11 +16,8 @@ abstract class IPoolWidgetModel extends IWidgetModel {
   ListenableState<EntityState<List<String>>> get logListState;
 }
 
-PoolWidgetModel defaultAppWidgetModelFactory(BuildContext context) {
-  return PoolWidgetModel(
-    PoolScreenModel(),
-  );
-}
+PoolWidgetModel defaultAppWidgetModelFactory(BuildContext context) =>
+    PoolWidgetModel(PoolScreenModel());
 
 /// Имплементация и реализация Виджет модели
 class PoolWidgetModel extends WidgetModel<PoolScreen, PoolScreenModel>
@@ -32,12 +29,12 @@ class PoolWidgetModel extends WidgetModel<PoolScreen, PoolScreenModel>
   @override
   ScrollController scrollController = ScrollController();
 
-  PoolWidgetModel(PoolScreenModel model) : super(model);
+  PoolWidgetModel(super._model);
 
   @override
   void initWidgetModel() {
     context.watch<DescriptionStreamLogger>().logStream.stream.listen((event) {
-      /// Добавить новые лог к списку старых
+      /// Добавить новую запись к списку старых логов
       final previousData = logListState.value?.data ?? [];
       logListState.content([
         ...previousData,
@@ -45,8 +42,11 @@ class PoolWidgetModel extends WidgetModel<PoolScreen, PoolScreenModel>
       ]);
 
       /// Автоматически скролим в конец логов
-      scrollController.animateTo(scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 200), curve: Curves.easeOut);
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.linear,
+      );
     });
     super.initWidgetModel();
   }

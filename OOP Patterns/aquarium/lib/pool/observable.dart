@@ -9,7 +9,7 @@ abstract class AquariumObservable<T extends AquariumObserver> {
   void removeObserver(T observer);
 
   /// Уведомить обозревателей
-  void notifyObservers();
+  void notifyAquariumObservers();
 }
 
 /// Обозреватель

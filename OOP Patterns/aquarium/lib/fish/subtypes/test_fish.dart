@@ -3,8 +3,8 @@ import 'package:aquarium/fish/strategy/react_pool_strategy.dart';
 import 'package:aquarium/res/assets.dart';
 
 /// Бессмертная рыба для дебага
-class TestFish extends Fish {
-  TestFish({required super.logger});
+class ImmortalFish extends Fish {
+  ImmortalFish({required super.logger});
 
   @override
   FishAppearance get appearance => FishAppearance(
@@ -13,7 +13,7 @@ class TestFish extends Fish {
       );
 
   @override
-  Fish birth() => TestFish(logger: super.logger);
+  Fish birth() => ImmortalFish(logger: super.logger);
 
   @override
   double get hungerHarm => 0;
@@ -25,10 +25,10 @@ class TestFish extends Fish {
   double get hungerSafeLimit => 0;
 
   @override
-  Duration get hungerTime => Duration(seconds: 5);
+  Duration get hungerTime => const Duration(seconds: 5);
 
   @override
-  Duration get lifetime => Duration(hours: 5);
+  Duration get lifetime => const Duration(hours: 5);
 
   @override
   double get maxHealth => 100;
@@ -37,7 +37,6 @@ class TestFish extends Fish {
   double get maxTemp => 40;
 
   @override
-  // TODO: implement minTemp
   double get minTemp => 20;
 
   @override

@@ -1,6 +1,6 @@
 import 'package:elementary/elementary.dart';
 
-/// Имплементация Elementary модели к
+/// Elementary модель к экрану бассейна
 class PoolScreenModel extends ElementaryModel {
   PoolScreenModel();
 }

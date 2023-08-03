@@ -1,8 +1,12 @@
 import 'package:aquarium/res/styles.dart';
 import 'package:flutter/material.dart';
 
+/// Виджет пользовательских логов
 class UserLogWidget extends StatelessWidget {
+  /// Список логов
   final List<String>? logList;
+
+  /// Контроллер для скрола
   final ScrollController controller;
 
   const UserLogWidget({
@@ -13,22 +17,20 @@ class UserLogWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: ListView.builder(
-          controller: controller,
-          itemCount: logList?.length,
-          itemBuilder: (_, i) {
-            if (logList != null) {
-              return Text(
-                logList![i],
-                style: AppStyles.userLogStyle,
-              );
-            }
-            return null;
-          },
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: ListView.builder(
+        controller: controller,
+        itemCount: logList?.length,
+        itemBuilder: (_, i) {
+          if (logList != null) {
+            return Text(
+              logList![i],
+              style: AppStyles.userLogStyle,
+            );
+          }
+          return null;
+        },
       ),
     );
   }

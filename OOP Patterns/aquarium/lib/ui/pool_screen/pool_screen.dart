@@ -11,7 +11,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-///
+/// Экран бассейна
 class PoolScreen extends ElementaryWidget<IPoolWidgetModel> {
   const PoolScreen({
     Key? key,
@@ -49,15 +49,16 @@ class PoolScreen extends ElementaryWidget<IPoolWidgetModel> {
               ],
             ),
           ),
-          // Экран с логами
-          EntityStateNotifierBuilder<List<String>>(
-            listenableEntityState: wm.logListState,
-            builder: (context, list) {
-              return UserLogWidget(
-                logList: list,
-                controller: wm.scrollController,
-              );
-            },
+          Flexible(
+            child: EntityStateNotifierBuilder<List<String>>(
+              listenableEntityState: wm.logListState,
+              builder: (context, list) {
+                return UserLogWidget(
+                  logList: list,
+                  controller: wm.scrollController,
+                );
+              },
+            ),
           ),
         ],
       ),
