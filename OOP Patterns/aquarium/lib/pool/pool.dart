@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:aquarium/fish/fish.dart';
 import 'package:aquarium/pool/observable.dart';
 import 'package:aquarium/pool/pool_state.dart';
+import 'package:flutter/foundation.dart';
 
 /// Класс бассейна для рыб
-class Pool implements AquariumObservable<Fish> {
+class Pool extends ChangeNotifier implements AquariumObservable<Fish> {
   /// Список рыб, находящихся в бассейне
   /// Они являются обозревателями
   late final List<Fish> fishes;
@@ -20,6 +21,7 @@ class Pool implements AquariumObservable<Fish> {
   set state(PoolState value) {
     _state = value;
     notifyObservers();
+    notifyListeners();
   }
 
   /// Вместимость бассейна
