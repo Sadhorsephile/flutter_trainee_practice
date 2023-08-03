@@ -1,12 +1,15 @@
 import 'package:aquarium/fish/fish.dart';
 import 'package:aquarium/fish/strategy/react_pool_strategy.dart';
+import 'package:aquarium/res/assets.dart';
 
 /// Карп.
 /// Подтип рыбы.
 class CarpFish extends Fish {
   @override
-  final FishAppearance appearance =
-      FishAppearance(description: 'Silver Scales');
+  final FishAppearance appearance = FishAppearance(
+    description: 'Silver Scales',
+    asset: AppAssets.bluefishAsset,
+  );
 
   @override
   double get minTemp => 16;
@@ -15,7 +18,7 @@ class CarpFish extends Fish {
   double get maxTemp => 24;
 
   @override
-  double get sensitivity => 4;
+  double get sensitivity => 1;
 
   @override
   final double maxHealth = 100;

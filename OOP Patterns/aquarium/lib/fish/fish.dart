@@ -152,16 +152,18 @@ abstract class Fish extends AquariumObserver {
   /// Часть паттерна "Наблюдатель"
   @override
   void react(PoolState newState) {
-    final healthHarm = reactPoolStateStrategy.react(this, newState);
-    health -= healthHarm;
-    if (health <= 0) {
-      logger.log(
-        LogEventData(
-          dateTime: DateTime.now(),
-          description: LogRes.reactPoolFishDeath,
-          object: this,
-        ),
-      );
+    if (state != FishState.dead) {
+      final healthHarm = reactPoolStateStrategy.react(this, newState);
+      health -= healthHarm;
+      if (health <= 0) {
+        logger.log(
+          LogEventData(
+            dateTime: DateTime.now(),
+            description: LogRes.reactPoolFishDeath,
+            object: this,
+          ),
+        );
+      }
     }
   }
 
@@ -200,9 +202,11 @@ class FishAppearance {
   /// Словесное описание внешнего виды рыбы
   String? description;
 
-  // TODO(AndrewVorotyntsev):  Добавить ассет
+  /// Ссылка на локальное изображение рыбы
+  String asset;
 
   FishAppearance({
+    required this.asset,
     this.description,
   });
 }
