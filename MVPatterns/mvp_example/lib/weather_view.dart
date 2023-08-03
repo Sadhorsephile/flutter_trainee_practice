@@ -12,13 +12,32 @@ class WeatherView extends StatefulWidget {
   State<WeatherView> createState() => WeatherViewState();
 }
 
-class WeatherViewState extends State<WeatherView> {
-  /// Определяем интерфейс взамодействия с View
+/// Интерфейс для работы с View
+abstract class IWeatherViewState {
+  int get currentCity;
 
+  set currentCity(int value);
+
+  double? get currentCityTemp;
+
+  set currentCityTemp(double? value);
+
+  String? get error;
+
+  set error(String? value);
+
+  bool? get isLoading;
+
+  set isLoading(bool? value);
+}
+
+class WeatherViewState extends State<WeatherView> implements IWeatherViewState {
   int _currentCity = 0;
 
+  @override
   int get currentCity => _currentCity;
 
+  @override
   set currentCity(int value) {
     setState(() {
       _currentCity = value;
@@ -27,8 +46,10 @@ class WeatherViewState extends State<WeatherView> {
 
   double? _currentCityTemp;
 
+  @override
   double? get currentCityTemp => _currentCityTemp;
 
+  @override
   set currentCityTemp(double? value) {
     setState(() {
       _currentCityTemp = value;
@@ -37,8 +58,10 @@ class WeatherViewState extends State<WeatherView> {
 
   String? _error;
 
+  @override
   String? get error => _error;
 
+  @override
   set error(String? value) {
     setState(() {
       _error = value;
@@ -47,8 +70,10 @@ class WeatherViewState extends State<WeatherView> {
 
   bool? _isLoading;
 
+  @override
   bool? get isLoading => _isLoading;
 
+  @override
   set isLoading(bool? value) {
     setState(() {
       _isLoading = value;

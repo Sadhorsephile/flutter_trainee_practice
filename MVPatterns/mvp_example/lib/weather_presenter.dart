@@ -8,36 +8,36 @@ class WeatherPresenter {
   final WeatherModel model;
 
   /// Презентер вызывает методы у View через его интерфейс
-  late final WeatherViewState state;
+  late final IWeatherViewState view;
 
   WeatherPresenter({required this.model});
 
   void init(WeatherViewState widgetState) {
-    state = widgetState;
-    state.currentCity = model.currentCitiId;
-    onChanged(state.currentCity);
+    view = widgetState;
+    view.currentCity = model.currentCitiId;
+    onChanged(view.currentCity);
   }
 
   void onChanged(int? id) async {
-    state.currentCity = id ?? state.currentCity;
+    view.currentCity = id ?? view.currentCity;
 
     /// Очистить ошибку
-    state.error = null;
-    state.isLoading = true;
+    view.error = null;
+    view.isLoading = true;
     // Имитация загрузки
     await Future<void>.delayed(Duration(seconds: 1));
 
     try {
       /// Запросить данные из модели и подготовить к отображению
-      state.currentCityTemp = model.getWeather(id);
+      view.currentCityTemp = model.getWeather(id);
     } on Exception catch (_) {
       /// Подготовить к отображению ошибку
-      state.currentCityTemp = null;
-      state.error = 'Произошла ошибка';
+      view.currentCityTemp = null;
+      view.error = 'Произошла ошибка';
     } finally {
       /// Сменить данные для текущего города
 
-      state.isLoading = false;
+      view.isLoading = false;
     }
   }
 }
