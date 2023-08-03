@@ -22,6 +22,8 @@ class _FishWidgetState extends State<FishWidget>
   Fish get fish => widget.fish;
   late final Timer timer;
 
+  double? prevTop;
+  double? prevLeft;
   double? top = 0;
   double? left = Random().nextInt(300).toDouble() + 10;
 
@@ -30,9 +32,14 @@ class _FishWidgetState extends State<FishWidget>
   // TODO(AndrewVorotyntsev): grow up - scale
   // TODO(AndrewVorotyntsev): sick - blend
 
+  double? get dir =>
+      prevLeft != null && left != null ? (prevLeft! - left!).sign : 1;
+
   @override
   void initState() {
     timer = Timer.periodic(moveSpeed, (timer) {
+      prevTop = top;
+      prevLeft = left;
       if (widget.fish.state == FishState.dead) {
         top = -50;
         return;
@@ -43,6 +50,8 @@ class _FishWidgetState extends State<FishWidget>
     });
     super.initState();
   }
+
+  double? get atanA => left != null ? (top ?? 0 / left!) : null;
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +67,21 @@ class _FishWidgetState extends State<FishWidget>
         transform: Matrix4.rotationZ(
           (fish.state != FishState.dead ? 0 : 180 * 2 * pi) / 360,
         ),
+        // transform: Matrix4.rotationZ((fish.state != FishState.dead
+        //     ? (atanA != null && dir != null
+        //         ? atan(atanA! * (dir!)) * 2 * pi
+        //         : 0)
+        //     : (180 * 2 * pi) / 360)),
+//          (fish.state != FishState.dead ? atanA != null ? atan(atanA!) : 0 : 180 * 2 * pi) / 360,
+
         transformAlignment: Alignment.center,
         duration: moveSpeed,
-        child: Image(image: AssetImage(fish.appearance.asset)),
+        child: Transform.scale(
+          scaleX: dir,
+          child: Image(
+            image: AssetImage(fish.appearance.asset),
+          ),
+        ),
       ),
     );
   }
