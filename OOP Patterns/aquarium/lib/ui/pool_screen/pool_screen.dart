@@ -7,6 +7,7 @@ import 'package:aquarium/ui/pool_screen/widgets/fish_widget.dart';
 import 'package:aquarium/ui/pool_screen/widgets/pollution_widget.dart';
 import 'package:aquarium/ui/pool_screen/widgets/thermo_widget.dart';
 import 'package:aquarium/ui/pool_screen/widgets/user_log_widget.dart';
+import 'package:aquarium/utils/orientation_widget.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,10 +30,10 @@ class PoolScreen extends ElementaryWidget<IPoolWidgetModel> {
         ),
         backgroundColor: AppColors.appbarColor,
       ),
-      body: Column(
+      body: OrientationSwitcher(
         children: [
           Flexible(
-            flex: 3,
+            flex: 2,
             child: Stack(
               children: [
                 Container(
