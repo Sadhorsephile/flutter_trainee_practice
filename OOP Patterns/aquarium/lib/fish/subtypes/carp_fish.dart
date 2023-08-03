@@ -34,11 +34,11 @@ class CarpFish extends Fish {
       RiverFishReactPoolStateStrategy();
 
   @override
-  double get hungerIncreasing => 10;
+  double get hungerIncreasing => 5;
   @override
   double get hungerSafeLimit => 50;
   @override
-  double get hungerHarm => 0.1;
+  double get hungerHarm => 0.01;
 
   CarpFish({required super.logger});
 

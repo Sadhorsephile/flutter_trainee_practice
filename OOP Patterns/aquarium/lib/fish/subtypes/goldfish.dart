@@ -33,11 +33,11 @@ class Goldfish extends Fish {
   final Duration lifetime = const Duration(seconds: 120);
 
   @override
-  double get hungerIncreasing => 10;
+  double get hungerIncreasing => 4;
   @override
-  double get hungerSafeLimit => 50;
+  double get hungerSafeLimit => 70;
   @override
-  double get hungerHarm => 0.1;
+  double get hungerHarm => 0.02;
 
   @override
   ReactPoolStateStrategy get reactPoolStateStrategy =>
