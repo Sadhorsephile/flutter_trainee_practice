@@ -27,13 +27,12 @@ class _FishWidgetState extends State<FishWidget>
 
   // scale
   // sick - blend
-  // remove delay create
 
   @override
   void initState() {
     timer = Timer.periodic(Duration(seconds: 2), (timer) {
       if (widget.fish.state == FishState.dead) {
-        top = 0;
+        top = -50;
         return;
       }
 
