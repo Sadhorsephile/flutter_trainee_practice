@@ -22,17 +22,26 @@ class _FishWidgetState extends State<FishWidget>
   Fish get fish => widget.fish;
   late final Timer timer;
 
-  double? top = 0;
-  double? left = Random().nextInt(300).toDouble() + 10;
+  double? prevTop;
+  double? prevLeft;
+  double top = 0;
+  double left = Random().nextInt(300).toDouble() + 10;
 
   static Duration get moveSpeed => const Duration(seconds: 2);
 
   // TODO(AndrewVorotyntsev): grow up - scale
   // TODO(AndrewVorotyntsev): sick - blend
 
+  /// Направление движения рыбы
+  ///  1 - влево
+  /// -1 - вправо
+  double? get direction => prevLeft != null ? (prevLeft! - left).sign : 1;
+
   @override
   void initState() {
     timer = Timer.periodic(moveSpeed, (timer) {
+      prevTop = top;
+      prevLeft = left;
       if (widget.fish.state == FishState.dead) {
         top = -50;
         return;
@@ -41,6 +50,8 @@ class _FishWidgetState extends State<FishWidget>
       top = Random().nextInt(300).toDouble() + 10;
       left = Random().nextInt(300).toDouble() + 10;
     });
+    top = Random().nextInt(300).toDouble() + 10;
+    left = Random().nextInt(300).toDouble() + 10;
     super.initState();
   }
 
@@ -60,7 +71,13 @@ class _FishWidgetState extends State<FishWidget>
         ),
         transformAlignment: Alignment.center,
         duration: moveSpeed,
-        child: Image(image: AssetImage(fish.appearance.asset)),
+        child: Transform.scale(
+          // Направление движения рыбы (лево, право)
+          scaleX: direction,
+          child: Image(
+            image: AssetImage(fish.appearance.asset),
+          ),
+        ),
       ),
     );
   }
