@@ -16,9 +16,7 @@ import 'mock/random_mock.dart';
 
 void main() {
   test('Description Stream Logger test', () {
-    final logStream = StreamController<String>();
-    final logger =
-        ConsoleLogger(logger: DescriptionStreamLogger(logStream: logStream));
+    final logger = DescriptionStreamLogger(logger: ConsoleLogger());
     final pool = Pool(
       state: const PoolState(temperature: normalTemperature, pollution: 0),
       capacity: 1,
@@ -31,7 +29,7 @@ void main() {
     when<int>(() => random.nextInt(maxTemperature.toInt())).thenReturn(newTemp);
 
     expect(
-        logStream.stream,
+        logger.logStream.stream,
         emitsInOrder([
           predicate<String>((item) => item.contains(LogRes.staffCleanPool)),
           predicate<String>((item) => item.contains(LogRes.staffServeFishes)),
@@ -63,6 +61,6 @@ void main() {
     );
     bornFish();
 
-    logStream.close();
+    logger.dispose();
   });
 }
