@@ -20,14 +20,20 @@ class FishWidget extends StatefulWidget {
 class _FishWidgetState extends State<FishWidget>
     with SingleTickerProviderStateMixin {
   Fish get fish => widget.fish;
-  late final Timer timer;
+
+  /// Таймер, регулирующий движение рыбы
+  late final Timer swimTimer;
 
   double? prevTop;
   double? prevLeft;
   double top = 0;
   double left = Random().nextInt(300).toDouble() + 10;
 
+  /// Время за которое рыба перемещается от одной точки к другой
   static Duration get moveSpeed => const Duration(seconds: 2);
+
+  /// Время первоначального погружения рыбы
+  static Duration get divingSpeed => const Duration(milliseconds: 200);
 
   // TODO(AndrewVorotyntsev): grow up - scale
   // TODO(AndrewVorotyntsev): sick - blend
@@ -35,24 +41,32 @@ class _FishWidgetState extends State<FishWidget>
   /// Направление движения рыбы
   ///  1 - влево
   /// -1 - вправо
-  double? get direction => prevLeft != null ? (prevLeft! - left).sign : 1;
+  double get direction => prevLeft != null ? (prevLeft! - left).sign : 1;
 
   @override
   void initState() {
-    timer = Timer.periodic(moveSpeed, (timer) {
+    diving();
+
+    /// Задаем анимацию плавания рыбы
+    swimTimer = Timer.periodic(moveSpeed, (timer) {
       prevTop = top;
       prevLeft = left;
       if (widget.fish.state == FishState.dead) {
         top = -50;
+        swimTimer.cancel();
         return;
       }
-
       top = Random().nextInt(300).toDouble() + 10;
       left = Random().nextInt(300).toDouble() + 10;
     });
-    top = Random().nextInt(300).toDouble() + 10;
-    left = Random().nextInt(300).toDouble() + 10;
     super.initState();
+  }
+
+  /// Первое погружение рыбы
+  /// Сначала рыба движется вниз имитируя её ныряние в аквариум
+  Future<void> diving() async {
+    await Future.delayed(divingSpeed);
+    top = Random().nextInt(300).toDouble() + 10;
   }
 
   @override
@@ -67,7 +81,7 @@ class _FishWidgetState extends State<FishWidget>
         height: 100,
         width: 100,
         transform: Matrix4.rotationZ(
-          (fish.state != FishState.dead ? 0 : 180 * 2 * pi) / 360,
+          fish.state != FishState.dead ? 0 : pi,
         ),
         transformAlignment: Alignment.center,
         duration: moveSpeed,
