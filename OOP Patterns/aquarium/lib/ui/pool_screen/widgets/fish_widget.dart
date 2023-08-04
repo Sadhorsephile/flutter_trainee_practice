@@ -35,6 +35,9 @@ class _FishWidgetState extends State<FishWidget>
   /// Таймер, регулирующий движение рыбы
   late final Timer swimTimer;
 
+  /// Таймер, регулирующий рост рыбы
+  late final Timer growTimer;
+
   double? prevTop;
   double? prevLeft;
   double top = 0;
@@ -46,12 +49,19 @@ class _FishWidgetState extends State<FishWidget>
   /// Время первоначального погружения рыбы
   static Duration get divingSpeed => const Duration(milliseconds: 200);
 
-  // TODO(AndrewVorotyntsev): grow up - scale
+  /// Время роста рыбы
+  static Duration get growTime => const Duration(seconds: 6);
 
   /// Направление движения рыбы
   ///  1 - влево
   /// -1 - вправо
   double get direction => prevLeft != null ? (prevLeft! - left).sign : 1;
+
+  /// Изначальный размер рыбы
+  double scale = 0.5;
+
+  /// Прирост размера рыбы за время [growTime]
+  static const scalePerTime = 0.25;
 
   @override
   void initState() {
@@ -63,14 +73,26 @@ class _FishWidgetState extends State<FishWidget>
       prevTop = top;
       prevLeft = left;
       if (widget.fish.state == FishState.dead) {
-        top = -50;
+        top = -30;
         swimTimer.cancel();
         return;
       }
       top = random.nextInt(poolSize.height.toInt()).toDouble();
       left = random.nextInt(poolSize.width.toInt()).toDouble();
     });
+    growTimer = Timer.periodic(growTime, (timer) {
+      growUp();
+    });
     super.initState();
+  }
+
+  /// Рост рыбы
+  void growUp() {
+    if (scale <= 1 && fish.state != FishState.dead) {
+      scale += scalePerTime;
+    } else {
+      growTimer.cancel();
+    }
   }
 
   /// Первое погружение рыбы
@@ -89,8 +111,8 @@ class _FishWidgetState extends State<FishWidget>
       left: left,
       duration: moveSpeed,
       child: AnimatedContainer(
-        height: fishSize.height,
-        width: fishSize.width,
+        height: fishSize.height * scale,
+        width: fishSize.width * scale,
         transform: Matrix4.rotationZ(
           fish.state != FishState.dead ? 0 : pi,
         ),
