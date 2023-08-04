@@ -72,7 +72,8 @@ class PoolWidgetModel extends WidgetModel<PoolScreen, PoolScreenModel>
           (media.orientation == Orientation.portrait
               ? poolFlex / (poolFlex + logFlex)
               : 1) -
-      fishSize.height;
+      fishSize.height -
+      200;
 
   double get poolWidth =>
       media.size.width *

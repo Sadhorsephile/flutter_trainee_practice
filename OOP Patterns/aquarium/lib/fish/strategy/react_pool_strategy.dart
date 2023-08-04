@@ -13,7 +13,7 @@ abstract class ReactPoolStateStrategy {
 /// Реакция речных рыб на изменение условий бассейна
 class RiverFishReactPoolStateStrategy implements ReactPoolStateStrategy {
   /// Коэффецент получения урона от загрязнения
-  static const pollutionHarmParam = 5;
+  static const pollutionHarmParam = 0.1;
 
   @override
   double react(Fish fish, PoolState poolState) {
@@ -51,7 +51,7 @@ class RiverFishReactPoolStateStrategy implements ReactPoolStateStrategy {
 /// Реакция домашних рыб на загрязнение
 class PetFishReactPoolStateStrategy implements ReactPoolStateStrategy {
   /// Коэффецент получения урона от загрязнения
-  static const pollutionHarmParam = 5;
+  static const pollutionHarmParam = 0.5;
 
   @override
   double react(Fish fish, PoolState poolState) {

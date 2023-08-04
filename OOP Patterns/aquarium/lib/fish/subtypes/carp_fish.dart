@@ -21,7 +21,7 @@ class CarpFish extends Fish {
   double get sensitivity => 1;
 
   @override
-  final double maxHealth = 100;
+  final double maxHealth = 200;
 
   @override
   Duration get hungerTime => const Duration(seconds: 2);

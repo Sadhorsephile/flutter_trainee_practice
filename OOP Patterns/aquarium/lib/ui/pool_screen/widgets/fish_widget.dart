@@ -73,7 +73,7 @@ class _FishWidgetState extends State<FishWidget>
       prevTop = top;
       prevLeft = left;
       if (widget.fish.state == FishState.dead) {
-        top = -30;
+        top = -50 * scale;
         swimTimer.cancel();
         return;
       }
