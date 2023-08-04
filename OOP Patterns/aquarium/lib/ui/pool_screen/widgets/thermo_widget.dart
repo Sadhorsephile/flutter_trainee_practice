@@ -17,6 +17,7 @@ class PoolThermometerWidget extends StatelessWidget {
       top: 8,
       child: SizedBox(
         height: 120,
+        width: 40,
         child: DecoratedBox(
           decoration: const BoxDecoration(
             color: AppColors.thermoBackgroundColor,

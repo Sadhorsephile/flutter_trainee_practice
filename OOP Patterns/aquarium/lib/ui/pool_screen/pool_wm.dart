@@ -25,6 +25,18 @@ abstract class IPoolWidgetModel extends IWidgetModel {
 
   /// Загрязнение бассейна
   double get poolPollution;
+
+  /// Размер бассейна
+  Size get poolSize;
+
+  /// Размер рыбы
+  Size get fishSize;
+
+  /// flex для бассейна
+  int get poolFlex;
+
+  /// flex для логов
+  int get logFlex;
 }
 
 PoolWidgetModel defaultAppWidgetModelFactory(BuildContext context) =>
@@ -43,6 +55,34 @@ class PoolWidgetModel extends WidgetModel<PoolScreen, PoolScreenModel>
 
   @override
   double get poolTemperature => pool.state.temperature;
+
+  @override
+  int get logFlex => 1;
+
+  @override
+  int get poolFlex => 3;
+
+  MediaQueryData get media => MediaQuery.of(context);
+
+  @override
+  Size get fishSize => const Size(100, 100);
+
+  double get poolHeight =>
+      media.size.height *
+          (media.orientation == Orientation.portrait
+              ? poolFlex / (poolFlex + logFlex)
+              : 1) -
+      fishSize.height;
+
+  double get poolWidth =>
+      media.size.width *
+          (media.orientation == Orientation.landscape
+              ? poolFlex / (poolFlex + logFlex)
+              : 1) -
+      fishSize.width;
+
+  @override
+  Size get poolSize => Size(poolWidth, poolHeight);
 
   @override
   final EntityStateNotifier<List<String>> logListState =

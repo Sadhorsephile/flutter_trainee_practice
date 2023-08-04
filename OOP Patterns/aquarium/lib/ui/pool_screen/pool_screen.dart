@@ -31,7 +31,7 @@ class PoolScreen extends ElementaryWidget<IPoolWidgetModel> {
       body: OrientationSwitcher(
         children: [
           Flexible(
-            flex: 2,
+            flex: wm.poolFlex,
             child: Stack(
               children: [
                 Container(
@@ -43,11 +43,17 @@ class PoolScreen extends ElementaryWidget<IPoolWidgetModel> {
                 PoolThermometerWidget(
                   temperature: wm.poolTemperature,
                 ),
-                for (final fish in wm.fishes) FishWidget(fish: fish),
+                for (final fish in wm.fishes)
+                  FishWidget(
+                    fish: fish,
+                    poolSize: wm.poolSize,
+                    fishSize: wm.fishSize,
+                  ),
               ],
             ),
           ),
           Flexible(
+            flex: wm.logFlex,
             child: EntityStateNotifierBuilder<List<String>>(
               listenableEntityState: wm.logListState,
               builder: (context, list) {

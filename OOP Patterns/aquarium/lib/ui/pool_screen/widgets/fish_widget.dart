@@ -6,8 +6,16 @@ import 'package:flutter/material.dart';
 
 /// Виджет, отображаюший рыбу
 class FishWidget extends StatefulWidget {
+  /// Размеры бассейна по которому рыба может плавать
+  final Size poolSize;
+
+  /// Размер рыбы
+  final Size fishSize;
+
   const FishWidget({
     required this.fish,
+    required this.poolSize,
+    required this.fishSize,
     super.key,
   });
 
@@ -19,7 +27,10 @@ class FishWidget extends StatefulWidget {
 
 class _FishWidgetState extends State<FishWidget>
     with SingleTickerProviderStateMixin {
+  final random = Random();
   Fish get fish => widget.fish;
+  Size get poolSize => widget.poolSize;
+  Size get fishSize => widget.fishSize;
 
   /// Таймер, регулирующий движение рыбы
   late final Timer swimTimer;
@@ -27,7 +38,7 @@ class _FishWidgetState extends State<FishWidget>
   double? prevTop;
   double? prevLeft;
   double top = 0;
-  double left = Random().nextInt(300).toDouble() + 10;
+  double left = 0;
 
   /// Время за которое рыба перемещается от одной точки к другой
   static Duration get moveSpeed => const Duration(seconds: 2);
@@ -44,6 +55,7 @@ class _FishWidgetState extends State<FishWidget>
 
   @override
   void initState() {
+    left = random.nextInt(poolSize.width.toInt()).toDouble();
     diving();
 
     /// Задаем анимацию плавания рыбы
@@ -55,8 +67,8 @@ class _FishWidgetState extends State<FishWidget>
         swimTimer.cancel();
         return;
       }
-      top = Random().nextInt(300).toDouble() + 10;
-      left = Random().nextInt(300).toDouble() + 10;
+      top = random.nextInt(poolSize.height.toInt()).toDouble();
+      left = random.nextInt(poolSize.width.toInt()).toDouble();
     });
     super.initState();
   }
@@ -65,7 +77,7 @@ class _FishWidgetState extends State<FishWidget>
   /// Сначала рыба движется вниз имитируя её ныряние в аквариум
   Future<void> diving() async {
     await Future.delayed(divingSpeed);
-    top = Random().nextInt(300).toDouble() + 10;
+    top = random.nextInt(poolSize.height.toInt()).toDouble();
   }
 
   @override
@@ -77,8 +89,8 @@ class _FishWidgetState extends State<FishWidget>
       left: left,
       duration: moveSpeed,
       child: AnimatedContainer(
-        height: 100,
-        width: 100,
+        height: fishSize.height,
+        width: fishSize.width,
         transform: Matrix4.rotationZ(
           fish.state != FishState.dead ? 0 : pi,
         ),
