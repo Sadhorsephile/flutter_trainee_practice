@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:aquarium/commands/command.dart';
 import 'package:aquarium/logger/base_logger.dart';
+import 'package:aquarium/logger/data/log_event_data.dart';
 import 'package:aquarium/logger/res/log_res.dart';
 import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/pool/pool_state.dart';

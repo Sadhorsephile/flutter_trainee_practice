@@ -1,4 +1,5 @@
 import 'package:aquarium/logger/base_logger.dart';
+import 'package:aquarium/logger/data/log_event_data.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
