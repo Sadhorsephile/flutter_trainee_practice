@@ -171,7 +171,7 @@ void main() {
 
       expect(pool.state.temperature, normalTemperature);
 
-      final changeTempCommand = ChangeNatureTemperature(
+      final changeTempCommand = ChangeNatureTemperatureEvent(
         pool: pool,
         random: random,
         logger: logger,
@@ -193,7 +193,7 @@ void main() {
 
       // Пустой аквариум
 
-      final bornFish = BornFish(
+      final bornFish = BornFishEvent(
         pool: pool,
         random: random,
         logger: logger,

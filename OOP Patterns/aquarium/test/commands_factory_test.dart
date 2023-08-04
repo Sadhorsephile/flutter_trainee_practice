@@ -112,8 +112,8 @@ void main() {
       /// будут возвращаться разные типы комманд
       final command1 = commandsFactory.giveCommand(NatureEventsEnum.changeTemp);
       final command2 = commandsFactory.giveCommand(NatureEventsEnum.bornFish);
-      expect(command1, isA<ChangeNatureTemperature>());
-      expect(command2, isA<BornFish>());
+      expect(command1, isA<ChangeNatureTemperatureEvent>());
+      expect(command2, isA<BornFishEvent>());
     });
   });
 }

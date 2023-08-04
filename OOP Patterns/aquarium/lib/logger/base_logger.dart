@@ -1,3 +1,5 @@
+import 'package:aquarium/logger/data/log_event_data.dart';
+
 /// Базовый класс для логгеров
 /// Для создани логгеров используется паттерн декоратор
 abstract class AppLogger {
@@ -5,22 +7,4 @@ abstract class AppLogger {
   abstract final AppLogger? logger;
 
   void log(LogEventData data) => logger?.log(data);
-}
-
-/// Сущность события для логирования
-class LogEventData {
-  /// Вреся наступления события
-  DateTime dateTime;
-
-  /// Описание события
-  String description;
-
-  /// Объект события
-  Object? object;
-
-  LogEventData({
-    required this.dateTime,
-    required this.description,
-    this.object,
-  });
 }

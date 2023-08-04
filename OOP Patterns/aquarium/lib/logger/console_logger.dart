@@ -1,4 +1,5 @@
 import 'package:aquarium/logger/base_logger.dart';
+import 'package:aquarium/logger/data/log_event_data.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
@@ -8,7 +9,7 @@ class ConsoleLogger extends AppLogger {
   final AppLogger? logger;
 
   /// Формат для строки данных
-  static DateFormat formatter = DateFormat('dd.MM.yyyy hh:mm:ss');
+  static DateFormat _formatter = DateFormat('dd.MM.yyyy hh:mm:ss');
 
   ConsoleLogger({
     this.logger,
@@ -17,7 +18,7 @@ class ConsoleLogger extends AppLogger {
   @override
   void log(LogEventData data) {
     if (kDebugMode) {
-      print('${formatter.format(data.dateTime)} : ${data.description}');
+      print('${_formatter.format(data.dateTime)} : ${data.description}');
       // Выводим отдельной строкой информацию об объекте если она передана
       if (data.object != null) {
         print(data.object);

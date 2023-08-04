@@ -28,13 +28,13 @@ class NatureEventFactory extends CommandsFactory<NatureEventsEnum> {
   NatureEvent giveCommand(NatureEventsEnum command) {
     switch (command) {
       case NatureEventsEnum.bornFish:
-        return BornFish(
+        return BornFishEvent(
           pool: _pool,
           random: _random,
           logger: _appLogger,
         );
       case NatureEventsEnum.changeTemp:
-        return ChangeNatureTemperature(
+        return ChangeNatureTemperatureEvent(
           pool: _pool,
           random: _random,
           logger: _appLogger,
