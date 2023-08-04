@@ -6,6 +6,7 @@ import 'package:aquarium/fish/fish.dart';
 import 'package:aquarium/fish/fish_factory.dart';
 import 'package:aquarium/fish/subtypes/carp_fish.dart';
 import 'package:aquarium/fish/subtypes/goldfish.dart';
+import 'package:aquarium/logger/console_logger.dart';
 import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/pool/pool_state.dart';
 import 'package:aquarium/pool/staff.dart';
@@ -28,7 +29,8 @@ void main() {
           ),
           capacity: 1,
         );
-        final fishFactory = EvenFishFactory();
+        final logger = ConsoleLogger();
+        final fishFactory = EvenFishFactory(logger: logger);
         final staff = PoolStaff(
           pool: pool,
           fishFactory: fishFactory,
@@ -38,7 +40,7 @@ void main() {
         async.elapse(timeWithoutCleaning);
         expect(pool.state.pollution, greaterThan(0));
 
-        final cleanPoolCommand = CleanPoolDuty(staff: staff);
+        final cleanPoolCommand = CleanPoolDuty(staff: staff, logger: logger);
         cleanPoolCommand();
         expect(pool.state.pollution, 0);
       });
@@ -53,13 +55,15 @@ void main() {
         ),
         capacity: 1,
       );
-      final fishFactory = EvenFishFactory();
+      final logger = ConsoleLogger();
+      final fishFactory = EvenFishFactory(logger: logger);
       final staff = PoolStaff(pool: pool, fishFactory: fishFactory);
 
       pool.changeTemperature(maxTemperature);
       expect(pool.state.temperature, maxTemperature);
 
-      final setNormalTempCommand = SetNormalTempDuty(staff: staff);
+      final setNormalTempCommand =
+          SetNormalTempDuty(staff: staff, logger: logger);
       setNormalTempCommand();
       expect(pool.state.temperature, normalTemperature);
     });
@@ -75,7 +79,8 @@ void main() {
           ),
           capacity: poolCapacity,
         );
-        final fishFactory = EvenFishFactory();
+        final logger = ConsoleLogger();
+        final fishFactory = EvenFishFactory(logger: logger);
         final staff = PoolStaff(
           pool: pool,
           fishFactory: fishFactory,
@@ -85,7 +90,8 @@ void main() {
 
         expect(pool.fishes, isEmpty);
 
-        final serveFishesCommand = ServeFishesDuty(staff: staff);
+        final serveFishesCommand =
+            ServeFishesDuty(staff: staff, logger: logger);
         serveFishesCommand();
         expect(pool.fishes.length, poolCapacity);
 
@@ -137,8 +143,8 @@ void main() {
         // Переселение лишних рыб
 
         pool
-          ..addObserver(Goldfish())
-          ..addObserver(CarpFish());
+          ..addObserver(Goldfish(logger: logger))
+          ..addObserver(CarpFish(logger: logger));
 
         expect(pool.fishes.length, greaterThan(poolCapacity));
 
@@ -160,6 +166,7 @@ void main() {
         ),
         capacity: 1,
       );
+      final logger = ConsoleLogger();
       final random = Random();
 
       expect(pool.state.temperature, normalTemperature);
@@ -167,6 +174,7 @@ void main() {
       final changeTempCommand = ChangeNatureTemperature(
         pool: pool,
         random: random,
+        logger: logger,
       );
       changeTempCommand();
 
@@ -180,11 +188,16 @@ void main() {
         state: const PoolState(temperature: normalTemperature, pollution: 0),
         capacity: 1,
       );
+      final logger = ConsoleLogger();
       final random = MockRandom();
 
       // Пустой аквариум
 
-      final bornFish = BornFish(pool: pool, random: random);
+      final bornFish = BornFish(
+        pool: pool,
+        random: random,
+        logger: logger,
+      );
       bornFish();
 
       // В пустом аквариуме рыб родиться не может
@@ -192,7 +205,7 @@ void main() {
 
       // Добавить рыбу в аквариум
 
-      pool.addObserver(Goldfish());
+      pool.addObserver(Goldfish(logger: logger));
       // Для выбора рыбы
       when<int>(() => random.nextInt(pool.fishes.length)).thenReturn(0);
       expect(pool.fishes.length, 1);
