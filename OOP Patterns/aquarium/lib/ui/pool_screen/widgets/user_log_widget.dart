@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 /// Виджет пользовательских логов
 class UserLogWidget extends StatelessWidget {
   /// Список логов
-  final List<String>? logList;
+  final List<String> logList;
 
   /// Контроллер для скрола
   final ScrollController controller;
@@ -21,15 +21,12 @@ class UserLogWidget extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       child: ListView.builder(
         controller: controller,
-        itemCount: logList?.length,
+        itemCount: logList.length,
         itemBuilder: (_, i) {
-          if (logList != null) {
-            return Text(
-              logList![i],
-              style: AppStyles.userLogStyle,
-            );
-          }
-          return null;
+          return Text(
+            logList[i],
+            style: AppStyles.userLogStyle,
+          );
         },
       ),
     );

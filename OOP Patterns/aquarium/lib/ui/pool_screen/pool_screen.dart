@@ -52,7 +52,7 @@ class PoolScreen extends ElementaryWidget<IPoolWidgetModel> {
               listenableEntityState: wm.logListState,
               builder: (context, list) {
                 return UserLogWidget(
-                  logList: list,
+                  logList: list ?? [],
                   controller: wm.scrollController,
                 );
               },
