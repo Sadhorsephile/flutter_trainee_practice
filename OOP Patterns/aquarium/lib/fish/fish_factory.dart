@@ -1,6 +1,7 @@
 import 'package:aquarium/fish/fish.dart';
 import 'package:aquarium/fish/subtypes/carp_fish.dart';
 import 'package:aquarium/fish/subtypes/goldfish.dart';
+import 'package:aquarium/fish/subtypes/test_fish.dart';
 import 'package:aquarium/logger/base_logger.dart';
 
 /// Фабрика, которая возвращает экземпляры класса рыб
@@ -29,4 +30,15 @@ class EvenFishFactory implements FishFactory {
       return Goldfish(logger: logger);
     }
   }
+}
+
+/// Фабрика для создания бессмертных рыб [] для дебага
+class DebugFishFactory implements FishFactory {
+  /// Логгер для рыб
+  AppLogger logger;
+
+  DebugFishFactory({required this.logger});
+
+  @override
+  Fish createFish() => ImmortalFish(logger: logger);
 }

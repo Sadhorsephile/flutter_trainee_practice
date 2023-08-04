@@ -19,7 +19,7 @@ class ScheduledInvoker implements Invoker {
   static const serveDelay = Duration(seconds: 10);
 
   /// Задержка между выполнением обязанностей
-  static const cleanDelay = Duration(seconds: 20);
+  static const cleanDelay = Duration(seconds: 15);
 
   /// Задержка между выполнением обязанностей
   static const setNormalTempDelay = Duration(seconds: 30);

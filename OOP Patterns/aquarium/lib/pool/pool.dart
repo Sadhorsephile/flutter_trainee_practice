@@ -3,9 +3,21 @@ import 'dart:async';
 import 'package:aquarium/fish/fish.dart';
 import 'package:aquarium/pool/observable.dart';
 import 'package:aquarium/pool/pool_state.dart';
+import 'package:flutter/foundation.dart';
 
 /// Класс бассейна для рыб
-class Pool implements AquariumObservable<Fish> {
+///
+/// Является обозреваемой сущностью
+/// для провайдера
+/// ```
+/// extends ChangeNotifier
+/// ```
+/// и для рыб
+/// ```
+/// implements AquariumObservable
+/// ```
+///
+class Pool extends ChangeNotifier implements AquariumObservable<Fish> {
   /// Список рыб, находящихся в бассейне
   /// Они являются обозревателями
   late final List<Fish> fishes;
@@ -19,7 +31,12 @@ class Pool implements AquariumObservable<Fish> {
   /// Текущее состояние бассейна
   set state(PoolState value) {
     _state = value;
-    notifyObservers();
+
+    /// При изменении состояния оповестить рыб
+    notifyAquariumObservers();
+
+    /// Оповестить служателей провайдера
+    notifyListeners();
   }
 
   /// Вместимость бассейна
@@ -28,7 +45,7 @@ class Pool implements AquariumObservable<Fish> {
   /// Время, после которого бассейн получает некоторую долю загрязнения
   static const pollutionDuration = Duration(seconds: 1);
 
-  /// Время, после которого бассейн получает некоторую долю загрязнения
+  /// Доля, на которую загрязнение возрастает за время [pollutionDuration]
   static const pollutionIncreasing = 0.1;
 
   Pool({
@@ -53,7 +70,7 @@ class Pool implements AquariumObservable<Fish> {
 
   /// Уведомить всех рыб о том что изменилось состояние бассейна
   @override
-  void notifyObservers() {
+  void notifyAquariumObservers() {
     for (final fish in fishes) {
       fish.react(state);
     }
