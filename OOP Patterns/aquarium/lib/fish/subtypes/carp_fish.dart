@@ -24,7 +24,7 @@ class CarpFish extends Fish {
   final double maxHealth = 100;
 
   @override
-  Duration get hungerTime => const Duration(seconds: 1);
+  Duration get hungerTime => const Duration(seconds: 2);
 
   @override
   final Duration lifetime = const Duration(seconds: 180);

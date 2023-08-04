@@ -20,7 +20,7 @@ class RandomInvoker implements Invoker {
   final Random _random;
 
   /// Задержка между событиями
-  static const defaultEventDelay = Duration(seconds: 10);
+  static const defaultEventDelay = Duration(seconds: 5);
 
   RandomInvoker({
     required NatureEventFactory commandsFactory,

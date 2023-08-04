@@ -27,7 +27,7 @@ class Goldfish extends Fish {
   final double maxHealth = 100;
 
   @override
-  Duration get hungerTime => const Duration(milliseconds: 500);
+  Duration get hungerTime => const Duration(seconds: 1);
 
   @override
   final Duration lifetime = const Duration(seconds: 120);

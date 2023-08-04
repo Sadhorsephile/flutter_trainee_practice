@@ -45,7 +45,7 @@ class Pool extends ChangeNotifier implements AquariumObservable<Fish> {
   /// Время, после которого бассейн получает некоторую долю загрязнения
   static const pollutionDuration = Duration(seconds: 1);
 
-  /// Время, после которого бассейн получает некоторую долю загрязнения
+  /// Доля, на которую загрязнение возрастает за время [pollutionDuration]
   static const pollutionIncreasing = 0.1;
 
   Pool({
