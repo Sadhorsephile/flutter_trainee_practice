@@ -87,7 +87,8 @@ class _FishWidgetState extends State<FishWidget>
         duration: moveSpeed,
         child: Transform.scale(
           // Направление движения рыбы (лево, право)
-          scaleX: direction,
+          // Необходимо указать 1 для всплытия рыбы
+          scaleX: fish.state != FishState.dead ? direction : 1,
           child: Image(
             image: AssetImage(fish.appearance.asset),
           ),
