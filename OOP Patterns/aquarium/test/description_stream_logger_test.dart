@@ -44,7 +44,7 @@ void main() {
     final setNormalCommand = SetNormalTempDuty(staff: staff, logger: logger);
     setNormalCommand();
 
-    final changeTemp = ChangeNatureTemperature(
+    final changeTemp = ChangeNatureTemperatureEvent(
       pool: pool,
       logger: logger,
       random: random,
@@ -52,7 +52,7 @@ void main() {
     changeTemp();
 
     when<int>(() => random.nextInt(pool.fishes.length)).thenReturn(0);
-    final bornFish = BornFish(
+    final bornFish = BornFishEvent(
       pool: pool,
       logger: logger,
       random: random,

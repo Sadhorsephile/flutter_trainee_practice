@@ -10,8 +10,8 @@ import 'package:aquarium/utils/list_utils.dart';
 /// Команда, представляющая природные события.
 ///
 /// Реализации
-/// - [ChangeNatureTemperature]
-/// - [BornFish]
+/// - [ChangeNatureTemperatureEvent]
+/// - [BornFishEvent]
 sealed class NatureEvent extends Command {
   /// Тип команды (для соответствия)
   /// При создании новых экземпляров
@@ -26,7 +26,7 @@ enum NatureEventsEnum {
 }
 
 /// Событие для изменения температуры
-class ChangeNatureTemperature implements NatureEvent {
+class ChangeNatureTemperatureEvent implements NatureEvent {
   @override
   NatureEventsEnum get type => NatureEventsEnum.changeTemp;
 
@@ -39,7 +39,7 @@ class ChangeNatureTemperature implements NatureEvent {
   /// Логгер для событий
   final AppLogger _appLogger;
 
-  ChangeNatureTemperature({
+  ChangeNatureTemperatureEvent({
     required Pool pool,
     required Random random,
     required AppLogger logger,
@@ -70,7 +70,7 @@ class ChangeNatureTemperature implements NatureEvent {
 }
 
 /// Событие для рождения рыбы
-class BornFish implements NatureEvent {
+class BornFishEvent implements NatureEvent {
   @override
   NatureEventsEnum get type => NatureEventsEnum.bornFish;
 
@@ -82,7 +82,7 @@ class BornFish implements NatureEvent {
   /// Логгер для событий
   final AppLogger _appLogger;
 
-  BornFish({
+  BornFishEvent({
     required Pool pool,
     required Random random,
     required AppLogger logger,
