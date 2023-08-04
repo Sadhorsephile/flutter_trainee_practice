@@ -36,7 +36,6 @@ class _FishWidgetState extends State<FishWidget>
   static Duration get divingSpeed => const Duration(milliseconds: 200);
 
   // TODO(AndrewVorotyntsev): grow up - scale
-  // TODO(AndrewVorotyntsev): sick - blend
 
   /// Направление движения рыбы
   ///  1 - влево
@@ -90,6 +89,11 @@ class _FishWidgetState extends State<FishWidget>
           // Необходимо указать 1 для всплытия рыбы
           scaleX: fish.state != FishState.dead ? direction : 1,
           child: Image(
+            /// Подсвечиваем зеленым цветом нездоровых рыб
+            color: fish.state != FishState.healthy
+                ? Colors.lightGreen.shade300
+                : null,
+            colorBlendMode: BlendMode.modulate,
             image: AssetImage(fish.appearance.asset),
           ),
         ),
