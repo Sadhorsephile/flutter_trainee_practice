@@ -64,13 +64,10 @@ class _MyAppState extends State<MyApp> {
     natureInvoker = RandomInvoker(
       commandsFactory: natureCommandsFactory,
       random: random,
-    );
+    )..live();
     staffInvoker = ScheduledInvoker(
       commandsFactory: dutyCommandsFactory,
-    );
-
-    natureInvoker.live();
-    staffInvoker.live();
+    )..live();
 
     super.initState();
   }
