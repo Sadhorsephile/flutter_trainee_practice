@@ -1,4 +1,6 @@
+import 'package:aquarium/fish/fish.dart';
 import 'package:aquarium/logger/description_stream_logger.dart';
+import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/ui/pool_screen/pool_model.dart';
 import 'package:aquarium/ui/pool_screen/pool_screen.dart';
 import 'package:elementary/elementary.dart';
@@ -14,6 +16,15 @@ abstract class IPoolWidgetModel extends IWidgetModel {
 
   /// Состояние списка логов.
   ListenableState<EntityState<List<String>>> get logListState;
+
+  /// Список рыб в бассейне
+  List<Fish> get fishes;
+
+  /// Температура бассейна
+  double get poolTemperature;
+
+  /// Загрязнение бассейна
+  double get poolPollution;
 }
 
 PoolWidgetModel defaultAppWidgetModelFactory(BuildContext context) =>
@@ -22,6 +33,17 @@ PoolWidgetModel defaultAppWidgetModelFactory(BuildContext context) =>
 /// Имплементация и реализация Виджет модели
 class PoolWidgetModel extends WidgetModel<PoolScreen, PoolScreenModel>
     implements IPoolWidgetModel {
+  Pool get pool => context.watch<Pool>();
+
+  @override
+  List<Fish> get fishes => pool.fishes;
+
+  @override
+  double get poolPollution => pool.state.pollution;
+
+  @override
+  double get poolTemperature => pool.state.temperature;
+
   @override
   final EntityStateNotifier<List<String>> logListState =
       EntityStateNotifier<List<String>>();

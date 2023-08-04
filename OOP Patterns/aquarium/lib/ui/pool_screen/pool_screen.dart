@@ -1,4 +1,3 @@
-import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/res/colors.dart';
 import 'package:aquarium/res/strings.dart';
 import 'package:aquarium/res/styles.dart';
@@ -10,7 +9,6 @@ import 'package:aquarium/ui/pool_screen/widgets/user_log_widget.dart';
 import 'package:aquarium/utils/orientation_widget.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 /// Экран бассейна
 class PoolScreen extends ElementaryWidget<IPoolWidgetModel> {
@@ -40,13 +38,12 @@ class PoolScreen extends ElementaryWidget<IPoolWidgetModel> {
                   color: AppColors.waterColor,
                 ),
                 PoolPollutionLayerWidget(
-                  pollution: wm.context.watch<Pool>().state.pollution,
+                  pollution: wm.poolPollution,
                 ),
                 PoolThermometerWidget(
-                  temperature: wm.context.watch<Pool>().state.temperature,
+                  temperature: wm.poolTemperature,
                 ),
-                for (final fish in wm.context.watch<Pool>().fishes)
-                  FishWidget(fish: fish),
+                for (final fish in wm.fishes) FishWidget(fish: fish),
               ],
             ),
           ),
