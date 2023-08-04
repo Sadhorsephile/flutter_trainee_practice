@@ -1,5 +1,8 @@
 import 'dart:math';
 import 'package:aquarium/commands/command.dart';
+import 'package:aquarium/logger/base_logger.dart';
+import 'package:aquarium/logger/data/log_event_data.dart';
+import 'package:aquarium/logger/res/log_res.dart';
 import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/pool/pool_state.dart';
 import 'package:aquarium/utils/list_utils.dart';
@@ -7,8 +10,8 @@ import 'package:aquarium/utils/list_utils.dart';
 /// Команда, представляющая природные события.
 ///
 /// Реализации
-/// - [ChangeNatureTemperature]
-/// - [BornFish]
+/// - [ChangeNatureTemperatureEvent]
+/// - [BornFishEvent]
 sealed class NatureEvent extends Command {
   /// Тип команды (для соответствия)
   /// При создании новых экземпляров
@@ -16,14 +19,14 @@ sealed class NatureEvent extends Command {
   abstract final NatureEventsEnum type;
 }
 
-/// Перечисление событий природв персонала
+/// Перечисление событий природы
 enum NatureEventsEnum {
   changeTemp,
   bornFish,
 }
 
 /// Событие для изменения температуры
-class ChangeNatureTemperature implements NatureEvent {
+class ChangeNatureTemperatureEvent implements NatureEvent {
   @override
   NatureEventsEnum get type => NatureEventsEnum.changeTemp;
 
@@ -33,21 +36,41 @@ class ChangeNatureTemperature implements NatureEvent {
   /// Генератор случайных чисел
   final Random _random;
 
-  ChangeNatureTemperature({
+  /// Логгер для событий
+  final AppLogger _appLogger;
+
+  ChangeNatureTemperatureEvent({
     required Pool pool,
     required Random random,
+    required AppLogger logger,
   })  : _pool = pool,
-        _random = random;
+        _random = random,
+        _appLogger = logger;
 
   @override
   void call() {
     final newTemperature = _random.nextInt(maxTemperature.toInt()).toDouble();
     _pool.changeTemperature(newTemperature);
+    _appLogger.log(
+      LogEventData(
+        dateTime: DateTime.now(),
+        description: LogRes.changingTemp(newTemperature),
+        object: this,
+      ),
+    );
+  }
+
+  @override
+  String toString() {
+    return '''
+    Command: $runtimeType # $hashCode
+    Receiver: ${_pool.runtimeType} # ${_pool.hashCode}
+    ''';
   }
 }
 
 /// Событие для рождения рыбы
-class BornFish implements NatureEvent {
+class BornFishEvent implements NatureEvent {
   @override
   NatureEventsEnum get type => NatureEventsEnum.bornFish;
 
@@ -56,11 +79,16 @@ class BornFish implements NatureEvent {
 
   final Random _random;
 
-  BornFish({
+  /// Логгер для событий
+  final AppLogger _appLogger;
+
+  BornFishEvent({
     required Pool pool,
     required Random random,
+    required AppLogger logger,
   })  : _pool = pool,
-        _random = random;
+        _random = random,
+        _appLogger = logger;
 
   @override
   void call() {
@@ -68,6 +96,21 @@ class BornFish implements NatureEvent {
     final newbornFish = fishToBirth?.birth();
     if (newbornFish != null) {
       _pool.addObserver(newbornFish);
+      _appLogger.log(
+        LogEventData(
+          dateTime: DateTime.now(),
+          description: LogRes.fishBirth,
+          object: this,
+        ),
+      );
     }
+  }
+
+  @override
+  String toString() {
+    return '''
+    Command: $runtimeType # $hashCode
+    Receiver: ${_pool.runtimeType} # ${_pool.hashCode}
+    ''';
   }
 }

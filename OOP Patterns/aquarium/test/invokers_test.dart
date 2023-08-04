@@ -5,6 +5,7 @@ import 'package:aquarium/fish/fish_factory.dart';
 import 'package:aquarium/fish/subtypes/goldfish.dart';
 import 'package:aquarium/invokers/random_invoker.dart';
 import 'package:aquarium/invokers/scheduled_invoker.dart';
+import 'package:aquarium/logger/console_logger.dart';
 import 'package:aquarium/pool/pool.dart';
 import 'package:aquarium/pool/pool_state.dart';
 import 'package:aquarium/pool/staff.dart';
@@ -18,20 +19,22 @@ void main() {
   /// Тест для рандомного инвокера
   test('Random invoker test', () {
     fakeAsync((async) {
+      final logger = ConsoleLogger();
       const poolCapacity = 2;
       final pool = Pool(
         state: const PoolState(temperature: normalTemperature, pollution: 0),
         capacity: poolCapacity,
-      )..addObserver(Goldfish());
+      )..addObserver(Goldfish(logger: logger));
       final mockRandom = MockRandom();
+      final commandsFactory = NatureEventFactory(
+        pool: pool,
+        logger: logger,
+        random: mockRandom,
+      );
       // Для задержки
       when<int>(() => mockRandom.nextInt(6)).thenReturn(1);
       // Для температуры
       when<int>(() => mockRandom.nextInt(40)).thenReturn(30);
-      final commandsFactory = NatureEventFactory(
-        pool: pool,
-        random: mockRandom,
-      );
 
       /// Запуск цикла событий
       RandomInvoker(
@@ -66,6 +69,7 @@ void main() {
   /// Тест для инвокера по расписанию
   test('Scheduled invoker test', () {
     fakeAsync((async) {
+      final logger = ConsoleLogger();
       const capacity = 2;
       final pool = Pool(
         state: const PoolState(
@@ -74,12 +78,12 @@ void main() {
         ),
         capacity: capacity,
       );
-      final fishFactory = EvenFishFactory();
+      final fishFactory = EvenFishFactory(logger: logger);
       final staff = PoolStaff(
         pool: pool,
         fishFactory: fishFactory,
       );
-      final commandsFactory = DutyCommandsFactory(staff: staff);
+      final commandsFactory = DutyCommandsFactory(staff: staff, logger: logger);
 
       // Изначально бассейн пуст
       expect(pool.fishes, isEmpty);

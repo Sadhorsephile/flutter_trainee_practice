@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:aquarium/fish/strategy/react_pool_strategy.dart';
+import 'package:aquarium/logger/base_logger.dart';
+import 'package:aquarium/logger/data/log_event_data.dart';
+import 'package:aquarium/logger/res/log_res.dart';
 import 'package:aquarium/pool/observable.dart';
 import 'package:aquarium/pool/pool_state.dart';
 import 'package:flutter/foundation.dart';
@@ -78,7 +81,10 @@ abstract class Fish extends AquariumObserver {
   /// На её основе высчитывается урон здоровью.
   ReactPoolStateStrategy get reactPoolStateStrategy;
 
-  Fish() {
+  /// Логгер для рыб
+  AppLogger logger;
+
+  Fish({required this.logger}) {
     health = maxHealth;
     hunger = 0;
 
@@ -86,7 +92,18 @@ abstract class Fish extends AquariumObserver {
     launchHungerTimer();
 
     /// Естественная смерть рыбы по истечению времени жизни
-    Future.delayed(lifetime).then((value) => health = 0);
+    Future.delayed(lifetime).then(
+      (value) {
+        health = 0;
+        logger.log(
+          LogEventData(
+            dateTime: DateTime.now(),
+            description: LogRes.oldFishDeath,
+            object: this,
+          ),
+        );
+      },
+    );
   }
 
   /// Запустить таймер, по которому рыба будет хотеть есть
@@ -105,6 +122,15 @@ abstract class Fish extends AquariumObserver {
       /// Если голод слишком высокий - уменьшается здоровье
       if (hunger > hungerSafeLimit) {
         health -= hunger * hungerHarm;
+        if (health <= 0) {
+          logger.log(
+            LogEventData(
+              dateTime: DateTime.now(),
+              description: LogRes.hungryFishDeath,
+              object: this,
+            ),
+          );
+        }
       }
     });
   }
@@ -129,12 +155,29 @@ abstract class Fish extends AquariumObserver {
   void react(PoolState newState) {
     final healthHarm = reactPoolStateStrategy.react(this, newState);
     health -= healthHarm;
+    if (health <= 0) {
+      logger.log(
+        LogEventData(
+          dateTime: DateTime.now(),
+          description: LogRes.reactPoolFishDeath,
+          object: this,
+        ),
+      );
+    }
   }
 
   /// Родить новую рыбу
   /// Родиться может только рыба того же типа (наследник Fish)
   /// Часть паттерна "Прототип"
   Fish birth();
+
+  @override
+  String toString() => '''
+   Fish #$hashCode
+    Subtype: $runtimeType
+    Health: $health
+    Hunger: $hunger 
+    ''';
 }
 
 /// Состояние рыбы
