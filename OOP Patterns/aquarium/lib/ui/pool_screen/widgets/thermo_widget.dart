@@ -26,7 +26,7 @@ class PoolThermometerWidget extends StatelessWidget {
             padding: const EdgeInsets.all(4),
             child: Column(
               children: [
-                Text('$temperature'),
+                Text(temperature.toStringAsFixed(1)),
                 Stack(
                   alignment: Alignment.bottomCenter,
                   children: [
